@@ -3,42 +3,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(TeX-command-list
-   (quote
-    (("TeX" "%(PDF)%(tex) %`%S%(PDFout)%(mode)%' %t" TeX-run-TeX nil
-      (plain-tex-mode texinfo-mode ams-tex-mode)
-      :help "Run plain TeX")
-     ("LaTeX" "%`%l%(mode)%' %t" TeX-run-TeX nil
-      (latex-mode doctex-mode)
-      :help "Run LaTeX")
-     ("Makeinfo" "makeinfo %t" TeX-run-compile nil
-      (texinfo-mode)
-      :help "Run Makeinfo with Info output")
-     ("Makeinfo HTML" "makeinfo --html %t" TeX-run-compile nil
-      (texinfo-mode)
-      :help "Run Makeinfo with HTML output")
-     ("AmSTeX" "%(PDF)amstex %`%S%(PDFout)%(mode)%' %t" TeX-run-TeX nil
-      (ams-tex-mode)
-      :help "Run AMSTeX")
-     ("ConTeXt" "context --nonstopmode %t" TeX-run-TeX nil
-      (context-mode)
-      :help "Run ConTeXt once")
-     ("ConTeXt XeTeX" "context --xetex %t" TeX-run-TeX nil
-      (context-mode)
-      :help "Run ConTeXt-XeTeX")
-     ("BibTeX" "bibtex %s" TeX-run-BibTeX nil t :help "Run BibTeX")
-     ("View" "%V" TeX-run-discard t t :help "Run Viewer")
-     ("Print" "%p" TeX-run-command t t :help "Print the file")
-     ("Queue" "%q" TeX-run-background nil t :help "View the printer queue" :visible TeX-queue-command)
-     ("File" "%(o?)dvips %d -o %f " TeX-run-command t t :help "Generate PostScript file")
-     ("Index" "makeindex %s" TeX-run-command nil t :help "Create index file")
-     ("Check" "lacheck %s" TeX-run-compile nil
-      (latex-mode)
-      :help "Check LaTeX file for correctness")
-     ("Spell" "(TeX-ispell-document \"\")" TeX-run-function nil t :help "Spell-check the document")
-     ("Clean" "TeX-clean" TeX-run-function nil t :help "Delete generated intermediate files")
-     ("Clean All" "(TeX-clean t)" TeX-run-function nil t :help "Delete generated intermediate and output files")
-     ("Other" "" TeX-run-command t t :help "Run an arbitrary command"))))
  '(ac-auto-show-menu nil)
  '(ac-auto-start nil)
  '(ac-use-quick-help nil)
@@ -93,16 +57,6 @@
  '(dired-guess-shell-alist-user (quote (("[.]pdf" "open"))))
  '(dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|.*~\\|CVS\\|.DS_Store")
  '(dired-recursive-copies (quote top))
- '(ecb-layout-window-sizes
-   (quote
-    (("brian1"
-      (ecb-directories-buffer-name 0.21739130434782608 . 0.24615384615384617)
-      (ecb-sources-buffer-name 0.21739130434782608 . 0.24615384615384617)
-      (ecb-methods-buffer-name 0.21739130434782608 . 0.24615384615384617)
-      (ecb-history-buffer-name 0.21739130434782608 . 0.24615384615384617)
-      (ecb-default-buffer-name 0.3 . 0.9846153846153847)))))
- '(ecb-options-version "2.40")
- '(ede-project-directories nil)
  '(ediff-diff3-options "--strip-trailing-cr")
  '(ediff-diff3-program "gdiff3")
  '(ediff-keep-variants nil)
@@ -562,7 +516,6 @@ pre {
  '(org-clock-into-drawer 3)
  '(org-confirm-babel-evaluate nil)
  '(org-default-priority 67)
- '(org-ditaa-jar-path "/Users/bstiles/.emacs.d/lisp/org-extensions/ditaa.jar")
  '(org-drawers (quote ("PROPERTIES" "CLOCK" "LOGBOOK" "DATA")))
  '(org-html-head
    "<style type=\"text/css\">

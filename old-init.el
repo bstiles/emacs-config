@@ -268,45 +268,6 @@
 (menu-bar-mode (if window-system 1 -1))
 
 ;; ========================================================
-;; Emacs customization
-;; ========================================================
-;; (setq custom-file "~/.emacs.d/emacs-custom.el")
-;; (load custom-file)
-
-
-
-;; ========================================================
-;; Confluence
-;; ========================================================
-(setq confluence-url "http://irlaeng05.ircorp.com/confluence/rpc/xmlrpc")
-
-;; ========================================================
-;; Slime
-;; ========================================================
-
-;'(slime-fancy) 
-;; (slime-setup '(slime-repl slime-js))
-;; ;(slime-setup '(slime-repl))
-
-;; (defun my-slime-connect (&optional port)
-;;   (interactive "NPort: ")
-;;   (slime-connect "127.0.0.1" port))
-
-;; (defun my-slime-complete-symbol-or-indent ()
-;;   (interactive)
-;;   (if (save-excursion
-;;         (let ((end (point)))
-;;           (beginning-of-line)
-;;           (string-match "^[[:space:]]*$" (buffer-substring-no-properties (point) end))))
-;;       (indent-for-tab-command)
-;;     (slime-complete-symbol)))
-
-;(add-hook 'slime-repl-mode-hook 'clojure-mode-font-lock-setup)
-;; (add-hook 'slime-repl-mode-hook
-;;           (lambda () 
-;;             (enable-paredit-mode)))
-
-;; ========================================================
 ;; CIDER
 ;; ========================================================
 
@@ -424,26 +385,6 @@
 ;; Shell
 ;; ========================================================
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
-
-;; ========================================================
-;; Eshell
-;; ========================================================
-;; let eshell show color but it is slow.
-;; (add-hook 'eshell-preoutput-filter-functions
-;;           'ansi-color-apply)
-;; ;; Do not let eshell show color
-;; ;(add-hook 'eshell-preoutput-filter-functions 'ansi-color-filter-apply)
-
-;; (add-hook 'eshell-mode-hook
-;;           (lambda ()
-;;             (eshell/export "VISUAL=emacsclient")
-;;             (eshell/export "TERM=eshell")
-;;             ))
-
-;; ========================================================
-;;; ange-ftp
-;; ========================================================
-(setq ange-ftp-ftp-program-args (append ange-ftp-ftp-program-args '("-u")))
 
 ;; ========================================================
 ;; Dired
@@ -888,34 +829,6 @@
                               str)))) nil t)))
 
 
-(defun TeX-ConTeXt-sentinel (process name)
-  "Cleanup TeX output buffer after running ConTeXt."
-  (cond ((TeX-TeX-sentinel-check process name))
-        ((save-excursion
-           ;; in a full ConTeXt run there will multiple texutil
-           ;; outputs. Just looking for "another run needed" would
-           ;; find the first occurence
-           (goto-char (point-max))
-           (re-search-backward "TeXUtil " nil t)
-           (re-search-forward "another run needed" nil t))
-         (message (concat "You should run ConTeXt again "
-                          "to get references right, "
-                          (TeX-current-pages)))
-         (setq TeX-command-next TeX-command-default))
-        ((re-search-forward "removed files :" nil t)
-         (message "sucessfully cleaned up"))
-;       ((re-search-forward "^ ?TeX\\(Exec\\|Util\\)" nil t) ;; strange regexp --pg
-        ((re-search-forward "\\(mkiv lua stats : runtime                   -\\|^ ?TeX\\(Exec\\|Util\\)\\)" nil t) ;; strange regexp --pg
-         (message (concat name ": successfully formatted "
-                          (TeX-current-pages)))
-         (setq TeX-command-next TeX-command-Show))
-        (t
-         (message (concat name ": problems after "
-                          (TeX-current-pages)))
-         (setq TeX-command-next TeX-command-default))))
-
-
-
 ;; ========================================================
 ;; ibuffer
 ;; ========================================================
@@ -960,50 +873,6 @@
 ;;         ;; (or (re-search-backward regexp nil t)
 ;;         ;;         (re-search-forward regexp nil t))
 ;;         (match-string-no-properties 4)))))
-
-
-;; ========================================================
-;; Highlight Symbol/Hi Lock
-;; ========================================================
-
-;;; 2014-02-15 bstiles: Defunct. No longer using highlight-symbol.
-(defun my-highlight-symbol-query-replace (replacement)
-  "*Replace the symbol at point."
-  (interactive (let ((symbol (or (thing-at-point 'symbol)
-                                 (error "No symbol at point"))))
-                 (highlight-symbol-temp-highlight)
-                 (set query-replace-to-history-variable
-                      (cons (substring-no-properties symbol)
-                            (eval query-replace-to-history-variable)))
-                 (list
-                  (read-from-minibuffer "Replacement: " nil nil nil
-                                        query-replace-to-history-variable))))
-  (goto-char (beginning-of-thing 'symbol))
-
-  (let ((opoint (point))
-        beg end)
-    (save-excursion
-      ;; Try first in this order for the sake of languages with nested
-      ;; functions where several can end at the same place as with
-      ;; the offside rule, e.g. Python.
-      (beginning-of-defun)
-      (setq beg (point))
-      (end-of-defun)
-      (setq end (point))
-      (while (looking-at "^\n")
-        (forward-line 1))
-      (unless (> (point) opoint)
-        ;; beginning-of-defun moved back one defun
-        ;; so we got the wrong one.
-        (goto-char opoint)
-        (end-of-defun)
-        (setq end (point))
-        (beginning-of-defun)
-        (setq beg (point)))
-      (goto-char end))
-    (re-search-backward "^\n" (- (point) 1) t)
-    ;; end
-    (query-replace-regexp (highlight-symbol-get-symbol) replacement nil beg end)))
 
 
 ;; ========================================================
@@ -1077,13 +946,6 @@ about what flexible matching means in this context."
 (defun browse-url-chrome-browser (url &optional new-window)
   (interactive (browse-url-interactive-arg "URL: "))
   (start-process (concat "open " url) nil "open" "-a" "Google Chrome" url))
-
-(defun my-comment-prefix ()
-  (interactive)
-  (comment-dwim nil)
-  (when (looking-back "[^ ]")
-    (insert " "))
-  (insert (format-time-string "%Y-%m-%d bstiles: " (current-time))))
 
 (defun my-open-in-browser ()
   (interactive)
@@ -1164,10 +1026,6 @@ Applies to lines after point."
       (setq line-move-visual nil)
     (setq line-move-visual t)))
 
-(defun my-toggle-truncate-lines ()
-  (interactive)
-  (set-variable 'truncate-lines (not truncate-lines)))
-
 (defun my-show-blocks-in-subtree ()
   (interactive)
   (save-excursion
@@ -1185,14 +1043,6 @@ Applies to lines after point."
       (org-narrow-to-subtree)
       (point-min)
       (org-block-map (lambda () (org-hide-block-toggle t))))))
-
-(defun my-set-tab-width-4 ()
-  (interactive)
-  (set-variable 'tab-width 4))
-
-(defun my-set-tab-width-8 ()
-  (interactive)
-  (set-variable 'tab-width 8))
 
 (defun my-other-frame-reverse ()
   (interactive)
@@ -1238,47 +1088,6 @@ Applies to lines after point."
     (set-frame-height my-frame (car my-window-spec))
     (set-frame-position my-frame (car (cdr my-window-spec)) (cadr (cdr my-window-spec)))))
 
-(defun my-show-dr-in-jira-thing-at-point ()
-  (interactive)
-  (let ((dr-id (thing-at-point 'symbol)))
-    (my-show-dr-in-jira dr-id)))
-(defun my-show-dr-in-jira (id)
-  (interactive "MDR identifier: ")
-  (cond ((and id
-              (string-match "^\\([dD][rR]-\\)?\\([0-9]+\\)$" id))
-         (browse-url (format "http://irlaeng05.ircorp.com/jira/browse/DR-%s" (match-string 2 id))))
-        ((and id
-              (string-match "^\\([pP][rR][oO][dD]-\\)?\\([0-9]+\\)$" id))
-         (browse-url (format "https://irisefactory.jira.com/browse/PROD-%s" (match-string 2 id))))
-        (t
-         (call-interactively 'my-show-dr-in-jira))))
-
-(defun my-javadoc (class-name)
-  (interactive "MClass name: ")
-  (shell-command (format "%s %s" (home-relative-file "bin/javadoc") class-name)))
-
-(defun my-swank-shell (name port dir)
-  (interactive "MName: \nnPort: \nDProject root: ")
-  (with-temp-buffer
-    (with-current-buffer (shell (format "*swank %s %s*" name port))
-      (sleep-for 1)
-      (insert-string (format "cd %s" dir))
-      (comint-send-input)
-      (sleep-for 0.3)
-      (insert-string (format "lein swank %s" port))
-      (comint-send-input))))
-
-(defun my-repl-shell (name dir)
-  (interactive "MName: \nDProject root: ")
-  (with-temp-buffer
-    (with-current-buffer (shell (format "*repl %s*" name))
-      (sleep-for 1)
-      (insert-string (format "cd %s" dir))
-      (comint-send-input)
-      (sleep-for 0.3)
-      (insert-string (format "lein repl :headless"))
-      (comint-send-input))))
-
 (defun my-presentation-frame (prefix)
   (interactive "p")
   (cond
@@ -1304,16 +1113,6 @@ Applies to lines after point."
   (let ((default-directory (or (ffip-project-root) default-directory)))
     (call-interactively 'rgrep)))
 
-(defun my-align-let ()
-  (interactive)
-  (save-excursion
-    (let ((beg (search-backward "(let [")))
-      (forward-char)
-      (forward-sexp)
-      (forward-sexp)
-      (align-regexp beg (point)
-                    "\\(\\s-*\\(\\s-*(let\\s-*\\[\\)?\\)\\_<.+?\\_>\\(\\s-+\\)"
-                    3 1 nil))))
 
 (server-start)
 
@@ -1465,117 +1264,8 @@ Make backspaces delete the previous character."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;
-;;;; BEGIN: Hot-keyed files/buffers
-;;;;
-(defmacro my-make-find-file-fn (name-sym file-path)
-  `(defun ,name-sym ()
-     (interactive)
-     (find-file ,file-path)))
-(my-make-find-file-fn my-file-init (expand-file-name "init.el" user-emacs-directory))
-(my-make-find-file-fn my-file-init-org (expand-file-name "init.org" user-emacs-directory))
-(my-make-find-file-fn my-file-journal (home-relative-file "org/journal.org"))
-(my-make-find-file-fn my-file-org (home-relative-file "org"))
-(my-make-find-file-fn my-file-org-one-ring (home-relative-file "org/one-ring.org"))
-(my-make-find-file-fn my-file-org-capture (home-relative-file "org/capture.org"))
-(my-make-find-file-fn my-file-org-personal (home-relative-file "org/personal.org"))
-(my-make-find-file-fn my-file-org-work (home-relative-file "org/work.org"))
-
-(defmacro my-make-goto-buffer-fn (name-sym buffer-name)
-  `(defun ,name-sym ()
-     (interactive)
-     (if (get-buffer ,buffer-name)
-         (switch-to-buffer ,buffer-name)
-       (message (concat "Buffer not found: " ,buffer-name)))))
-(my-make-goto-buffer-fn my-buffer-compilation "*compilation*")
-(my-make-goto-buffer-fn my-buffer-grep "*grep*")
-(my-make-goto-buffer-fn my-buffer-find "*Find*")
-(my-make-goto-buffer-fn my-buffer-shell "*shell*")
-;;;;
-;;;; END: Hot-keyed files
-;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;
 ;;;; BEGIN: Key bindings
 ;;;;
-(setq mac-command-modifier 'meta)
-;; 'Correct' the backspace key in a tty by binding C-x ? to help-command
-;; (in any case so that it is consistently bound) and translating C-h to DEL
-;; only if in a tty
-(if (< (string-to-number emacs-version) 21)
-    (progn
-      (global-set-key (kbd "C-x ?") 'help-command)
-      (if (not window-system)
-           (keyboard-translate ?\C-h ?\C-?))))
-
-(global-set-key (kbd "<f7>") 'mark-sexp) ; For terminals (mapped to C-opt-SPC in iTerm2)
-;; (global-set-key (kbd "C-.") 'hippie-expand)
-(global-set-key (kbd "C-.") 'company-complete-common)
-(global-set-key (kbd "<f5>") 'company-complete-common) ; For terminals (mapped to C-. in iTerm2)
-(global-set-key (kbd "C-/") 'comment-or-uncomment-region)
-(global-set-key (kbd "<f6>") 'comment-or-uncomment-region) ; For terminals (mapped to C-/ in iTerm2)
-(global-set-key (kbd "C-c C-/") 'my-comment-prefix)
-(global-set-key (kbd "C-c 4") 'my-set-tab-width-4)
-(global-set-key (kbd "C-c 8") 'my-set-tab-width-8)
-(global-set-key (kbd "C-c a") 'align-regexp)
-(global-set-key (kbd "C-c A") 'my-align-let)
-(global-set-key (kbd "C-c c") 'column-highlight-mode)
-(global-set-key (kbd "C-c C") 'my-set-colors)
-(global-set-key (kbd "C-c D") 'my-show-dr-in-jira-thing-at-point)
-(global-set-key (kbd "C-c H") 'global-hl-line-mode)
-(global-set-key (kbd "C-c J") 'my-javadoc)
-(global-set-key (kbd "C-c P") 'picture-mode)
-(global-set-key (kbd "C-c f") 'font-lock-mode)
-(global-set-key (kbd "C-c g c") 'my-buffer-compilation)
-(global-set-key (kbd "C-c g e") 'my-file-init)
-(global-set-key (kbd "C-c g E") 'my-file-init-org)
-(global-set-key (kbd "C-c g f") 'my-buffer-find)
-(global-set-key (kbd "C-c g F") 'find-dired)
-(global-set-key (kbd "C-c g g") 'my-buffer-grep)
-(global-set-key (kbd "C-c g G") 'my-rgrep-in-project)
-(global-set-key (kbd "C-c g l") 'goto-line)
-(global-set-key (kbd "C-c g s") 'my-buffer-shell)
-(global-set-key (kbd "C-c h b") 'helm-buffers-list)
-(global-set-key (kbd "C-c h p") 'helm-projectile)
-(global-set-key (kbd "C-c h P") 'my-helm-projectile)
-;(global-set-key (kbd "C-c h g") 'my-helm-ls-git-ls)
-(global-set-key (kbd "C-c n c") 'cider-connect)
-(global-set-key (kbd "C-c n j") 'cider-jack-in)
-(global-set-key (kbd "C-c n n") 'nrepl-connection-browser)
-(global-set-key (kbd "C-c n q") 'cider-quit)
-(global-set-key (kbd "C-c n r") 'cider-switch-to-repl-buffer)
-(global-set-key (kbd "C-c n R") 'my-cider-reset)
-(global-set-key (kbd "C-c o A") 'org-align-all-tags)
-(global-set-key (kbd "C-c o a") 'org-agenda)
-(global-set-key (kbd "C-c o b h") 'my-hide-blocks-in-subtree)
-(global-set-key (kbd "C-c o b H") 'org-hide-block-all)
-(global-set-key (kbd "C-c o b s") 'my-show-blocks-in-subtree)
-(global-set-key (kbd "C-c o b S") 'org-show-block-all)
-(global-set-key (kbd "C-c o c") 'my-file-org-capture)
-(global-set-key (kbd "C-c o h h") 'my-helm-org-headlines)
-(global-set-key (kbd "C-c o h n") 'my-helm-org-named-blocks)
-(global-set-key (kbd "C-c o i") 'my-file-init-org)
-(global-set-key (kbd "C-c o j") 'my-file-journal)
-(global-set-key (kbd "C-c o l") 'orgstruct-mode)
-(global-set-key (kbd "C-c o O") 'my-file-org)
-(global-set-key (kbd "C-c o o") 'my-file-org-one-ring)
-(global-set-key (kbd "C-c o p") 'my-file-org-personal)
-(global-set-key (kbd "C-c o t") 'orgtbl-mode)
-(global-set-key (kbd "C-c o T") 'my-org-table-to-gfm-table)
-(global-set-key (kbd "C-c o w") 'my-file-org-work)
-(global-set-key (kbd "C-c t") 'my-toggle-truncate-lines)
-(global-set-key (kbd "C-c w") 'whitespace-mode)
-(global-set-key (kbd "C-x C-b") 'helm-buffers-list)
-(global-set-key (kbd "C-x B") 'ibuffer)
-(global-set-key (kbd "C-M-S-h") 'auto-highlight-symbol-mode)
-(global-set-key (kbd "C-M-S-q") 'my-indent-top-level-sexp)
-(global-set-key (kbd "C-M-z") 'my-toggle-window-width)
-(global-set-key (kbd "C-M-S-z") 'my-toggle-window-height)
-(global-set-key (kbd "C-M-<tab>") [escape tab])
-(global-set-key (kbd "M-`") 'other-frame)
-(global-set-key (kbd "M-~") 'my-other-frame-reverse)
 (add-hook 'nxml-mode-hook
           (lambda ()
             (local-set-key (kbd "C-c C-c") 'my-open-in-browser)))

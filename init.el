@@ -1,22 +1,91 @@
-(unless noninteractive
-  (message "Loading %s..." load-file-name))
-
-(setq my-emacs-config-dir "~/.emacs.d/emacs-config")
+;;; Config files location
+;;; ----------------------------------------------------------------------------
+(defvar my-emacs-config-dir "~/.emacs.d/emacs-config"
+  "Directory containing my config files.")
 (add-to-list 'load-path my-emacs-config-dir)
 
-;; Local customization
-(load "local-config")
+;;; Key binding setup
+;;; - Use my- variations of `global-set-key' and `define-key' to capture
+;;;   my customizations to key bindings.
+;;; - Use `my-describe-key-bindings' to view all key bindings I've set.
+;;; ----------------------------------------------------------------------------
+(defvar my-global-key-bindings '()
+  "Stores the global key bindings set with
+`my-global-set-key'. These key bindings can be displayed with
+`my-describe-key-bindings'.")
+
+(defmacro my-global-set-key (key command)
+  "Same as `global-set-key' but adds the definition to
+`my-global-key-bindings' for use with
+`my-describe-key-bindings'. KEY is passed to `kbd' before being
+passed to `global-set-key'."
+  (let ((command-desc (if (and (listp command) (eq 'quote (car command)))
+                          (cadr command)
+                        command)))
+    `(progn
+       (setq my-global-key-bindings
+             (cons '(,key ,command-desc ,load-file-name)
+                   (delq nil
+                         (mapcar (lambda (x)
+                                   (if (equal ,key (car x))
+                                       nil
+                                     x))
+                                 my-global-key-bindings))))
+       (global-set-key (kbd ,key) ,command))))
 
 (if (< (string-to-number emacs-version) 24.4)
-    ;; We're on an old emacs, only load minimal config
-    (load "init-minimal.el")
+    (defun my-describe-key-bindings ()
+      (interactive)
+      (message "Not supported on older Emacsen."))
+  (defun my-describe-key-bindings ()
+    "List all key bindings set with `my-global-set-key' or
+`my-define-key'."
+    (interactive)
+    (let ((my-key-bindings-help-buffer "*My Key Bindings*"))
+      (ignore-errors (kill-buffer my-key-bindings-help-buffer))
+      (with-current-buffer (get-buffer-create my-key-bindings-help-buffer)
+        (insert "My Key Bindings:\n\n")
+        (loop for (key command file) in (sort my-global-key-bindings
+                                              (lambda (a b)
+                                                (string< (car a) (car b))))
+              do (insert (format "%-15s%-40s%s\n" key command
+                                 (file-name-base (or file "")))))
+        (goto-char (point-min))
+        (help-mode)
+        (display-buffer (current-buffer) t)))))
 
+;;; Local customization
+;;; - Allow each machine to supply machine-specific configuration.
+;;; - The machine identifier is set in `my-machine-identifier-file'.
+;;; ----------------------------------------------------------------------------
+(defvar my-machine-identifier "UNDEFINED"
+  "Uniquely identifies the machine on which Emacs is run")
+
+(defvar my-machine-identifier-file "~/.emacs.d/machine-identifier.el"
+  "Identifies a file that contains an emacs lisp expression to
+set `my-machine-identifier'.")
+
+(if (not (load my-machine-identifier-file t))
+    (message "WARN: Machine identifier file not found: %s"
+             my-machine-identifier-file)
+  (let ((machine (concat "local-config-" my-machine-identifier)))
+    (when (not (load machine t))
+      (message "WARN: Local init file not found: %s" machine))))
+
+;;; Emacs customization
+;;; - Override the custom-file location so Custom doesn't mess with init.el.
+;;; ----------------------------------------------------------------------------
+(setq custom-file (expand-file-name "emacs-custom.el" my-emacs-config-dir))
+(load custom-file)
+
+;;; Minimal/full customization
+;;; - Always load the minimal config.
+;;; - Only load full config if Emacs is version 24.4 or greater.
+;;; ----------------------------------------------------------------------------
+(load "init-minimal.el")
+(when (>= (string-to-number emacs-version) 24.4)
   ;; Load full config
   ;; ---------------------------------------------------------------------------
-
-  ;; Emacs customization
-  (setq custom-file (expand-file-name "emacs-custom.el" my-emacs-config-dir))
-  (load custom-file)
 
   ;; Bootstrap `use-package'
   (require 'package)
@@ -34,7 +103,7 @@
 
 ;;; XXX 2015-01-06 bstiles: Use remainder of old init.el while
 ;;; migrating.
-  ;; (load "old-init.el")
-  )
+  (when (equal "Brians-MacBook-Pro" my-machine-identifier)
+    (load "old-init.el")))
 
-(message "========================\nEnd init.el evaluatation\n========================")
+(message "End init.el evaluatation")

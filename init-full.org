@@ -2,17 +2,129 @@
 #+OPTIONS: toc:4 h:4
 
 * Configuration
+** init.el and the general initialization flow
+init.el is the start of the configuration. It contains a few global
+definitions used commonly, such as the location of my config files and
+some helpers to set key bindings. It also loads machine-specific
+configuration and overrides Custom's configuration file location.
+
+If the Emacs instance is older than 24.4, only init-minimal.el is
+loaded. Otherwise, full configuration continues.
+
+*** Minimal configuration
+init-minimal.el just creates a few thin wrappers for often-used
+functions or commands and assigns a number of global key bindings.
+
+*** Full configuration
+Full configuration starts in init.el by loading `package',
+`use-package', `org', and `org-dotemacs' just prior to handing control
+to this file, init-full.org.
+
+*** Package management
+Packages are generally loaded from the ELPA package management
+infrastructure, but via `use-package' so that the manifest is encoded
+in the configuration source files, rather than manual usage of the
+package manager. This should make it easier to set up new machines.
+
+*** Setting up a new machine
+All configuration files are stored in `my-emacs-config-dir'. This
+directory is managed as a Git repository. The directory can be cloned
+to a new machine in `my-emacs-config-dir' (usually under ~/.emacs.d).
+There is a shell script named `setup.sh' in the config dir that can be
+used to link init.el into ~/.emacs.d and to configure the machine
+identifier used to select machine-specific configuration.
+
+All package management is done via config files via `use-package', so
+dependencies should be automatically installed on first run.
+
+*** Machine-specific configuration
+Machine-specific configuration is stored in files in
+`my-emacs-config-dir' named `local-config-<MACHINE>.el'. The
+appropriate file is determined by `machine-identifier.el' created by
+setup.sh in ~/.emacs.d.
+
 ** About this file
 <<babel-init>>
 
 ** Personal information
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results silent
   (setq user-full-name "Brian Stiles"
         user-mail-address "bstiles@bstiles.net")
 #+end_src
 
-** Emacs initialization
-#+begin_src emacs-lisp
-  (message "hiiii")
+** Key bindings
+Key bindings should be set with `my-global-set-key' or `my-define-key'
+(defined in init.el) which are thin wrappers around `global-set-key'
+and `define-key' that track the bindings for easy description with
+`my-describe-key-bindings'. All key bindings that I have set can be
+viewed with `my-describe-key-bindings'.
+
+*** Machine-specific file key bindings (machine)
+Create key bindings for often used files with:
+
+#+begin_example :results silent
+  (my-make-find-file-fn my-file-org-work "/path/to/file)
+#+end_example
+
+See 'local-config-Brians-MacBook-Pro.el' for examples.
+
+#+begin_src emacs-lisp :results silent
+  (defmacro my-make-find-file-fn (name-sym file-path)
+    (if (boundp name-sym)
+        `(defun ,name-sym ()
+           (interactive)
+           (find-file ,file-path))
+      (let ((sym-name (symbol-name name-sym)))
+        `(defun ,name-sym ()
+           (interactive)
+           (message "%S is not bound on this machine." ,sym-name)))))
+  (my-global-set-key "C-c g E" 'my-file-init-org)
+  (my-global-set-key "C-c o c" 'my-file-org-capture)
+  (my-global-set-key "C-c o i" 'my-file-init-org)
+  (my-global-set-key "C-c o j" 'my-file-journal)
+  (my-global-set-key "C-c o O" 'my-file-org)
+  (my-global-set-key "C-c o o" 'my-file-org-one-ring)
+  (my-global-set-key "C-c o p" 'my-file-org-personal)
+  (my-global-set-key "C-c o w" 'my-file-org-work)
+#+end_src
+
+*** Global keybindigs (full)
+#+begin_src emacs-lisp :results silent
+  (my-global-set-key "C-." 'company-complete-common)
+  (my-global-set-key "<f5>" 'company-complete-common) ; For terminals (mapped to C-. in iTerm2)
+  ;; XXX Tie to mode/terminal type
+  (my-global-set-key "C-c c" 'column-highlight-mode)
+  (my-global-set-key "C-c C" 'my-set-colors)
+  (my-global-set-key "C-c g G" 'my-rgrep-in-project)
+  (my-global-set-key "C-c g s" 'my-buffer-shell)
+  (my-global-set-key "C-c h b" 'helm-buffers-list)
+  (my-global-set-key "C-c h p" 'helm-projectile)
+  (my-global-set-key "C-c h P" 'my-helm-projectile)
+  ;(my-global-set-key "C-c h g" 'my-helm-ls-git-ls)
+  (my-global-set-key "C-c n c" 'cider-connect)
+  (my-global-set-key "C-c n j" 'cider-jack-in)
+  (my-global-set-key "C-c n n" 'nrepl-connection-browser)
+  (my-global-set-key "C-c n q" 'cider-quit)
+  (my-global-set-key "C-c n r" 'cider-switch-to-repl-buffer)
+  (my-global-set-key "C-c n R" 'my-cider-reset)
+  (my-global-set-key "C-c o A" 'org-align-all-tags)
+  (my-global-set-key "C-c o a" 'org-agenda)
+  (my-global-set-key "C-c o b h" 'my-hide-blocks-in-subtree)
+  (my-global-set-key "C-c o b H" 'org-hide-block-all)
+  (my-global-set-key "C-c o b s" 'my-show-blocks-in-subtree)
+  (my-global-set-key "C-c o b S" 'org-show-block-all)
+  (my-global-set-key "C-c o h h" 'my-helm-org-headlines)
+  (my-global-set-key "C-c o h n" 'my-helm-org-named-blocks)
+  (my-global-set-key "C-c o l" 'orgstruct-mode)
+  (my-global-set-key "C-c o t" 'orgtbl-mode)
+  (my-global-set-key "C-c o T" 'my-org-table-to-gfm-table)
+  (my-global-set-key "C-x C-b" 'helm-buffers-list)
+  (my-global-set-key "C-x B" 'ibuffer)
+  (my-global-set-key "C-M-S-h" 'auto-highlight-symbol-mode)
+  (my-global-set-key "C-M-S-q" 'my-indent-top-level-sexp)
+  (my-global-set-key "C-M-z" 'my-toggle-window-width)
+  (my-global-set-key "C-M-S-z" 'my-toggle-window-height)
+  (my-global-set-key "M-`" 'other-frame)
+  (my-global-set-key "M-~" 'my-other-frame-reverse)
 #+end_src
