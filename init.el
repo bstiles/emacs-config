@@ -65,6 +65,16 @@ passed to `global-set-key'."
   "Identifies a file that contains an emacs lisp expression to
 set `my-machine-identifier'.")
 
+(defmacro my-make-find-file-fn (name-sym file-path)
+  (if (boundp name-sym)
+      `(defun ,name-sym ()
+	 (interactive)
+	 (find-file ,file-path))
+    (let ((sym-name (symbol-name name-sym)))
+      `(defun ,name-sym ()
+	 (interactive)
+	 (message "%S is not bound on this machine." ,sym-name)))))
+
 (if (not (load my-machine-identifier-file t))
     (message "WARN: Machine identifier file not found: %s"
              my-machine-identifier-file)

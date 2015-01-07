@@ -70,15 +70,6 @@ Create key bindings for often used files with:
 See 'local-config-Brians-MacBook-Pro.el' for examples.
 
 #+begin_src emacs-lisp :results silent
-  (defmacro my-make-find-file-fn (name-sym file-path)
-    (if (boundp name-sym)
-        `(defun ,name-sym ()
-           (interactive)
-           (find-file ,file-path))
-      (let ((sym-name (symbol-name name-sym)))
-        `(defun ,name-sym ()
-           (interactive)
-           (message "%S is not bound on this machine." ,sym-name)))))
   (my-global-set-key "C-c g E" 'my-file-init-org)
   (my-global-set-key "C-c o c" 'my-file-org-capture)
   (my-global-set-key "C-c o i" 'my-file-init-org)
