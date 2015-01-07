@@ -768,6 +768,7 @@ pre {
  '(slime-net-coding-system (quote utf-8-unix))
  '(sql-postgres-program "~/bin/psql-emacs")
  '(sql-sqlite-program "sqlite3")
+ '(truncate-partial-width-windows nil)
  '(uniquify-buffer-name-style (quote post-forward) nil (uniquify))
  '(uniquify-separator nil)
  '(use-dialog-box nil)

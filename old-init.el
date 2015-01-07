@@ -261,7 +261,6 @@
 (set 'font-lock-maximum-decoration t)
 (setq comint-input-ring-size 500)
 (setq next-line-add-newlines nil)               ; Don't extend buffer
-(setq truncate-partial-width-windows nil)
 
 (setq-default completion-ignore-case t)         ; Case insensitive tab completion
 (setq compilation-window-height 15)
