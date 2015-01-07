@@ -520,7 +520,7 @@ pre {
  '(org-html-head
    "<style type=\"text/css\">
   body {
-    font-family: \"verdana\", \"helvetica neue\", \"helvetica\", \"arial unicode\", \"arial\", sans-serif;
+    font-family: \"avenir next\", \"verdana\", \"helvetica neue\", \"helvetica\", \"arial unicode\", \"arial\", sans-serif;
     /*font-family: \"georgia\", \"times new roman\", serif;*/
     font-size: larger;
     padding-left: 1.4em;

@@ -98,7 +98,6 @@
 
 ;(auto-complete-config)
 
-;(load "htmlize")
 ;(load-file (home-relative-file "elisp/java-decompile-helper.el"))
 (load-library "java-decompile-helper")
 (load-library "dired-x")
@@ -962,20 +961,6 @@ about what flexible matching means in this context."
   (save-excursion
     (goto-char (point-min))
     (let ((template-buffer (find-file-noselect (home-relative-file "bin/00_NEW_SCRIPT_TEMPLATE.sh")))
-          start
-          end)
-      (save-excursion
-        (set-buffer template-buffer)
-        (setq start (point-min) end (point-max)))
-      (insert-buffer-substring template-buffer start end)
-      (kill-buffer template-buffer))))
-
-(defun my-html-template ()
-  "Adds boilerplate to the current buffer suitable for an HTML file."
-  (interactive)
-  (save-excursion
-    (goto-char (point-min))
-    (let ((template-buffer (find-file-noselect (home-relative-file "bin/00_HTML_TEMPLATE.html")))
           start
           end)
       (save-excursion

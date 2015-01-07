@@ -1,3 +1,9 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Emacs initialization
+;;; - See init-full.org for more documentation
+;;;
+
 ;;; Config files location
 ;;; ----------------------------------------------------------------------------
 (defvar my-emacs-config-dir "~/.emacs.d/emacs-config"
@@ -65,7 +71,11 @@ passed to `global-set-key'."
   "Identifies a file that contains an emacs lisp expression to
 set `my-machine-identifier'.")
 
+;;; Defined here since local configs will be where this is typically
+;;; used.
 (defmacro my-make-find-file-fn (name-sym file-path)
+  "Convenience for creating functions meant to be bound to keys
+for quick access to commonly used files."
   (if (boundp name-sym)
       `(defun ,name-sym ()
 	 (interactive)
@@ -93,10 +103,10 @@ set `my-machine-identifier'.")
 ;;; - Only load full config if Emacs is version 24.4 or greater.
 ;;; ----------------------------------------------------------------------------
 (load "init-minimal.el")
-(when (>= (string-to-number emacs-version) 24.4)
-  ;; Load full config
-  ;; ---------------------------------------------------------------------------
 
+;;; Load full config for Emacs 24.4 or newer
+;;; ---------------------------------------------------------------------------
+(when (>= (string-to-number emacs-version) 24.4)
   ;; Bootstrap `use-package'
   (require 'package)
   (setq package-enable-at-startup nil)
@@ -116,4 +126,4 @@ set `my-machine-identifier'.")
   (when (equal "Brians-MacBook-Pro" my-machine-identifier)
     (load "old-init.el")))
 
-(message "End init.el evaluatation")
+(message "-- End init.el evaluatation")
