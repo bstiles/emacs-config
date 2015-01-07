@@ -50,8 +50,6 @@ echo "Linking/writing initialization files to $HOME/.emacs.d/..."
    || abort "ERROR: $init_file already exists"
 [ ! -e "$machine_id_file" ] \
     || abort "ERROR: $machine_id_file already exists."
-[ -d "$(dirname "$use_package_dir")" -o ! -e "$(dirname "$use_package_dir")" ] \
-    || abort "ERROR: non-directory is in the way of $(dirname "$use_package_dir")"
 
 ln -s "$config_dir/init.el" "$init_file"
 printf '(setq my-machine-identifier "%s"' "$machine" > "$machine_id_file"
