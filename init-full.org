@@ -1,0 +1,18 @@
+#+TITLE: Brian Stiles' Emacs configuration
+#+OPTIONS: toc:4 h:4
+
+* Configuration
+** About this file
+<<babel-init>>
+
+** Personal information
+
+#+begin_src emacs-lisp
+  (setq user-full-name "Brian Stiles"
+        user-mail-address "bstiles@bstiles.net")
+#+end_src
+
+** Emacs initialization
+#+begin_src emacs-lisp
+  (message "hiiii")
+#+end_src
