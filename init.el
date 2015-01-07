@@ -4,6 +4,8 @@
 ;;; - See init-full.org for more documentation
 ;;;
 
+(unless noninteractive (message "Loading %s..." load-file-name))
+
 ;;; Config files location
 ;;; ----------------------------------------------------------------------------
 (defvar my-emacs-config-dir "~/.emacs.d/emacs-config"
@@ -76,14 +78,9 @@ set `my-machine-identifier'.")
 (defmacro my-make-find-file-fn (name-sym file-path)
   "Convenience for creating functions meant to be bound to keys
 for quick access to commonly used files."
-  (if (boundp name-sym)
-      `(defun ,name-sym ()
-	 (interactive)
-	 (find-file ,file-path))
-    (let ((sym-name (symbol-name name-sym)))
-      `(defun ,name-sym ()
-	 (interactive)
-	 (message "%S is not bound on this machine." ,sym-name)))))
+  `(defun ,name-sym ()
+     (interactive)
+     (find-file ,file-path)))
 
 (if (not (load my-machine-identifier-file t))
     (message "WARN: Machine identifier file not found: %s"

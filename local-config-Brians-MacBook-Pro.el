@@ -1,3 +1,11 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Emacs LOCAL initialization for Brians-MacBook-Pro
+;;; - See init-full.org for more documentation
+;;;
+
+(unless noninteractive (message "Loading %s..." load-file-name))
+
 ;; These are used to bind hot keys to open the specified files.
 ;; See key-bindings.el.
 (my-make-find-file-fn my-file-org-capture "~/org/capture.org")

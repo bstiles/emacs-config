@@ -2,6 +2,10 @@
 #+OPTIONS: toc:4 h:4
 
 * Configuration
+#+begin_src emacs-lisp :results silent
+   (unless noninteractive (message "Loading %s..." load-file-name))
+#+end_src
+
 ** init.el and the general initialization flow
 =init.el= is the start of the configuration. It contains a few global
 definitions used commonly, such as the location of my config files and
@@ -84,8 +88,12 @@ See =local-config-Brians-MacBook-Pro.el= for examples.
 
 **** File access bindings
 #+begin_src emacs-lisp :results silent
-  (my-make-find-file-fn my-file-init-org (expand-file-name "init.org" my-emacs-config-dir))
-  (my-global-set-key "C-c g E o" 'my-file-init-org)
+  (my-make-find-file-fn my-file-init-full-org (expand-file-name "init-full.org" my-emacs-config-dir))
+  (my-global-set-key "C-c g e" 'my-file-init-full-org)
+  (my-global-set-key "C-c g E f" 'my-file-init-full-org)
+
+  (my-make-find-file-fn my-file-emacs-config-dir my-emacs-config-dir)
+  (my-global-set-key "C-c g E e" 'my-file-emacs-config-dir)
 #+end_src
 
 **** Uncategorized

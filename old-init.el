@@ -1,3 +1,5 @@
+(unless noninteractive (message "Loading %s..." load-file-name))
+
 (desktop-save-mode 1)
 (setq message-log-max 5000)
 (prefer-coding-system 'utf-8)
