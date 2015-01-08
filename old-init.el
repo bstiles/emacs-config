@@ -104,16 +104,6 @@
 (load-library "java-decompile-helper")
 (load-library "dired-x")
 (load-library "css-mode-simple")
-;(load (home-relative-file "elisp/haskell-mode/haskell-site-file"))
-
-;(autoload 'js2-mode "js2" nil t)
-;;(autoload #'espresso-mode "espresso" "Start espresso-mode" t)
-
-;; (autoload 'moz-minor-mode "moz" "Mozilla Minor and Inferior Mozilla Modes" t)
-
-;; (add-hook 'js2-mode-hook 'js2-custom-setup)
-;; (defun js2-custom-setup ()
-;;   (moz-minor-mode 1))
 
 (autoload 'ghc-init "ghc" nil t)
 (add-hook 'haskell-mode-hook (lambda () (ghc-init) (flymake-mode)))
@@ -139,14 +129,6 @@
    (add-hook hook 'margin-indicator-mode))
  '(clojure-mode-hook
    emacs-lisp-mode-hook))
-;;XXX
-;; (mapc
-;;  (lambda (hook)
-;;    (add-hook hook 'highlight-80+-mode))
-;;  '(clojure-mode-hook
-;;    emacs-lisp-mode-hook
-;;    coffee-mode-hook
-;;    js2-mode-hook))
 
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
@@ -187,11 +169,6 @@
                     (margin-indicator-mode))))
       '(coffee-mode-hook
         js2-mode-hook))
-
-;; (add-hook 'cider-repl-mode-hook 'ac-nrepl-setup)
-;; (add-hook 'cider-mode-hook 'ac-nrepl-setup)
-;; (eval-after-load "auto-complete"
-;;   '(add-to-list 'ac-modes 'cider-repl-mode))
 
 ;; ==============================================================
 ;; Look and feel
@@ -318,12 +295,9 @@
 ;;      (ad-activate 'cider-load-buffer t)))
 
 
-;(remove-hook 'cider-repl-mode-hook 'clojure-mode-font-lock-setup)
 (add-hook 'cider-repl-mode-hook
           (lambda () 
             (enable-paredit-mode)))
-;; (add-hook 'nrepl-interaction-mode-hook
-;;           'nrepl-turn-on-eldoc-mode)
 (add-hook 'cider-mode-hook
           'cider-turn-on-eldoc-mode)
 
@@ -331,16 +305,6 @@
 ;; Ediff
 ;; ========================================================
 (setq ediff-diff-options "-dw")
-;; (add-hook 'ediff-quit-hook
-;;           (lambda ()
-;;             (dolist (f (filtered-frame-list
-;;                         (lambda (x)
-;;                           (and (frame-live-p x)
-;;                                (string= "kill-me-after-ediff"
-;;                                         (aget (frame-parameters x)
-;;                                               'name
-;;                                               nil))))))
-;;               (delete-frame f))))
 
 (defun my-org-visible-in-ediff-prepare ()
   (when (eq major-mode 'org-mode)
@@ -441,21 +405,6 @@
          (nrepl-sync-request:eval
           (buffer-substring-no-properties (point-min) (point-max)))
          "value")))))
-
-;; (defvar my-org-babel-clojure-command (concat (getenv "HOME") "/bin/clojure -"))
-;; (eval-after-load 'ob-clojure
-;;   '(defun org-babel-execute:clojure (body params)
-;;      (with-temp-buffer
-;;        (insert (org-babel-expand-body:clojure body params))
-;;        ((lambda (result)
-;;           (let ((result-params (cdr (assoc :result-params params))))
-;;             (if (or (member "scalar" result-params)
-;;                     (member "verbatim" result-params))
-;;                 result
-;;               (condition-case nil (org-babel-script-escape result)
-;;                 (error result)))))
-;;         (org-babel-eval my-org-babel-clojure-command
-;;                         (buffer-substring-no-properties (point-min) (point-max)))))))
 
 ;; ========================================================
 ;; Mode associations
@@ -857,22 +806,6 @@
 (add-hook 'ibuffer-mode-hook
           (lambda ()
             (ibuffer-switch-to-saved-filter-groups "default")))
-
-
-;; ========================================================
-;; Clojure Mode bug fix
-;; ========================================================
-
-;; (defun clojure-find-ns ()
-;;   (let ((regexp clojure-namespace-name-regex))
-;;     (save-excursion
-;;       ;; 2012-11-07 bstiles: move point to beginning of buffer
-;;       (goto-char (point-min))
-;;       (when (re-search-forward regexp nil t)
-;;         ;; 2012-11-07 bstiles: only need the forward case
-;;         ;; (or (re-search-backward regexp nil t)
-;;         ;;         (re-search-forward regexp nil t))
-;;         (match-string-no-properties 4)))))
 
 
 ;; ========================================================
