@@ -91,6 +91,7 @@
 (my-global-set-key "C-c g F" 'find-dired)
 (my-global-set-key "C-c g g" 'my-buffer-grep)
 (my-global-set-key "C-c g l" 'goto-line)
+(my-global-set-key "C-c H" 'global-hl-line-mode)
 (my-global-set-key "C-c t" 'my-toggle-truncate-lines)
 (my-global-set-key "C-c w" 'whitespace-mode)
 (my-global-set-key "C-M-<tab>" [escape tab])
