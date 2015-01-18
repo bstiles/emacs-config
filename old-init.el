@@ -7,9 +7,9 @@
   (concat (getenv "HOME") "/" relative-path))
 
 (setq my-top 22)
-(setq my-left 0)
-(setq my-width-cols 187); 183 166
-(setq my-height-rows 58); 54 48
+(setq my-left 250); 0
+(setq my-width-cols 174); 187 183 166
+(setq my-height-rows 52); 58 54 48
 (setq my-dock-height 0); 100
 (setq my-dock-width 0); 30 0
 

@@ -107,6 +107,7 @@ See =local-config-Brians-MacBook-Pro.el= for examples.
   (my-global-set-key "C-c g G" 'my-rgrep-in-project)
   (my-global-set-key "C-c g s" 'my-buffer-shell)
   (my-global-set-key "C-c h b" 'helm-buffers-list)
+  (my-global-set-key "C-c h i" 'helm-imenu)
   (my-global-set-key "C-c h p" 'helm-projectile)
   (my-global-set-key "C-c h P" 'my-helm-projectile)
   ;(my-global-set-key "C-c h g" 'my-helm-ls-git-ls)

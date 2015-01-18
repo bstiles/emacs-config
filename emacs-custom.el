@@ -97,8 +97,10 @@
        (set-variable
         (quote truncate-lines)
         t)))))
+ '(helm-buffers-fuzzy-matching t)
  '(helm-ff-history-max-length 500)
  '(helm-grep-max-length-history 500)
+ '(helm-imenu-fuzzy-match t)
  '(helm-truncate-lines t)
  '(highlight-symbol-idle-delay 0.5)
  '(highlight-symbol-on-navigation-p t)
@@ -149,6 +151,7 @@
  '(ibuffer-use-other-window t)
  '(ido-max-prospects 50)
  '(ido-max-window-height 0.5)
+ '(imenu-auto-rescan t)
  '(indent-tabs-mode nil)
  '(inferior-js-program-command "/Users/bstiles/bin/rhino.py")
  '(ispell-program-name "aspell")
@@ -763,6 +766,7 @@ pre {
      (eval load-file "../../aquarium-mode.el")
      (TeX-command-default . "ConTeXt-XeTeX")
      (show-trailing-whitespace . t))))
+ '(send-mail-function (quote mailclient-send-it))
  '(show-paren-mode t)
  '(show-trailing-whitespace nil)
  '(slime-net-coding-system (quote utf-8-unix))
@@ -782,7 +786,7 @@ pre {
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 170 :width normal :foundry "nil" :family "Menlo"))))
+ '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 140 :width normal :foundry "nil" :family "Menlo"))))
  '(ahs-definition-face ((((background dark)) (:background "#bb3222" :underline t)) (((background light)) (:background "Yellow" :underline t))))
  '(ahs-face ((((background dark)) (:background "#992000")) (((background light)) (:background "Yellow"))))
  '(ahs-plugin-defalt-face ((t (:background "#206600"))))
