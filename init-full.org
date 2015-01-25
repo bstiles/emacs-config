@@ -160,3 +160,14 @@ See =local-config-Brians-MacBook-Pro.el= for examples.
         (insert-buffer-substring template-buffer start end)
         (kill-buffer template-buffer))))
 #+end_src
+
+** Chores/Emacs hygiene
+
+*** Midnight mode
+For cleaning up buffers not recently used. Provides
+=clean-buffer-list= which kills old buffers that have not been
+displayed recently.
+#+begin_src emacs-lisp :results silent
+  (require 'midnight)
+#+end_src
+

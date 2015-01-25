@@ -147,6 +147,7 @@
      (mark " "
            (name 32 32 :left :elide)
            " " filename))))
+ '(ibuffer-old-time 72)
  '(ibuffer-show-empty-filter-groups t)
  '(ibuffer-use-other-window t)
  '(ido-max-prospects 50)
@@ -766,6 +767,7 @@ pre {
      (eval load-file "../../aquarium-mode.el")
      (TeX-command-default . "ConTeXt-XeTeX")
      (show-trailing-whitespace . t))))
+ '(scroll-bar-mode nil)
  '(send-mail-function (quote mailclient-send-it))
  '(show-paren-mode t)
  '(show-trailing-whitespace nil)
