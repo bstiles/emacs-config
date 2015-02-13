@@ -161,6 +161,13 @@ See =local-config-Brians-MacBook-Pro.el= for examples.
         (kill-buffer template-buffer))))
 #+end_src
 
+** Go Programming
+#+begin_src emacs-lisp :results silent
+  (use-package go-mode
+    :ensure t
+    :pin melpa)
+#+end_src
+
 ** Chores/Emacs hygiene
 
 *** Midnight mode
