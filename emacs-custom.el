@@ -154,6 +154,7 @@
  '(ido-max-window-height 0.5)
  '(imenu-auto-rescan t)
  '(indent-tabs-mode nil)
+ '(indicate-buffer-boundaries (quote left))
  '(inferior-js-program-command "/Users/bstiles/bin/rhino.py")
  '(ispell-program-name "aspell")
  '(jka-compr-compression-info-list
@@ -521,6 +522,7 @@ pre {
  '(org-confirm-babel-evaluate nil)
  '(org-default-priority 67)
  '(org-drawers (quote ("PROPERTIES" "CLOCK" "LOGBOOK" "DATA")))
+ '(org-export-backends (quote (ascii html icalendar latex md)))
  '(org-html-head
    "<style type=\"text/css\">
   body {
@@ -657,6 +659,7 @@ pre {
         (concat
          (getenv "HOME")
          "/org/lob.org"))))))
+ '(org-md-headline-style (quote setext))
  '(org-mobile-directory "~/Dropbox/Apps/MobileOrg")
  '(org-mode-hook
    (quote
@@ -772,13 +775,13 @@ pre {
  '(show-paren-mode t)
  '(show-trailing-whitespace nil)
  '(slime-net-coding-system (quote utf-8-unix))
- '(sql-postgres-program "~/bin/psql-emacs")
  '(sql-sqlite-program "sqlite3")
  '(tramp-verbose 2)
  '(truncate-partial-width-windows nil)
  '(uniquify-buffer-name-style (quote post-forward) nil (uniquify))
  '(uniquify-separator nil)
  '(use-dialog-box nil)
+ '(visual-line-fringe-indicators (quote (left-curly-arrow right-curly-arrow)))
  '(whitespace-global-modes t)
  '(whitespace-style
    (quote
@@ -788,7 +791,7 @@ pre {
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 140 :width normal :foundry "nil" :family "Menlo"))))
+ '(default ((t (:foreground "Wheat" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 170 :width normal :family "Menlo"))))
  '(ahs-definition-face ((((background dark)) (:background "#bb3222" :underline t)) (((background light)) (:background "Yellow" :underline t))))
  '(ahs-face ((((background dark)) (:background "#992000")) (((background light)) (:background "Yellow"))))
  '(ahs-plugin-defalt-face ((t (:background "#206600"))))
