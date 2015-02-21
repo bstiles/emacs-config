@@ -8,7 +8,7 @@
 
 ;;; Config files location
 ;;; ----------------------------------------------------------------------------
-(defvar my-emacs-config-dir "~/.emacs.d/emacs-config"
+(defvar my-emacs-config-dir (file-name-directory (file-chase-links load-file-name))
   "Directory containing my config files.")
 (add-to-list 'load-path my-emacs-config-dir)
 
