@@ -113,6 +113,18 @@ for quick access to commonly used files."
     (package-install 'use-package))
   (require 'use-package)
 
+  ;; Check how old the package archives are. If older than 2 weeks,
+  ;; update them. MELPA is arbitrarily the representative age.
+  (let* ((file "~/.emacs.d/elpa/archives/melpa/archive-contents")
+         (attrs (or (file-attributes (file-truename file))
+                    (file-attributes file))))
+    (when (and attrs
+               (> (float-time
+                   (time-subtract (current-time)
+                                  (nth 5 attrs)))
+                  (* 2 7 24 60 60.0)))
+      (package-refresh-contents)))
+
   ;; (use-package org :ensure t :pin org)
   (use-package org-plus-contrib :ensure t :pin org)
   (use-package org-dotemacs :ensure t :pin marmalade)
