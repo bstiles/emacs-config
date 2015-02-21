@@ -102,7 +102,6 @@
 
 ;(load-file (home-relative-file "elisp/java-decompile-helper.el"))
 (load-library "java-decompile-helper")
-(load-library "dired-x")
 (load-library "css-mode-simple")
 
 (autoload 'ghc-init "ghc" nil t)
