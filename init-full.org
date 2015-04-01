@@ -182,3 +182,9 @@ displayed recently.
   (require 'midnight)
 #+end_src
 
+** Dockerfiles
+#+begin_src emacs-lisp :results silent
+  (use-package dockerfile-mode
+    :ensure t
+    :pin melpa)
+#+end_src

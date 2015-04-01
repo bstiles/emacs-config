@@ -884,7 +884,8 @@ about what flexible matching means in this context."
   (let ((docroot "/Users/bstiles/Sites/")
         (baseurl "http://localhost/~bstiles/")
         (path (buffer-file-name (current-buffer))))
-    (if (string-match (concat docroot "\\(.*\\)") path)
+    (if (and (not 'disabled) ; Disable
+             (string-match (concat docroot "\\(.*\\)") path))
         (browse-url (concat baseurl (match-string 1 path)))
       (browse-url path))))
 
@@ -1039,6 +1040,14 @@ Applies to lines after point."
 ;;;;
 ;;;; BEGIN: Bug fixes
 ;;;;
+
+;;; 2015-04-01 bstiles: Cider assumes I'm using themes to set colors
+;;; and so doesn't pick up my color changes. Also, it appears that
+;;; cider-scale-background-color is called early before I initially
+;;; set the background-color to DarkSlateGray.
+(defadvice my-set-colors (after fix-cider-error-color activate)
+  (when (fboundp #'cider-scale-background-color)
+    (setq cider-stacktrace-frames-background-color (cider-scale-background-color))))
 
 (defun comint-carriage-motion (start end)
   "Interpret carriage control characters in the region from START to END.

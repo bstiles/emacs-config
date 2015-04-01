@@ -493,6 +493,7 @@ pre {
     ("%e" mode-line-front-space mode-line-mule-info mode-line-client mode-line-modified mode-line-remote mode-line-frame-identification mode-line-buffer-identification "   " mode-line-position "  " mode-line-modes mode-line-misc-info mode-line-end-spaces)))
  '(mode-require-final-newline t)
  '(mouse-wheel-scroll-amount (quote (1 ((shift) . 1) ((control)))))
+ '(nrepl-force-ssh-for-remote-hosts t)
  '(ns-alternate-modifier (quote none))
  '(ns-pop-up-frames nil)
  '(org-agenda-custom-commands
@@ -524,6 +525,7 @@ pre {
  '(org-default-priority 67)
  '(org-drawers (quote ("PROPERTIES" "CLOCK" "LOGBOOK" "DATA")))
  '(org-export-backends (quote (ascii html icalendar latex md)))
+ '(org-from-is-user-regexp "\\<Brian Stiles\\>")
  '(org-html-head
    "<style type=\"text/css\">
   body {
@@ -533,7 +535,16 @@ pre {
     padding-left: 1.4em;
   }
   table.org-info-js_info-navigation {
-    //margin-left: -1em;
+    margin-left: -1em;
+  }
+  h1,h2,h3,h4,h5{font-weight:700;margin:2.5rem 0 1rem 0}
+  h1{font-size:2.5em;line-height:3rem;letter-spacing:-1px}
+  h2{font-size:2rem;line-height:2.5rem}
+  h3{font-size:1.75rem;line-height:2rem}
+  h4{font-size:1.5rem;line-height:1.75rem;margin-bottom:.5rem}
+  h5{font-size:1.2rem;line-hight:1.5;margin-bottom:0;text-transform:uppercase;letter-spacing:1px}
+  .section-number-1,.section-number-2,.section-number-3,.section-number-4,.section-number-5,.section-number-6,.section-number-8,.section-number-9 {
+    color: rgba(7, 70, 140, 0.5);
   }
   h1,h2,h3,h4,h5,h6 {
     color: rgb(7, 70, 140);
@@ -544,7 +555,7 @@ pre {
   }
   pre.src {
     color: #f5deb3;
-    background-color: #2f4f4f;
+    background-color: rgba(60,60,60,0.9)/*#3c3c3c*/;
     font-family: \"menlo\", \"lucida sans typewriter\", \"courier\", monospace;
     font-size: smaller;
     overflow-x: scroll;
@@ -740,7 +751,7 @@ pre {
      ("WAIT" :foreground "pink" :weight bold :inverse-video t))))
  '(org-todo-keywords
    (quote
-    ((type "IDEA(i)" "TODO(t)" "NEXT(n)" "WAIT(w)" "ACTIVE(a)" "DELEGATED(D)" "PAUSED(p!)" "DONE(d!)"))))
+    ((type "BUG(b)" "IDEA(i)" "TODO(t)" "NEXT(n)" "WAIT(w)" "ACTIVE(a)" "DELEGATED(D)" "PAUSED(p!)" "DONE(d!)"))))
  '(oz-prefix "/Applications/Mozart.app/Contents/Resources")
  '(package-archives
    (quote
@@ -770,7 +781,9 @@ pre {
      (eval load-file "../../ob-css.el")
      (eval load-file "../../aquarium-mode.el")
      (TeX-command-default . "ConTeXt-XeTeX")
-     (show-trailing-whitespace . t))))
+     (show-trailing-whitespace . t)
+     (org-babel-noweb-wrap-start . "{{")
+     (org-babel-noweb-wrap-end . "}}"))))
  '(scroll-bar-mode nil)
  '(send-mail-function (quote mailclient-send-it))
  '(show-paren-mode t)
