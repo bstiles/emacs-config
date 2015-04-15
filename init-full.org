@@ -125,6 +125,7 @@ See =local-config-Brians-MacBook-Pro.el= for examples.
   (my-global-set-key "C-c o b S" 'org-show-block-all)
   (my-global-set-key "C-c o h h" 'my-helm-org-headlines)
   (my-global-set-key "C-c o h n" 'my-helm-org-named-blocks)
+  (my-global-set-key "C-c o F" 'my-set-org-agenda-files)
   (my-global-set-key "C-c o l" 'orgstruct-mode)
   (my-global-set-key "C-c o t" 'orgtbl-mode)
   (my-global-set-key "C-c o T" 'my-org-table-to-gfm-table)
@@ -136,6 +137,22 @@ See =local-config-Brians-MacBook-Pro.el= for examples.
   (my-global-set-key "C-M-S-z" 'my-toggle-window-height)
   (my-global-set-key "M-`" 'other-frame)
   (my-global-set-key "M-~" 'my-other-frame-reverse)
+#+end_src
+
+** Org customizations
+
+*** Set agenda files for current project
+#+begin_src emacs-lisp :results silent
+  (require 'find-lisp)
+  (require 'projectile)
+  (defun my-set-org-agenda-files ()
+    (interactive)
+    (let ((files (find-lisp-find-files (projectile-project-root) "\.org$")))
+      (setq org-agenda-files files)
+      (message "%s agenda file%s."
+               (length files)
+               (if (= 1 (length files))
+                   "" "s"))))
 #+end_src
 
 ** File system
