@@ -36,6 +36,7 @@
  '(browse-url-firefox-program "/Applications/Firefox.app/Contents/MacOS/firefox-bin")
  '(canlock-password "e7415257d290faf90e7bedf1524d44d0fb6b3a2c")
  '(cider-auto-jump-to-error nil)
+ '(cider-macroexpansion-display-namespaces nil)
  '(cider-macroexpansion-suppress-namespaces nil)
  '(clojure-defun-indents (quote (apply interpose run run* with-precision fresh)))
  '(clojure-defun-style-default-indent t)
@@ -500,7 +501,9 @@ pre {
    (quote
     (("x" "Describe command here" tags "" nil)
      ("P" "Show Projects" tags "Type=\"project\"" nil))))
- '(org-agenda-files (quote ("~/org/")))
+ '(org-agenda-files
+   (quote
+    ("/Users/bstiles/iRise/Projects/bnw/README.org" "/Users/bstiles/iRise/Projects/bnw/Envs/ENVS.org" "/Users/bstiles/iRise/Projects/bnw/doc/notes/trello-api.org" "/Users/bstiles/iRise/Projects/bnw/doc/DOC.org" "/Users/bstiles/iRise/Projects/bnw/demo/trivial-use-case/spike1.org" "/Users/bstiles/iRise/Projects/bnw/demo/integrations/stack.org" "/Users/bstiles/iRise/Projects/bnw/demo/integrations/INTEGRATIONS.org" "/Users/bstiles/iRise/Projects/bnw/demo/integrations/environments.org" "/Users/bstiles/iRise/Projects/bnw/demo/integrations/docker-registry-stack.org" "/Users/bstiles/iRise/Projects/bnw/demo/integrations/ACCESS.org" "/Users/bstiles/iRise/Projects/bnw/demo/dev-envs/DEMO.org" "/Users/bstiles/iRise/Projects/bnw/demo/Animal Farm.org")))
  '(org-agenda-fontify-priorities (quote cookies))
  '(org-agenda-sorting-strategy
    (quote
@@ -537,18 +540,43 @@ pre {
   table.org-info-js_info-navigation {
     margin-left: -1em;
   }
-  h1,h2,h3,h4,h5{font-weight:700;margin:2.5rem 0 1rem 0}
-  h1{font-size:2.5em;line-height:3rem;letter-spacing:-1px}
-  h2{font-size:2rem;line-height:2.5rem}
+  h1,h2,h3,h4,h5{margin:2.5rem 0 1rem 0}
+  h1{font-size:2.5em}
+  h2{font-size:2.25rem;line-height:2.5rem}
   h3{font-size:1.75rem;line-height:2rem}
   h4{font-size:1.5rem;line-height:1.75rem;margin-bottom:.5rem}
   h5{font-size:1.2rem;line-hight:1.5;margin-bottom:0;text-transform:uppercase;letter-spacing:1px}
   .section-number-1,.section-number-2,.section-number-3,.section-number-4,.section-number-5,.section-number-6,.section-number-8,.section-number-9 {
     color: rgba(7, 70, 140, 0.5);
   }
-  h1,h2,h3,h4,h5,h6 {
-    color: rgb(7, 70, 140);
-    //margin-left: -1em;
+  h1 {
+    color:black;
+    font-weight:700;
+    font-size:2.75rem;
+    line-height:3rem;
+    letter-spacing:-1px
+  }
+  h2 {
+    color:black;
+    font-weight:700;
+    font-size:2.5rem;
+    line-height:2.75rem;
+  }
+  h3 {
+    color:rgb(191, 81, 5);
+    font-weight:600;
+    font-size:2rem;
+    line-height:2.25rem;
+  }
+  h4 {
+    font-size:1.6rem;
+    line-height:1.85rem;
+  }
+  h4,h5,h6 {
+    color:rgb(7, 70, 140);
+    font-weight:500;
+    font-size:1.2em;
+    line-height:1.45rem;
   }
   p {
     max-width: 60rem;
@@ -573,6 +601,8 @@ pre {
   li > code, p > code {
     background-color: #eee;
     border: 1px solid #aaa;
+    padding-left: 0.1em;
+    padding-right: 0.1em;
   }
   table {
     margin: 1.2em;
@@ -751,7 +781,7 @@ pre {
      ("WAIT" :foreground "pink" :weight bold :inverse-video t))))
  '(org-todo-keywords
    (quote
-    ((type "BUG(b)" "IDEA(i)" "TODO(t)" "NEXT(n)" "WAIT(w)" "ACTIVE(a)" "DELEGATED(D)" "PAUSED(p!)" "DONE(d!)"))))
+    ((type "BUG(b!)" "IDEA(i)" "TODO(t!)" "NEXT(n)" "WAIT(w!)" "ACTIVE(a)" "DELEGATED(D)" "PAUSED(p!)" "DONE(d!)"))))
  '(oz-prefix "/Applications/Mozart.app/Contents/Resources")
  '(package-archives
    (quote
@@ -865,7 +895,7 @@ pre {
  '(org-block-background ((t (:inherit hl-sexp-face))))
  '(org-block-begin-line ((t (:inherit org-meta-line :weight normal))) t)
  '(org-block-end-line ((t (:inherit org-meta-line :underline t :weight normal))) t)
- '(org-date ((((class color) (background dark)) (:foreground "gray"))))
+ '(org-date ((t (:foreground "Gray" :underline t))))
  '(org-done ((t (:foreground "White" :inverse-video t :weight bold))))
  '(org-indent ((((background dark)) (:foreground "gray40")) (((background light)) (:foreground "gray"))) t)
  '(org-link ((t (:underline "Grey"))))
