@@ -20,7 +20,7 @@
 (my-make-find-file-fn my-file-org-one-ring "~/org/one-ring.org")
 (my-global-set-key "C-c o o" 'my-file-org-one-ring)
 
-(my-make-find-file-fn my-file-org-personal "~org/personal.org")
+(my-make-find-file-fn my-file-org-personal "~/org/personal.org")
 (my-global-set-key "C-c o p" 'my-file-org-personal)
 
 (my-make-find-file-fn my-file-org-work "~/org/work.org")

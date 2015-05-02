@@ -927,14 +927,15 @@ Applies to lines after point."
                       "Kill lines (containing match for regexp): "
                       nil nil nil 'regexp-history nil t)))
   (save-excursion
+    (goto-char (point-min))
     (let ((first-blood t))
       (while (and (not (eobp))
                   (re-search-forward regexp nil t))
-        (if (not first-blood)
+        (if (and (not current-prefix-arg) (not first-blood))
             (append-next-kill))
-        (kill-region (save-excursion (goto-char (match-beginning 0))
-                                     (beginning-of-line)
-                                     (point))
+        (kill-region (progn (goto-char (match-beginning 0))
+                            (beginning-of-line)
+                            (point))
                      (progn (forward-line 1) (point)))
         (setq first-blood nil)))))
 
@@ -1193,9 +1194,13 @@ Make backspaces delete the previous character."
 ;;;;
 ;;;; BEGIN: Key bindings
 ;;;;
-(add-hook 'nxml-mode-hook
-          (lambda ()
-            (local-set-key (kbd "C-c C-c") 'my-open-in-browser)))
+(mapc
+ (lambda (mode-symbol)
+   (add-hook mode-symbol
+             (lambda ()
+               (local-set-key (kbd "C-c C-c") 'my-open-in-browser))))
+ '(nxml-mode-hook
+   web-mode-hook))
 (add-hook 'paredit-mode-hook
           (lambda ()
             (when (not (equal mode-name "REPL"))

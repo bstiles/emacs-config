@@ -45,6 +45,7 @@
  '(column-number-mode t)
  '(comment-auto-fill-only-comments t)
  '(company-idle-delay nil)
+ '(company-show-numbers t)
  '(company-tooltip-minimum-width 30)
  '(compilation-scroll-output t)
  '(completion-ignored-extensions
@@ -701,6 +702,7 @@ pre {
         (concat
          (getenv "HOME")
          "/org/lob.org"))))))
+ '(org-log-into-drawer t)
  '(org-md-headline-style (quote setext))
  '(org-mobile-directory "~/Dropbox/Apps/MobileOrg")
  '(org-mode-hook

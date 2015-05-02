@@ -147,7 +147,19 @@ See =local-config-Brians-MacBook-Pro.el= for examples.
   (require 'projectile)
   (defun my-set-org-agenda-files ()
     (interactive)
-    (let ((files (find-lisp-find-files (projectile-project-root) "\.org$")))
+    
+    (let ((files
+           (cons
+            "~/org/one-ring.org"
+            (let ((filep 'find-lisp-default-file-predicate)
+                  (dirp (lambda (dir parent)
+                          (and (find-lisp-default-directory-predicate dir parent)
+                               (not (string= "Historical" dir)))))
+                  (find-lisp-regexp "\.org$"))
+              (find-lisp-find-files-internal
+               (projectile-project-root)
+               filep
+               dirp)))))
       (setq org-agenda-files files)
       (message "%s agenda file%s."
                (length files)
