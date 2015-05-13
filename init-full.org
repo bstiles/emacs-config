@@ -217,3 +217,10 @@ displayed recently.
     :ensure t
     :pin melpa)
 #+end_src
+
+** BATS
+#+begin_src emacs-lisp :results silent
+  (use-package bats-mode
+    :ensure t
+    :pin melpa)
+#+end_src

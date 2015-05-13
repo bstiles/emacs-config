@@ -57,8 +57,12 @@
  '(confirm-kill-emacs (quote yes-or-no-p))
  '(dabbrev-check-all-buffers t)
  '(dired-guess-shell-alist-user (quote (("[.]pdf" "open"))))
+ '(dired-omit-extensions
+   (quote
+    (".beam" ".vee" ".jam" ".hi" ".svn/" "CVS/" ".o" "~" ".bin" ".lbin" ".so" ".a" ".ln" ".blg" ".bbl" ".elc" ".lof" ".glo" ".idx" ".lot" ".dvi" ".fmt" ".tfm" ".class" ".fas" ".lib" ".mem" ".x86f" ".sparcf" ".fasl" ".ufsl" ".fsl" ".dxl" ".pfsl" ".dfsl" ".lo" ".la" ".gmo" ".mo" ".toc" ".aux" ".cp" ".fn" ".ky" ".pg" ".tp" ".cps" ".fns" ".kys" ".pgs" ".tps" ".vrs" ".pyc" ".pyo" ".DS_Store" ".idx" ".lof" ".lot" ".glo" ".blg" ".bbl" ".cp" ".cps" ".fn" ".fns" ".ky" ".kys" ".pg" ".pgs" ".tp" ".tps" ".vr" ".vrs")))
  '(dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|.*~\\|CVS\\|.DS_Store")
  '(dired-recursive-copies (quote top))
+ '(dired-use-ls-dired nil)
  '(ediff-diff3-options "--strip-trailing-cr")
  '(ediff-diff3-program "gdiff3")
  '(ediff-keep-variants nil)

@@ -126,7 +126,7 @@ for quick access to commonly used files."
       (package-refresh-contents)))
 
   ;; (use-package org :ensure t :pin org)
-  (use-package org-plus-contrib :ensure t :pin org)
+  (use-package org :ensure t :pin org)
   (use-package org-dotemacs :ensure t :pin marmalade)
   (org-babel-load-file (expand-file-name "init-full.org" my-emacs-config-dir))
 
