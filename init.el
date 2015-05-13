@@ -104,6 +104,10 @@ for quick access to commonly used files."
 ;;; Load full config for Emacs 24.4 or newer
 ;;; ---------------------------------------------------------------------------
 (when (>= (string-to-number emacs-version) 24.4)
+  ;; 2015-05-13 bstiles: 'cl is required by org-dotemacs but
+  ;; apparently isn't being required properly.
+  (require 'cl)
+
   ;; Bootstrap `use-package'
   (require 'package)
   (setq package-enable-at-startup nil)
@@ -125,8 +129,8 @@ for quick access to commonly used files."
                   (* 2 7 24 60 60.0)))
       (package-refresh-contents)))
 
-  ;; (use-package org :ensure t :pin org)
   (use-package org :ensure t :pin org)
+  ;; (use-package org-plus-contrib :ensure t :pin org)
   (use-package org-dotemacs :ensure t :pin marmalade)
   (org-babel-load-file (expand-file-name "init-full.org" my-emacs-config-dir))
 
