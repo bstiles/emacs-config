@@ -139,6 +139,13 @@ See =local-config-Brians-MacBook-Pro.el= for examples.
   (my-global-set-key "M-~" 'my-other-frame-reverse)
 #+end_src
 
+** Projectile
+#+begin_src emacs-lisp :results silent
+  (use-package projectile
+    :ensure t
+    :pin melpa)
+#+end_src
+
 ** Org customizations
 
 *** Set agenda files for current project
