@@ -702,10 +702,14 @@ pre {
  '(org-load-hook
    (quote
     ((lambda nil
-       (org-babel-lob-ingest
-        (concat
-         (getenv "HOME")
-         "/org/lob.org"))))))
+       (let
+           ((lob
+             (concat
+              (getenv "HOME")
+              "/org/lob.org")))
+         (if
+             (file-exists-p lob)
+             (org-babel-lob-ingest)))))))
  '(org-log-into-drawer t)
  '(org-md-headline-style (quote setext))
  '(org-mobile-directory "~/Dropbox/Apps/MobileOrg")
