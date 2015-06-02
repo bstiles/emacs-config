@@ -85,7 +85,7 @@
  '(fci-rule-column 80)
  '(find-exec-terminator "\\;")
  '(find-ls-option (quote ("-exec ls -ld {} \\;" . "-ld")))
- '(global-auto-highlight-symbol-mode t)
+ '(flx-ido-use-faces t)
  '(global-hl-line-mode t)
  '(global-hl-sexp-mode nil)
  '(global-whitespace-mode nil)
@@ -525,13 +525,20 @@ pre {
      (python . t)
      (clojure . t)
      (sh . t)
-     (java . t))))
+     (java . t)
+     (plantuml . t))))
  '(org-babel-post-tangle-hook nil)
  '(org-babel-results-keyword "results")
+ '(org-capture-templates
+   (quote
+    (("i" "INBOX" entry
+      (file+olp "~/org/one-ring.org" "INBOX")
+      "" :prepend t))))
  '(org-catch-invisible-edits (quote error))
  '(org-clock-into-drawer 3)
  '(org-confirm-babel-evaluate nil)
  '(org-default-priority 67)
+ '(org-ditaa-jar-path "/Users/bstiles/.emacs.d/lisp/org-extensions/ditaa.jar")
  '(org-drawers (quote ("PROPERTIES" "CLOCK" "LOGBOOK" "DATA")))
  '(org-export-backends (quote (ascii html icalendar latex md)))
  '(org-from-is-user-regexp "\\<Brian Stiles\\>")
@@ -551,7 +558,7 @@ pre {
   h2{font-size:2.25rem;line-height:2.5rem}
   h3{font-size:1.75rem;line-height:2rem}
   h4{font-size:1.5rem;line-height:1.75rem;margin-bottom:.5rem}
-  h5{font-size:1.2rem;line-hight:1.5;margin-bottom:0;text-transform:uppercase;letter-spacing:1px}
+  h5{font-size:1.2rem;line-hight:1.5;margin-bottom:0;letter-spacing:1px}
   .section-number-1,.section-number-2,.section-number-3,.section-number-4,.section-number-5,.section-number-6,.section-number-8,.section-number-9 {
     color: rgba(7, 70, 140, 0.5);
   }
@@ -792,7 +799,7 @@ pre {
      ("WAIT" :foreground "pink" :weight bold :inverse-video t))))
  '(org-todo-keywords
    (quote
-    ((type "BUG(b!)" "IDEA(i)" "TODO(t!)" "NEXT(n)" "WAIT(w!)" "ACTIVE(a)" "DELEGATED(D)" "PAUSED(p!)" "DONE(d!)"))))
+    ((type "PAUSED(p!)" "BUG(b!)" "IDEA(i)" "TODO(t!)" "NEXT(n)" "WAIT(w!)" "ACTIVE(a)" "DELEGATED(D)" "DONE(d!)"))))
  '(oz-prefix "/Applications/Mozart.app/Contents/Resources")
  '(package-archives
    (quote
@@ -836,6 +843,7 @@ pre {
  '(uniquify-buffer-name-style (quote post-forward) nil (uniquify))
  '(uniquify-separator nil)
  '(use-dialog-box nil)
+ '(vc-follow-symlinks nil)
  '(visual-line-fringe-indicators (quote (left-curly-arrow right-curly-arrow)))
  '(whitespace-global-modes t)
  '(whitespace-style

@@ -6,6 +6,13 @@
 
 (unless noninteractive (message "Loading %s..." load-file-name))
 
+;; 2015-06-02 bstiles: Force-set the colors early so that files opened
+;; by Desktop will see the correct colors when the mode processing and
+;; fontification is done. Setting *-frame-alist results in the color
+;; being set late.
+(set-background-color "DarkSlateGray")
+(set-foreground-color "Wheat")
+
 ;;; Config files location
 ;;; ----------------------------------------------------------------------------
 (defvar my-emacs-config-dir (file-name-directory (file-chase-links load-file-name))

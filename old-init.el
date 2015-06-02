@@ -1262,6 +1262,10 @@ Make backspaces delete the previous character."
 (ahs-onekey-edit "M-2 r" beginning-of-defun)
 (ahs-onekey-edit "M-2 R" whole-buffer)
 
+(add-hook 'clojure-mode-hook
+          (lambda ()
+            (auto-highlight-symbol-mode 1)))
+
 (mapc
  (lambda (mode-symbol)
    (add-hook mode-symbol
