@@ -509,7 +509,7 @@ pre {
      ("P" "Show Projects" tags "Type=\"project\"" nil))))
  '(org-agenda-files
    (quote
-    ("/Users/bstiles/iRise/Projects/bnw/README.org" "/Users/bstiles/iRise/Projects/bnw/Envs/ENVS.org" "/Users/bstiles/iRise/Projects/bnw/doc/notes/trello-api.org" "/Users/bstiles/iRise/Projects/bnw/doc/DOC.org" "/Users/bstiles/iRise/Projects/bnw/demo/trivial-use-case/spike1.org" "/Users/bstiles/iRise/Projects/bnw/demo/integrations/stack.org" "/Users/bstiles/iRise/Projects/bnw/demo/integrations/INTEGRATIONS.org" "/Users/bstiles/iRise/Projects/bnw/demo/integrations/environments.org" "/Users/bstiles/iRise/Projects/bnw/demo/integrations/docker-registry-stack.org" "/Users/bstiles/iRise/Projects/bnw/demo/integrations/ACCESS.org" "/Users/bstiles/iRise/Projects/bnw/demo/dev-envs/DEMO.org" "/Users/bstiles/iRise/Projects/bnw/demo/Animal Farm.org")))
+    ("/Users/bstiles/org/one-ring.org")))
  '(org-agenda-fontify-priorities (quote cookies))
  '(org-agenda-sorting-strategy
    (quote
