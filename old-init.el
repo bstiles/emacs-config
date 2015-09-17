@@ -258,20 +258,6 @@
       (indent-for-tab-command)
     (call-interactively #'complete-symbol)))
 
-(defun my-cider-reset (&optional arg)
-  (interactive "p")
-  (if (not (get-buffer (nrepl-current-connection-buffer)))
-      (message "No active nREPL connection.")
-    ;; cider-find-or-create-repl-buffer is obsolete as of > 7.0
-    (set-buffer (if (fboundp 'cider-find-or-create-repl-buffer)
-                    (cider-find-or-create-repl-buffer)
-                  (cider-get-repl-buffer)))
-    (goto-char (point-max))
-    (if (= 4 arg)
-        (insert "(clojure.tools.namespace.repl/refresh)")
-      (insert "(user/reset)"))
-    (cider-repl-return)))
-
 ;; (eval-after-load "cider-interaction"
 ;;   '(progn
 ;;      (defadvice cider-load-buffer
@@ -297,8 +283,6 @@
 (add-hook 'cider-repl-mode-hook
           (lambda () 
             (enable-paredit-mode)))
-(add-hook 'cider-mode-hook
-          'cider-turn-on-eldoc-mode)
 
 ;; ========================================================
 ;; Ediff
@@ -785,8 +769,13 @@
 (setq ibuffer-show-empty-filter-groups nil)
 (setq ibuffer-saved-filter-groups
       (quote (("default"
+               ("REPL" (mode . cider-repl-mode))
+               ("nREPL messages" (mode . nrepl-messages-mode))
+               ("nREPL connections" (mode . nrepl-connections-buffer-mode))
                ("Dired" (mode . dired-mode))
                ("Clojure" (mode . clojure-mode))
+               ("Clojure" (mode . clojure-mode))
+               ("ClojureScript" (mode . clojurescript-mode))
                ("Org" (mode . org-mode))
                ("nXML" (mode . nxml-mode))
                ("Java" (mode . java-mode))
@@ -974,6 +963,29 @@ Applies to lines after point."
 (defun my-frame-display-pixel-height ()
   (nth 4 (assoc 'geometry (frame-monitor-attributes))))
 
+(defun my-window-split-rotate (arg)
+  "Rotate two split-windows to be vertically or horizontally
+arranged. If `arg` is 0, arrange side-by-side, otherwise
+top-over-bottom."
+  (if (> (length (window-list)) 2)
+      (error "Can't toggle with more than 2 windows!")
+    (condition-case nil
+        (while t
+          (windmove-left))
+      (error nil))
+    (condition-case nil
+        (while t
+          (windmove-up))
+      (error nil))
+    (let ((func (if (= 0 arg)
+                    #'split-window-horizontally
+                  #'split-window-vertically)))
+      (delete-other-windows)
+      (funcall func)
+      (save-selected-window
+        (other-window 1)
+        (switch-to-buffer (other-buffer))))))
+
 (setq my-window-widths-and-positions
       (list
        (lambda () (list my-width-cols my-left my-top))
@@ -988,6 +1000,10 @@ Applies to lines after point."
                 (list (car my-window-widths-and-positions))))
   (let ((my-window-spec (funcall (car my-window-widths-and-positions)))
         (my-frame (window-frame (get-buffer-window (current-buffer)))))
+    (if (equal my-width-cols (car my-window-spec))
+        (my-window-split-rotate 0)
+      (message "horiz")
+      (my-window-split-rotate 4))
     (set-frame-width my-frame (car my-window-spec))
     (set-frame-position my-frame (car (cdr my-window-spec)) (cadr (cdr my-window-spec)))))
 
@@ -1041,6 +1057,52 @@ Applies to lines after point."
 ;;;;
 ;;;; BEGIN: Bug fixes
 ;;;;
+
+;;; 2015-09-08 bstiles: It seems a recent change to org-indent.el
+;;; stops applying the org-indent face to the
+;;; org-indent-boundary-char. So, I removed any customization of the
+;;; org-indent face (letting org-hide be used instead for the stars)
+;;; and added an appropriate face to org-indent-boundary-char directly
+;;; in the code below.
+(eval-after-load "org-indent"
+  '(defun org-indent-set-line-properties (level indentation &optional heading)
+     "Set prefix properties on current line an move to next one.
+
+  LEVEL is the current level of heading.  INDENTATION is the
+  expected indentation when wrapping line.
+
+  When optional argument HEADING is non-nil, assume line is at
+  a heading.  Moreover, if is is `inlinetask', the first star will
+  have `org-warning' face."
+     (let* ((stars (if (<= level 1) ""
+                     (make-string (* (1- org-indent-indentation-per-level)
+                                     (1- level))
+                                  ?*)))
+            (line
+             (cond
+              ((and (org-bound-and-true-p org-inlinetask-show-first-star)
+                    (eq heading 'inlinetask))
+               (concat org-indent-inlinetask-first-star
+                       (org-add-props (substring stars 1) nil 'face 'org-hide)))
+              (heading (org-add-props stars nil 'face 'org-hide))
+              (t (concat (org-add-props (concat stars (make-string level ?*))
+                             nil 'face 'org-indent)
+                         (and (> level 0)
+                              ;; 2015-09-08 bstiles: Add face to boundary char.
+                              (org-add-props
+                                  (char-to-string org-indent-boundary-char)
+                                  nil 'face 'org-agenda-dimmed-todo-face))))))
+            (wrap
+             (org-add-props
+                 (concat stars
+                         (make-string level ?*)
+                         (if heading " "
+                           (make-string (+ indentation (min level 1)) ?\s)))
+                 nil 'face 'org-indent)))
+       ;; Add properties down to the next line to indent empty lines.
+       (add-text-properties (line-beginning-position) (line-beginning-position 2)
+                            `(line-prefix ,line wrap-prefix ,wrap)))
+     (forward-line)))
 
 ;;; 2015-04-01 bstiles: Cider assumes I'm using themes to set colors
 ;;; and so doesn't pick up my color changes. Also, it appears that
@@ -1217,6 +1279,8 @@ Make backspaces delete the previous character."
    cider-repl-mode-hook
    cider-mode-hook
    nrepl-mode-hook))
+
+(add-hook 'cider-mode-hook #'eldoc-mode)
 ;; (add-hook 'js2-mode-hook
 ;;           (lambda ()
 ;;             (local-set-key (kbd "C-M-x") 'js-send-last-sexp-and-go)
@@ -1291,7 +1355,7 @@ Make backspaces delete the previous character."
 ;; (load-library "org-dotemacs")
 ;; (org-dotemacs-load-file "" "~/.emacs.d/init.org")
 
-(load-file (expand-file-name "~/.emacs.d/init-helm.el"))
+(load-file (expand-file-name "init-helm.el" my-emacs-config-dir))
 
 ;;; 2014-06-17 bstiles: helm-buffers seems to have moved ahead of helm-projectile.
 ;;; https://github.com/bbatsov/projectile/issues/358

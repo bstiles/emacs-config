@@ -109,14 +109,13 @@ See =local-config-Brians-MacBook-Pro.el= for examples.
   (my-global-set-key "C-c h b" 'helm-buffers-list)
   (my-global-set-key "C-c h i" 'helm-imenu)
   (my-global-set-key "C-c h p" 'helm-projectile)
-  (my-global-set-key "C-c h P" 'my-helm-projectile)
   ;(my-global-set-key "C-c h g" 'my-helm-ls-git-ls)
   (my-global-set-key "C-c n c" 'cider-connect)
   (my-global-set-key "C-c n j" 'cider-jack-in)
   (my-global-set-key "C-c n n" 'nrepl-connection-browser)
   (my-global-set-key "C-c n q" 'cider-quit)
   (my-global-set-key "C-c n r" 'cider-switch-to-repl-buffer)
-  (my-global-set-key "C-c n R" 'my-cider-reset)
+  (my-global-set-key "C-c n u" 'my-cider-user-ns)
   (my-global-set-key "C-c o A" 'org-align-all-tags)
   (my-global-set-key "C-c o a" 'org-agenda)
   (my-global-set-key "C-c o b h" 'my-hide-blocks-in-subtree)
@@ -130,6 +129,11 @@ See =local-config-Brians-MacBook-Pro.el= for examples.
   (my-global-set-key "C-c o r" 'org-capture)
   (my-global-set-key "C-c o t" 'orgtbl-mode)
   (my-global-set-key "C-c o T" 'my-org-table-to-gfm-table)
+  (my-global-set-key "C-c s !" 'run-skewer)
+  (my-global-set-key "C-c s r" 'skewer-repl)
+  (my-global-set-key "C-c s R" 'my-skewer-reload)
+  (my-global-set-key "C-c s s" 'my-skewer-soft-reload-HACK)
+  (my-global-set-key "C-c T" 'my-cider-test-function)
   (my-global-set-key "C-x C-b" 'helm-buffers-list)
   (my-global-set-key "C-x B" 'ibuffer)
   (my-global-set-key "C-M-S-h" 'auto-highlight-symbol-mode)
@@ -180,6 +184,7 @@ See =local-config-Brians-MacBook-Pro.el= for examples.
 #+begin_src emacs-lisp :results silent
   (require 'dired-x)
 #+end_src
+
 ** HTML
 #+begin_src emacs-lisp :results silent
   ;; - Handles syntax highlighted for org-html-export.  Exports buffers to
@@ -201,6 +206,31 @@ See =local-config-Brians-MacBook-Pro.el= for examples.
           (setq start (point-min) end (point-max)))
         (insert-buffer-substring template-buffer start end)
         (kill-buffer template-buffer))))
+#+end_src
+
+** Skewer
+#+begin_src emacs-lisp :results silent
+  (use-package skewer-mode
+    :ensure t
+    :pin melpa)
+
+  (defun my-skewer-reload ()
+    (interactive)
+    (let ((buf (get-buffer "*skewer-repl*")))
+      (if buf
+          (with-current-buffer buf
+            (goto-char (point-max))
+            (insert "window.location.reload()")
+            (comint-send-input)))))
+
+  (defun my-skewer-soft-reload-HACK ()
+    (interactive)
+    (let ((buf (get-buffer "*skewer-repl*")))
+      (if buf
+          (with-current-buffer buf
+            (goto-char (point-max))
+            (insert "window.location.search=''+new Date().getTime()")
+            (comint-send-input)))))
 #+end_src
 
 ** Go Programming
@@ -253,4 +283,36 @@ displayed recently.
 Tell the Org Babel tooling where the JAR file is.
 #+begin_src emacs-lisp :results silent
   (setq org-plantuml-jar-path plantuml-jar-path)
+#+end_src
+
+** CIDER
+#+begin_src emacs-lisp :results silent
+  (defun my-cider-user-ns ()
+    (interactive)
+    (cider-repl-set-ns "user"))
+  (defun my-cider-test-function (arg)
+    (interactive "P")
+    (lexical-let*
+        ((buf (current-buffer))
+         (run-test (lambda ()
+                     (with-current-buffer buf
+                       (let* ((start nil)
+                              (fn (save-excursion
+                                    (goto-char (cider-defun-at-point-start-pos))
+                                    (forward-word)
+                                    (skip-syntax-forward " ")
+                                    (setq start (point))
+                                    (forward-sexp)
+                                    (buffer-substring-no-properties start (point)))))
+                         (cider-interactive-eval (concat "(test #'" fn ")")))))))
+      (if (null arg)
+          (cider-interactive-eval
+           (cider-defun-at-point)
+           (lambda (result)
+             (nrepl-dbind-response result (err)
+               (if err
+                   (message (s-trim err))
+                 (funcall run-test))))
+           (cider--region-for-defun-at-point))
+        (funcall run-test))))
 #+end_src

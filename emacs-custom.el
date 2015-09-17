@@ -29,6 +29,7 @@
  '(archive-zip-extract (quote ("/Users/bstiles/bin/irise-unzip" "-qq" "-c")))
  '(archive-zip-update (quote ("/Users/bstiles/bin/irise-zip" "-q")))
  '(archive-zip-update-case (quote ("/Users/bstiles/bin/irise-zip" "-q" "-k")))
+ '(backup-by-copying-when-linked t)
  '(blink-cursor-blinks 0)
  '(blink-cursor-interval 0.5)
  '(bookmark-default-file (expand-file-name ".emacs.bmk" user-emacs-directory))
@@ -38,6 +39,10 @@
  '(cider-auto-jump-to-error nil)
  '(cider-macroexpansion-display-namespaces nil)
  '(cider-macroexpansion-suppress-namespaces nil)
+ '(cider-prompt-for-symbol nil)
+ '(cider-refresh-after-fn "user/go")
+ '(cider-refresh-before-fn "user/stop")
+ '(cider-repl-use-pretty-printing t)
  '(clojure-defun-indents (quote (apply interpose run run* with-precision fresh)))
  '(clojure-defun-style-default-indent t)
  '(coffee-command (concat (getenv "HOME") "/bin/coffee"))
@@ -67,6 +72,7 @@
  '(ediff-diff3-program "gdiff3")
  '(ediff-keep-variants nil)
  '(ediff-split-window-function (quote split-window-horizontally))
+ '(eldoc-idle-delay 0.25)
  '(emerge-diff-options "--strip-trailing-cr")
  '(emerge-diff3-program "gdiff3")
  '(epg-gpg-program "gpg2")
@@ -96,7 +102,7 @@
     ("SCCS" "RCS" "CVS" "MCVS" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" "build.output" "node_modules")))
  '(grep-find-ignored-files
    (quote
-    (".#*" "*.o" "*~" "*.bin" "*.lbin" "*.so" "*.a" "*.ln" "*.blg" "*.bbl" "*.elc" "*.lof" "*.glo" "*.idx" "*.lot" "*.fmt" "*.tfm" "*.class" "*.fas" "*.lib" "*.mem" "*.x86f" "*.sparcf" "*.dfsl" "*.pfsl" "*.d64fsl" "*.p64fsl" "*.lx64fsl" "*.lx32fsl" "*.dx64fsl" "*.dx32fsl" "*.fx64fsl" "*.fx32fsl" "*.sx64fsl" "*.sx32fsl" "*.wx64fsl" "*.wx32fsl" "*.fasl" "*.ufsl" "*.fsl" "*.dxl" "*.lo" "*.la" "*.gmo" "*.mo" "*.toc" "*.aux" "*.cp" "*.fn" "*.ky" "*.pg" "*.tp" "*.vr" "*.cps" "*.fns" "*.kys" "*.pgs" "*.tps" "*.vrs" "*.pyc" "*.pyo")))
+    (".js.map" ".#*" "*.o" "*~" "*.bin" "*.lbin" "*.so" "*.a" "*.ln" "*.blg" "*.bbl" "*.elc" "*.lof" "*.glo" "*.idx" "*.lot" "*.fmt" "*.tfm" "*.class" "*.fas" "*.lib" "*.mem" "*.x86f" "*.sparcf" "*.dfsl" "*.pfsl" "*.d64fsl" "*.p64fsl" "*.lx64fsl" "*.lx32fsl" "*.dx64fsl" "*.dx32fsl" "*.fx64fsl" "*.fx32fsl" "*.sx64fsl" "*.sx32fsl" "*.wx64fsl" "*.wx32fsl" "*.fasl" "*.ufsl" "*.fsl" "*.dxl" "*.lo" "*.la" "*.gmo" "*.mo" "*.toc" "*.aux" "*.cp" "*.fn" "*.ky" "*.pg" "*.tp" "*.vr" "*.cps" "*.fns" "*.kys" "*.pgs" "*.tps" "*.vrs" "*.pyc" "*.pyo")))
  '(grep-highlight-matches nil)
  '(grep-setup-hook
    (quote
@@ -105,14 +111,20 @@
         (quote truncate-lines)
         t)))))
  '(helm-buffers-fuzzy-matching t)
+ '(helm-candidate-number-limit 100)
  '(helm-ff-history-max-length 500)
  '(helm-grep-max-length-history 500)
  '(helm-imenu-fuzzy-match t)
- '(helm-truncate-lines t)
+ '(helm-projectile-sources-list
+   (quote
+    (helm-source-projectile-recentf-list helm-source-projectile-buffers-list helm-source-projectile-files-list helm-source-projectile-projects)))
+ '(helm-split-window-default-side (quote right))
+ '(helm-truncate-lines t t)
  '(highlight-symbol-idle-delay 0.5)
  '(highlight-symbol-on-navigation-p t)
  '(hl-paren-background-colors (quote ("black" "black" "black")))
  '(hl-paren-colors (quote ("green" "red" "wheat" "wheat" "wheat" "wheat")))
+ '(httpd-port 49401)
  '(ibuffer-default-sorting-mode (quote recency))
  '(ibuffer-filter-group-name-face (quote font-lock-function-name-face))
  '(ibuffer-fontification-alist
@@ -160,6 +172,7 @@
  '(ido-max-prospects 50)
  '(ido-max-window-height 0.5)
  '(ido-use-faces t)
+ '(ido-vertical-define-keys (quote C-n-C-p-up-down-left-right))
  '(imenu-auto-rescan t)
  '(indent-tabs-mode nil)
  '(indicate-buffer-boundaries (quote left))
@@ -500,23 +513,34 @@ pre {
     ("%e" mode-line-front-space mode-line-mule-info mode-line-client mode-line-modified mode-line-remote mode-line-frame-identification mode-line-buffer-identification "   " mode-line-position "  " mode-line-modes mode-line-misc-info mode-line-end-spaces)))
  '(mode-require-final-newline t)
  '(mouse-wheel-scroll-amount (quote (1 ((shift) . 1) ((control)))))
+ '(nrepl-buffer-name-show-port t)
  '(nrepl-force-ssh-for-remote-hosts t)
+ '(nrepl-log-messages nil)
  '(ns-alternate-modifier (quote none))
  '(ns-pop-up-frames nil)
  '(org-agenda-custom-commands
    (quote
-    (("x" "Describe command here" tags "" nil)
+    (("I" "Show TODO items in INBOXes" tags "CATEGORY={Inbox}-TODO=\"DONE\"+TODO={.+}" nil)
+     ("x" "All but DONE and MAYBE" tags "+TODO={PAUSED\\|IDEA\\|TODO\\|NEXT\\|WAIT\\|ACTIVE\\|DELEGATED}" nil)
      ("P" "Show Projects" tags "Type=\"project\"" nil))))
  '(org-agenda-files
    (quote
-    ("/Users/bstiles/org/one-ring.org")))
+    ("~/org/one-ring.org" "/Users/bstiles/iRise/Projects/bnw/README.org" "/Users/bstiles/iRise/Projects/bnw/my.stuff/my.TODO.org" "/Users/bstiles/iRise/Projects/bnw/Envs/AWS/requirise/requirise-stack.org" "/Users/bstiles/iRise/Projects/bnw/Envs/AWS/editor/editor-stack.org" "/Users/bstiles/iRise/Projects/bnw/doc/PREREQUISITES.org" "/Users/bstiles/iRise/Projects/bnw/doc/notes/trello-api.org" "/Users/bstiles/iRise/Projects/bnw/doc/DOC.org" "/Users/bstiles/iRise/Projects/bnw/demo/integrations/stack.org" "/Users/bstiles/iRise/Projects/bnw/demo/integrations/INTEGRATIONS.org" "/Users/bstiles/iRise/Projects/bnw/demo/integrations/environments.org" "/Users/bstiles/iRise/Projects/bnw/demo/integrations/docker-registry-stack.org" "/Users/bstiles/iRise/Projects/bnw/demo/dev-envs/DEMO.org" "/Users/bstiles/iRise/Projects/bnw/demo/Animal Farm.org" "/Users/bstiles/iRise/Projects/bnw/config/config.org")))
  '(org-agenda-fontify-priorities (quote cookies))
+ '(org-agenda-prefix-format
+   (quote
+    ((agenda . " %i %-16:c%?-12t% s")
+     (timeline . "  % s")
+     (todo . " %i %-16:c")
+     (tags . " %i %-16:c")
+     (search . " %i %-16:c"))))
  '(org-agenda-sorting-strategy
    (quote
     ((agenda habit-down time-up priority-down category-keep)
-     (todo priority-down todo-state-down)
+     (todo category-down)
      (tags priority-down category-keep)
      (search category-keep))))
+ '(org-agenda-span 30)
  '(org-agenda-todo-keyword-format "%-6s")
  '(org-babel-load-languages
    (quote
@@ -791,15 +815,17 @@ pre {
  '(org-time-stamp-custom-formats (quote ("<%m/%d/%y %a>" . "<%m/%d %a>")))
  '(org-todo-keyword-faces
    (quote
-    (("IDEA" . "Gray")
+    (("IDEA" :foreground "White" :weight bold :inverse-video t)
      ("NEXT" :foreground "Red" :background "Black" :weight bold :inverse-video t)
      ("DELEGATED" :foreground "Gold" :background "Black" :weight bold :inverse-video t)
      ("ACTIVE" :foreground "Yellow" :background "Black" :weight bold :inverse-video t)
      ("PAUSED" :foreground "pink" :background "black" :weight bold :inverse-video t)
-     ("WAIT" :foreground "pink" :weight bold :inverse-video t))))
+     ("WAIT" :foreground "pink" :weight bold :inverse-video t)
+     ("BUG" . warning)
+     ("MAYBE" . "Dark gray"))))
  '(org-todo-keywords
    (quote
-    ((type "PAUSED(p!)" "BUG(b!)" "IDEA(i)" "TODO(t!)" "NEXT(n)" "WAIT(w!)" "ACTIVE(a)" "DELEGATED(D)" "DONE(d!)"))))
+    ((type "MAYBE(m!)" "PAUSED(p!)" "BUG(b!)" "IDEA(i!)" "TODO(t!)" "NEXT(n)" "WAIT(w!)" "ACTIVE(a)" "DELEGATED(D)" "DONE(d!)"))))
  '(oz-prefix "/Applications/Mozart.app/Contents/Resources")
  '(package-archives
    (quote
@@ -816,9 +842,11 @@ pre {
     ("rebar.config" "project.clj" "pom.xml" "build.sbt" "build.gradle" "Gemfile" "requirements.txt" "package.json" "gulpfile.js" "Gruntfile.js" "bower.json" "composer.json" ".git" ".projectile")))
  '(projectile-project-root-files-bottom-up nil)
  '(projectile-switch-project-action (quote projectile-dired))
+ '(prolog-system (quote swi))
  '(py-default-interpreter (quote jython))
  '(py-jython-command (concat (getenv "HOME") "/bin/jython"))
  '(py-shell-switch-buffers-on-execute nil)
+ '(python-shell-enable-font-lock nil)
  '(read-buffer-completion-ignore-case t)
  '(safe-local-variable-values
    (quote
@@ -900,13 +928,21 @@ pre {
  '(ido-vertical-match-face ((t (:inherit font-lock-function-name-face :underline t :weight bold))))
  '(jde-java-font-lock-modifier-face ((((class color) (background dark)) (:foreground "LightSteelBlue")) (((class color) (background light)) (:foreground "LightSteelBlue"))))
  '(js2-function-param-face ((t (:foreground "Green"))))
+ '(message-cited-text ((((class color) (background dark)) (:foreground "gray"))))
  '(message-cited-text-face ((((class color) (background dark)) (:foreground "gray"))) t)
+ '(message-header-cc ((((class color) (background dark)) (:bold t :foreground "green2"))))
  '(message-header-cc-face ((((class color) (background dark)) (:bold t :foreground "green2"))) t)
+ '(message-header-name ((((class color) (background dark)) (:foreground "YellowGreen"))))
  '(message-header-name-face ((((class color) (background dark)) (:foreground "YellowGreen"))) t)
+ '(message-header-other ((((class color) (background dark)) (:foreground "LightGreen"))))
  '(message-header-other-face ((((class color) (background dark)) (:foreground "LightGreen"))) t)
+ '(message-header-subject ((((class color) (background dark)) (:foreground "Yellow"))))
  '(message-header-subject-face ((((class color) (background dark)) (:foreground "Yellow"))) t)
+ '(message-header-to ((((class color) (background dark)) (:bold t :foreground "green"))))
  '(message-header-to-face ((((class color) (background dark)) (:bold t :foreground "green"))) t)
+ '(message-mml ((((class color) (background dark)) (:foreground "LimeGreen"))))
  '(message-mml-face ((((class color) (background dark)) (:foreground "LimeGreen"))) t)
+ '(message-separator ((((class color) (background dark)) (:foreground "lightblue"))))
  '(message-separator-face ((((class color) (background dark)) (:foreground "lightblue"))) t)
  '(modelinepos-column-warning ((t (:background "Yellow" :foreground "Black"))))
  '(nxml-attribute-local-name-face ((nil (:inherit font-lock-warning-face))))
@@ -914,11 +950,10 @@ pre {
  '(nxml-delimiter-face ((((class color) (background dark)) (:inherit font-lock-preprocessor-face))))
  '(nxml-name-face ((((class color) (background dark)) (:inherit font-lock-constant-face))))
  '(org-block-background ((t (:inherit hl-sexp-face))))
- '(org-block-begin-line ((t (:inherit org-meta-line :weight normal))) t)
- '(org-block-end-line ((t (:inherit org-meta-line :underline t :weight normal))) t)
+ '(org-block-begin-line ((t (:inherit org-meta-line :weight normal))))
+ '(org-block-end-line ((t (:inherit org-meta-line :underline t :weight normal))))
  '(org-date ((t (:foreground "Gray" :underline t))))
- '(org-done ((t (:foreground "White" :inverse-video t :weight bold))))
- '(org-indent ((((background dark)) (:foreground "gray40")) (((background light)) (:foreground "gray"))) t)
+ '(org-done ((t (:foreground "Gray" :inverse-video t :weight bold))))
  '(org-link ((t (:underline "Grey"))))
  '(org-meta-line ((t (:foreground "#80af9f" :weight normal))))
  '(org-special-keyword ((((background dark)) (:foreground "Gray70")) (((background light)) (:foreground "gray"))))
