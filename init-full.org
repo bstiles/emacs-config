@@ -102,6 +102,7 @@ See =local-config-Brians-MacBook-Pro.el= for examples.
   (my-global-set-key "C-." 'company-complete-common)
   (my-global-set-key "<f5>" 'company-complete-common) ; For terminals (mapped to C-. in iTerm2)
   ;; XXX Tie to mode/terminal type
+  (my-global-set-key "C-c A" 'my-align-let-like-forms)
   (my-global-set-key "C-c c" 'column-highlight-mode)
   (my-global-set-key "C-c C" 'my-set-colors)
   (my-global-set-key "C-c g G" 'my-rgrep-in-project)
@@ -115,6 +116,7 @@ See =local-config-Brians-MacBook-Pro.el= for examples.
   (my-global-set-key "C-c n n" 'nrepl-connection-browser)
   (my-global-set-key "C-c n q" 'cider-quit)
   (my-global-set-key "C-c n r" 'cider-switch-to-repl-buffer)
+  (my-global-set-key "C-c n s" 'cider-scratch)
   (my-global-set-key "C-c n u" 'my-cider-user-ns)
   (my-global-set-key "C-c o A" 'org-align-all-tags)
   (my-global-set-key "C-c o a" 'org-agenda)
@@ -122,7 +124,7 @@ See =local-config-Brians-MacBook-Pro.el= for examples.
   (my-global-set-key "C-c o b H" 'org-hide-block-all)
   (my-global-set-key "C-c o b s" 'my-show-blocks-in-subtree)
   (my-global-set-key "C-c o b S" 'org-show-block-all)
-  (my-global-set-key "C-c o h h" 'my-helm-org-headlines)
+  (my-global-set-key "C-c o h h" 'helm-org-in-buffer-headings)
   (my-global-set-key "C-c o h n" 'my-helm-org-named-blocks)
   (my-global-set-key "C-c o F" 'my-set-org-agenda-files)
   (my-global-set-key "C-c o l" 'orgstruct-mode)
@@ -134,6 +136,7 @@ See =local-config-Brians-MacBook-Pro.el= for examples.
   (my-global-set-key "C-c s R" 'my-skewer-reload)
   (my-global-set-key "C-c s s" 'my-skewer-soft-reload-HACK)
   (my-global-set-key "C-c T" 'my-cider-test-function)
+  (my-global-set-key "C-c C-t" 'my-show-time)
   (my-global-set-key "C-x C-b" 'helm-buffers-list)
   (my-global-set-key "C-x B" 'ibuffer)
   (my-global-set-key "C-M-S-h" 'auto-highlight-symbol-mode)
@@ -178,6 +181,21 @@ See =local-config-Brians-MacBook-Pro.el= for examples.
                (length files)
                (if (= 1 (length files))
                    "" "s"))))
+#+end_src
+
+*** Turn on Auto Fill mode
+#+begin_src emacs-lisp :results silent
+  (add-hook 'org-mode-hook (lambda () (auto-fill-mode 1)))
+#+end_src
+
+*** Turn on helm support
+#+begin_src emacs-lisp :results silent
+  (require 'helm-org)
+#+end_src
+
+*** Re-bind helm-imenu to helm-org-in-buffer-headings
+#+begin_src emacs-lisp :results silent
+  (define-key org-mode-map (kbd "C-c h i") 'helm-org-in-buffer-headings)
 #+end_src
 
 ** File system
@@ -315,4 +333,60 @@ Tell the Org Babel tooling where the JAR file is.
                  (funcall run-test))))
            (cider--region-for-defun-at-point))
         (funcall run-test))))
+#+end_src
+
+** Prettify symbols
+#+begin_src emacs-lisp :results silent
+  (defun my-clojure-prettify ()
+    (mapc (lambda (elt) (push elt prettify-symbols-alist))
+          '((">=" . ?≥)
+            ("<=" . ?≤)
+            ("identical?" . ?≡)
+            ("and" . ?∧)
+            ("or" . ?∨)
+            ("not" . ?¬)
+            ("not=" . ?≠))))
+  (add-hook 'clojure-mode-hook #'my-clojure-prettify)
+  (global-prettify-symbols-mode)
+#+end_src
+
+** Clojure customizations
+*** Align let-like forms
+#+begin_src emacs-lisp :results silent
+  (use-package align-cljlet
+    :ensure t
+    :pin melpa)
+  (defun my-align-let-like-forms (arg)
+    (interactive "p")
+    (let ((beg (region-beginning))
+          (end (region-end))
+          (regexp "\\s-*\\S-+\\(\\s-*\\) "))
+      (cond
+       ((= 1 arg) (align-cljlet))
+       ((= 4 arg) (align-regexp beg end regexp))
+       ;; 2015-11-04 bstiles: This case is like align-cljlet except it
+       ;; doesn't test for acl-found-alignable-form before aligning
+       ;; (throwing caution to the wind).
+       ((= 16 arg (save-excursion
+                    (acl-backward-to-code)
+                    (acl-align-form)))))))
+#+end_src
+
+** Swiper search
+#+begin_src emacs-lisp :results silent
+  (use-package swiper
+    :ensure t
+    :pin melpa)
+  (define-key isearch-mode-map (kbd "C-o") 'swiper-from-isearch)
+#+end_src
+
+** Time utilities
+#+begin_src emacs-lisp :results silent
+  (defun my-show-time ()
+    (interactive)
+    (let ((millis (thing-at-point 'number)))
+      (if millis
+          (message "%s" (format-time-string "%Y-%m-%d %T UTC"
+                                            (seconds-to-time (/ millis 1000))))
+        (message "No time under point."))))
 #+end_src

@@ -73,7 +73,6 @@
 (my-global-set-key "C-c 4" 'my-set-tab-width-4)
 (my-global-set-key "C-c 8" 'my-set-tab-width-8)
 (my-global-set-key "C-c a" 'align-regexp)
-(my-global-set-key "C-c A" 'my-align-let)
 (my-global-set-key "C-c P" 'picture-mode)
 (my-global-set-key "C-c f" 'font-lock-mode)
 (my-global-set-key "C-c g c" 'my-buffer-compilation)

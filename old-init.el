@@ -374,20 +374,34 @@
 (eval-after-load 'ob-clojure
   '(defun org-babel-execute:clojure (body params)
      "Execute a block of Clojure code with Babel."
-     (require 'nrepl-client)
-     (with-temp-buffer
-       (insert (org-babel-expand-body:clojure body params))
-       ((lambda (result)
+     (let ((expanded (org-babel-expand-body:clojure body params))
+           result)
+       (case org-babel-clojure-backend
+         (cider
+          (require 'cider)
           (let ((result-params (cdr (assoc :result-params params))))
-            (if (or (member "scalar" result-params)
-                    (member "verbatim" result-params))
-                result
-              (condition-case nil (org-babel-script-escape result)
-                (error result)))))
-        (nrepl-dict-get
-         (nrepl-sync-request:eval
-          (buffer-substring-no-properties (point-min) (point-max)))
-         "value")))))
+            (setq result
+                  (nrepl-dict-get
+                   ;; 2015-10-27 bstiles: Replaced with cider-nrepl-send-request:eval
+                   ;; (nrepl-sync-request:eval expanded)
+                   (cider-nrepl-sync-request:eval expanded)
+                   (if (or (member "output" result-params)
+                           (member "pp" result-params))
+                       "out"
+                     "value")))))
+         (slime
+          (require 'slime)
+          (with-temp-buffer
+            (insert expanded)
+            (setq result
+                  (slime-eval
+                   `(swank:eval-and-grab-output
+                     ,(buffer-substring-no-properties (point-min) (point-max)))
+                   (cdr (assoc :package params)))))))
+       (org-babel-result-cond (cdr (assoc :result-params params))
+         result
+         (condition-case nil (org-babel-script-escape result)
+           (error result))))))
 
 ;; ========================================================
 ;; Mode associations
@@ -910,8 +924,9 @@ about what flexible matching means in this context."
 
 (defun my-kill-lines (regexp)
   "Kill lines containing matches for REGEXP.
-If a match is split across lines, all the lines it lies in are deleted.
-Applies to lines after point."
+If a match is split across lines, all the lines it lies in are
+deleted.  Applies to lines after point. Prefix with C-u to
+prevent appending to the kill buffer."
   (interactive (list (read-from-minibuffer
                       "Kill lines (containing match for regexp): "
                       nil nil nil 'regexp-history nil t)))
@@ -1350,42 +1365,6 @@ Make backspaces delete the previous character."
 ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-;; (load-library "org-dotemacs")
-;; (org-dotemacs-load-file "" "~/.emacs.d/init.org")
-
-(load-file (expand-file-name "init-helm.el" my-emacs-config-dir))
-
-;;; 2014-06-17 bstiles: helm-buffers seems to have moved ahead of helm-projectile.
-;;; https://github.com/bbatsov/projectile/issues/358
-(defvar helm-source-projectile-buffers-list
-  `((name . "Projectile Buffers")
-    (init . (lambda ()
-              ;; Issue #51 Create the list before `helm-buffer' creation.
-              (setq helm-projectile-buffers-list-cache (projectile-project-buffer-names))
-              (let ((result (cl-loop for b in helm-projectile-buffers-list-cache
-                                     maximize (length b) into len-buf
-                                     maximize (length (with-current-buffer b
-                                                        (symbol-name major-mode)))
-                                     into len-mode
-                                     finally return (cons len-buf len-mode))))
-                (unless helm-buffer-max-length
-                  (setq helm-buffer-max-length (car result)))
-                (unless helm-buffer-max-len-mode
-                  ;; If a new buffer is longer that this value
-                  ;; this value will be updated
-                  (setq helm-buffer-max-len-mode (cdr result))))))
-    (candidates . helm-projectile-buffers-list-cache)
-    (type . buffer)
-    (match helm-buffers-list--match-fn)
-    (persistent-action . helm-buffers-list-persistent-action)
-    (keymap . ,helm-buffer-map)
-    (volatile)
-    (no-delay-on-input)
-    (mode-line . helm-buffer-mode-line-string)
-    (persistent-help
-     . "Show this buffer / C-u \\[helm-execute-persistent-action]: Kill this buffer")))
 
 (message "==================================")
 (message "init.el file evaluated to the end!")

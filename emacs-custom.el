@@ -13,10 +13,10 @@
     ((clojure-mode . "^[0-9A-Za-z/_.,:;*+=&%|$#@!^?'>-]+$"))))
  '(ahs-modes
    (quote
-    (actionscript-mode apache-mode bat-generic-mode c++-mode c-mode csharp-mode css-mode dos-mode emacs-lisp-mode ini-generic-mode java-mode javascript-mode js-mode lisp-interaction-mode lua-mode latex-mode makefile-mode makefile-gmake-mode markdown-mode moccur-edit-mode outline-mode perl-mode cperl-mode php-mode python-mode rc-generic-mode reg-generic-mode ruby-mode sgml-mode sh-mode squirrel-mode tcl-mode visual-basic-mode clojure-mode)))
+    (actionscript-mode apache-mode bat-generic-mode c++-mode c-mode csharp-mode css-mode dos-mode emacs-lisp-mode ini-generic-mode java-mode javascript-mode js-mode lisp-interaction-mode lua-mode latex-mode makefile-mode makefile-gmake-mode markdown-mode moccur-edit-mode outline-mode perl-mode cperl-mode php-mode python-mode rc-generic-mode reg-generic-mode ruby-mode sgml-mode sh-mode squirrel-mode tcl-mode visual-basic-mode clojurec-mode clojurescript-mode clojure-mode)))
  '(ahs-plugin-bod-modes
    (quote
-    (emacs-lisp-mode lisp-interaction-mode c++-mode nil clojure-mode)))
+    (emacs-lisp-mode lisp-interaction-mode c++-mode clojurescript-mode clojurec-mode clojure-mode)))
  '(align-c++-modes
    (quote
     (c++-mode c-mode java-mode coffee-mode javascript-mode js2-mode)))
@@ -37,11 +37,13 @@
  '(browse-url-firefox-program "/Applications/Firefox.app/Contents/MacOS/firefox-bin")
  '(canlock-password "e7415257d290faf90e7bedf1524d44d0fb6b3a2c")
  '(cider-auto-jump-to-error nil)
- '(cider-macroexpansion-display-namespaces nil)
+ '(cider-font-lock-dynamically (quote (deprecated)))
+ '(cider-macroexpansion-display-namespaces (quote tidy))
+ '(cider-macroexpansion-print-metadata t)
  '(cider-macroexpansion-suppress-namespaces nil)
  '(cider-prompt-for-symbol nil)
- '(cider-refresh-after-fn "user/go")
- '(cider-refresh-before-fn "user/stop")
+ '(cider-refresh-after-fn "sys/start")
+ '(cider-refresh-before-fn "sys/stop")
  '(cider-repl-use-pretty-printing t)
  '(clojure-defun-indents (quote (apply interpose run run* with-precision fresh)))
  '(clojure-defun-style-default-indent t)
@@ -102,7 +104,7 @@
     ("SCCS" "RCS" "CVS" "MCVS" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" "build.output" "node_modules")))
  '(grep-find-ignored-files
    (quote
-    (".js.map" ".#*" "*.o" "*~" "*.bin" "*.lbin" "*.so" "*.a" "*.ln" "*.blg" "*.bbl" "*.elc" "*.lof" "*.glo" "*.idx" "*.lot" "*.fmt" "*.tfm" "*.class" "*.fas" "*.lib" "*.mem" "*.x86f" "*.sparcf" "*.dfsl" "*.pfsl" "*.d64fsl" "*.p64fsl" "*.lx64fsl" "*.lx32fsl" "*.dx64fsl" "*.dx32fsl" "*.fx64fsl" "*.fx32fsl" "*.sx64fsl" "*.sx32fsl" "*.wx64fsl" "*.wx32fsl" "*.fasl" "*.ufsl" "*.fsl" "*.dxl" "*.lo" "*.la" "*.gmo" "*.mo" "*.toc" "*.aux" "*.cp" "*.fn" "*.ky" "*.pg" "*.tp" "*.vr" "*.cps" "*.fns" "*.kys" "*.pgs" "*.tps" "*.vrs" "*.pyc" "*.pyo")))
+    ("*.cache.edn" "*.js.map" ".#*" "*.o" "*~" "*.bin" "*.lbin" "*.so" "*.a" "*.ln" "*.blg" "*.bbl" "*.elc" "*.lof" "*.glo" "*.idx" "*.lot" "*.fmt" "*.tfm" "*.class" "*.fas" "*.lib" "*.mem" "*.x86f" "*.sparcf" "*.dfsl" "*.pfsl" "*.d64fsl" "*.p64fsl" "*.lx64fsl" "*.lx32fsl" "*.dx64fsl" "*.dx32fsl" "*.fx64fsl" "*.fx32fsl" "*.sx64fsl" "*.sx32fsl" "*.wx64fsl" "*.wx32fsl" "*.fasl" "*.ufsl" "*.fsl" "*.dxl" "*.lo" "*.la" "*.gmo" "*.mo" "*.toc" "*.aux" "*.cp" "*.fn" "*.ky" "*.pg" "*.tp" "*.vr" "*.cps" "*.fns" "*.kys" "*.pgs" "*.tps" "*.vrs" "*.pyc" "*.pyo")))
  '(grep-highlight-matches nil)
  '(grep-setup-hook
    (quote
@@ -110,11 +112,15 @@
        (set-variable
         (quote truncate-lines)
         t)))))
+ '(helm-buffer-skip-remote-checking t)
  '(helm-buffers-fuzzy-matching t)
  '(helm-candidate-number-limit 100)
  '(helm-ff-history-max-length 500)
  '(helm-grep-max-length-history 500)
  '(helm-imenu-fuzzy-match t)
+ '(helm-org-format-outline-path t)
+ '(helm-org-headings-fontify t)
+ '(helm-org-headings-max-depth 8)
  '(helm-projectile-sources-list
    (quote
     (helm-source-projectile-recentf-list helm-source-projectile-buffers-list helm-source-projectile-files-list helm-source-projectile-projects)))
@@ -176,6 +182,7 @@
  '(imenu-auto-rescan t)
  '(indent-tabs-mode nil)
  '(indicate-buffer-boundaries (quote left))
+ '(inf-clojure-program "planck -r")
  '(inferior-js-program-command "/Users/bstiles/bin/rhino.py")
  '(ispell-program-name "aspell")
  '(jka-compr-compression-info-list
@@ -516,6 +523,7 @@ pre {
  '(nrepl-buffer-name-show-port t)
  '(nrepl-force-ssh-for-remote-hosts t)
  '(nrepl-log-messages nil)
+ '(nrepl-sync-request-timeout 30)
  '(ns-alternate-modifier (quote none))
  '(ns-pop-up-frames nil)
  '(org-agenda-custom-commands
@@ -542,6 +550,7 @@ pre {
      (search category-keep))))
  '(org-agenda-span 30)
  '(org-agenda-todo-keyword-format "%-6s")
+ '(org-babel-clojure-backend (quote cider))
  '(org-babel-load-languages
    (quote
     ((emacs-lisp . t)
@@ -557,6 +566,9 @@ pre {
    (quote
     (("i" "INBOX" entry
       (file+olp "~/org/one-ring.org" "INBOX")
+      "" :prepend t)
+     ("j" "Journal" entry
+      (file+datetree "~/org/journal.org")
       "" :prepend t))))
  '(org-catch-invisible-edits (quote error))
  '(org-clock-into-drawer 3)
@@ -564,7 +576,7 @@ pre {
  '(org-default-priority 67)
  '(org-ditaa-jar-path "/Users/bstiles/.emacs.d/lisp/org-extensions/ditaa.jar")
  '(org-drawers (quote ("PROPERTIES" "CLOCK" "LOGBOOK" "DATA")))
- '(org-export-backends (quote (ascii html icalendar latex md)))
+ '(org-export-backends (quote (ascii html icalendar latex man md texinfo)))
  '(org-from-is-user-regexp "\\<Brian Stiles\\>")
  '(org-html-head
    "<style type=\"text/css\">
@@ -581,7 +593,7 @@ pre {
   h1{font-size:2.5em}
   h2{font-size:2.25rem;line-height:2.5rem}
   h3{font-size:1.75rem;line-height:2rem}
-  h4{font-size:1.5rem;line-height:1.75rem;margin-bottom:.5rem}
+  h4{font-size:1.5rem;line-height:1.75rem;margin-bottm:o.5rem}
   h5{font-size:1.2rem;line-hight:1.5;margin-bottom:0;letter-spacing:1px}
   .section-number-1,.section-number-2,.section-number-3,.section-number-4,.section-number-5,.section-number-6,.section-number-8,.section-number-9 {
     color: rgba(7, 70, 140, 0.5);
@@ -614,6 +626,63 @@ pre {
     font-weight:500;
     font-size:1.2em;
     line-height:1.45rem;
+  }
+  #table-of-contents {
+    font-stretch: condensed;
+    position: fixed;
+    width: 12rem;
+    top: 0;
+    bottom: 0;
+    border-right: thin gray solid;
+    overflow-y: scroll;
+  }
+  #table-of-contents > h2 {
+    display: none;
+  }
+  #text-table-of-contents {
+    font-family: \"avenir next condensed\", \"arial narrow\", \"arial unicode\", \"arial\", sans-serif;
+    font-size: inherit;
+  }
+  #table-of-contents ul {
+    list-style-type: none;
+    list-style-position: inside;
+    padding-left: 0;
+  }
+  #table-of-contents a {
+    padding-left: 0;
+    text-decoration: none;
+    color: #222;
+  }
+  #text-table-of-contents > ul {
+    font-weight: bold;
+  }
+  #text-table-of-contents > ul ul {
+    font-weight: normal;
+  }
+  #text-table-of-contents > ul ul ul {
+    padding-left: 0.5rem;
+  }
+  #text-table-of-contents > ul ul ul ul {
+    padding-left: 0.5rem;
+    font-size: smaller;
+  }
+  #text-table-of-contents > ul ul ul ul ul {
+    font-size: inherit;
+  }
+  #table-of-contents li {
+    padding-left: 0;
+    text-indent: 0;
+  }
+  #table-of-contents .tag {
+    display: none;
+  }
+  #table-of-contents ~ div {
+    margin-left: 14rem;
+    margin-right: 0;
+  }
+  #postamble {
+    margin-left: 14rem;
+    margin-right: 0;
   }
   p {
     max-width: 60rem;
@@ -743,7 +812,7 @@ pre {
              (file-exists-p lob)
              (org-babel-lob-ingest)))))))
  '(org-log-into-drawer t)
- '(org-md-headline-style (quote setext))
+ '(org-md-headline-style (quote atx))
  '(org-mobile-directory "~/Dropbox/Apps/MobileOrg")
  '(org-mode-hook
    (quote
@@ -825,7 +894,7 @@ pre {
      ("MAYBE" . "Dark gray"))))
  '(org-todo-keywords
    (quote
-    ((type "MAYBE(m!)" "PAUSED(p!)" "BUG(b!)" "IDEA(i!)" "TODO(t!)" "NEXT(n)" "WAIT(w!)" "ACTIVE(a)" "DELEGATED(D)" "DONE(d!)"))))
+    ((type "MAYBE(m!)" "PAUSED(p!)" "BUG(b!)" "IDEA(i!)" "TODO(t!)" "NEXT(n!)" "WAIT(w!)" "ACTIVE(a!)" "DELEGATED(D!)" "DONE(d!)"))))
  '(oz-prefix "/Applications/Mozart.app/Contents/Resources")
  '(package-archives
    (quote
@@ -950,8 +1019,8 @@ pre {
  '(nxml-delimiter-face ((((class color) (background dark)) (:inherit font-lock-preprocessor-face))))
  '(nxml-name-face ((((class color) (background dark)) (:inherit font-lock-constant-face))))
  '(org-block-background ((t (:inherit hl-sexp-face))))
- '(org-block-begin-line ((t (:inherit org-meta-line :weight normal))))
- '(org-block-end-line ((t (:inherit org-meta-line :underline t :weight normal))))
+ '(org-block-begin-line ((((background dark)) (:background "#1d403f" :foreground "#80af9f" :weight normal)) (((background light)) (:background "beige" :foreground "#80af9f" :weight normal))))
+ '(org-block-end-line ((((background dark)) (:background "#1d403f" :foreground "pink4" :underline t :weight normal)) (((background light)) (:background "beige" :foreground "#ff9999" :underline t :weight normal))))
  '(org-date ((t (:foreground "Gray" :underline t))))
  '(org-done ((t (:foreground "Gray" :inverse-video t :weight bold))))
  '(org-link ((t (:underline "Grey"))))
