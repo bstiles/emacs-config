@@ -147,6 +147,12 @@ See =local-config-Brians-MacBook-Pro.el= for examples.
   (my-global-set-key "M-~" 'my-other-frame-reverse)
 #+end_src
 
+*** Company keybindings
+#+begin_src emacs-lisp :results silent
+  (with-eval-after-load 'company
+    (define-key company-active-map (kbd "C-n") #'company-select-next)
+    (define-key company-active-map (kbd "C-p") #'company-select-previous))
+#+end_src
 ** Projectile
 #+begin_src emacs-lisp :results silent
   (use-package projectile
@@ -336,16 +342,18 @@ Tell the Org Babel tooling where the JAR file is.
 #+end_src
 
 ** Prettify symbols
+With additional [[http://endlessparentheses.com/using-prettify-symbols-in-clojure-and-elisp-without-breaking-indentation.html][trickery]].
 #+begin_src emacs-lisp :results silent
   (defun my-clojure-prettify ()
     (mapc (lambda (elt) (push elt prettify-symbols-alist))
-          '((">=" . ?≥)
-            ("<=" . ?≤)
+          '((">=" . (?\s (Br . Bl) ?≥))
+            ("<=" . (?\s (Br . Bl) ?≤)) 
             ("identical?" . ?≡)
-            ("and" . ?∧)
-            ("or" . ?∨)
-            ("not" . ?¬)
-            ("not=" . ?≠))))
+            ("and" . (?\s (Br . Bl) ?∧ (Br . Bl) ?\s))
+            ("or" . (?\s (Br . Bl) ?∨))
+            ("not" . (?\s (Br . Bl) ?¬ (Br . Bl) ?\s))
+            ("not=" . (?\s (Br . Bl) ?≠ (Br . Bl) ?\s (Br . Bl) ?\s))
+            ("fn" . (?\s (Br . Bl) ?λ)))))
   (add-hook 'clojure-mode-hook #'my-clojure-prettify)
   (global-prettify-symbols-mode)
 #+end_src
@@ -389,4 +397,175 @@ Tell the Org Babel tooling where the JAR file is.
           (message "%s" (format-time-string "%Y-%m-%d %T UTC"
                                             (seconds-to-time (/ millis 1000))))
         (message "No time under point."))))
+#+end_src
+
+** Log view mode
+#+begin_src emacs-lisp :results silent
+  (defvar my-log-view-hidden-areas ())
+  (add-to-invisibility-spec 'lv)
+
+  (defun my-log-view-add-overlay (start end)
+    (let ((overlay (make-overlay start end)))
+      (setq my-log-view-hidden-areas (cons overlay my-log-view-hidden-areas))
+      (overlay-put overlay 'invisible 'lv)))
+
+  (defun my-log-view-hide-prefix ()
+    (interactive)
+    (save-excursion
+      (goto-char (point-min))
+      (while (search-forward-regexp
+              "^\\(?:..\\)?..-..-.. +..:..:..\\(?:,...\\)? +\\([^[ ]+\\|\\[[^]]+\\]\\)? +[^ ]+ +\\(\\[[^]]+\\]\\)? [^ ]+ -"
+              nil t)
+        (my-log-view-add-overlay (match-beginning 1) (match-end 1))
+        (when (match-beginning 2)
+          (my-log-view-add-overlay (match-beginning 2) (match-end 2))))))
+
+  (defun my-log-view-show-prefix ()
+    (interactive)
+    (mapc (lambda (overlay) (delete-overlay overlay)) 
+          my-log-view-hidden-areas)
+    (setq my-log-view-hidden-areas ()))
+
+  (define-generic-mode my-log-view-mode
+    '()
+    '()
+    '(("^\\(\\(?:..\\)?..-..-.. +..:..:..\\(?:,...\\)? +\\(?:[^[ ]+\\|\\[[^]]+\\]\\)? +[^ ]+ +\\(?:\\[[^]]+\\]\\)? [^ ]+ -\\)"
+       1 font-lock-string-face prepend)
+      ("^\\(?:..\\)?..-..-.. +..:..:..\\(?:,...\\)? +\\(?:[^[ ]+\\|\\[[^]]+\\]\\)? +\\(DEBUG\\|TRACE\\) .*$"
+       0 font-lock-comment-face t)
+      ("^\\(?:..\\)?..-..-.. +..:..:..\\(?:,...\\)? +\\(?:[^[ ]+\\|\\[[^]]+\\]\\)? +WARN .*$"
+       0 font-lock-variable-name-face t)
+      ("^\\(?:..\\)?..-..-.. +..:..:..\\(?:,...\\)? +\\(?:[^[ ]+\\|\\[[^]]+\\]\\)? +\\(?:ERROR\\|FATAL\\) .*$"
+       0 font-lock-warning-face t))
+    '("\\.log[.0-9]+\\'")
+    `(,(lambda ()
+         (local-set-key (kbd "C-c l s") #'my-log-view-show-prefix)
+         (local-set-key (kbd "C-c l h") #'my-log-view-hide-prefix)))
+    "Minor mode for viewing logs.")
+#+end_src
+
+** Hide/show logging statements
+#+begin_src emacs-lisp :results silent
+  (defvar my-log-statement-hidden-areas ())
+  (add-to-invisibility-spec 'ls)
+
+  (defvar my-log-statement-regexp
+    "\\(\\w*/?\\(d\\(fatal\\|error\\|warn\\|info\\|debug\\|trace\\)f?\\( +\\[?\\(:\\w+ ?\\)+]?\\)?\\)\\)")
+
+  (defun my-log-statement-add-overlay (start end)
+    (let ((overlay (make-overlay start end)))
+      (setq my-log-statement-hidden-areas (cons overlay my-log-statement-hidden-areas))
+      ;; (overlay-put overlay 'invisible 'ls)
+      (overlay-put overlay 'face font-lock-comment-face)
+      (overlay-put overlay 'display (concat "..."))))
+
+  (defun my-log-statement-elide-collapse ()
+    (interactive)
+    (save-excursion
+      (goto-char (point-min))
+      (while (search-forward-regexp my-log-statement-regexp nil t)
+        (let (start end (more t))
+          (backward-up-list)
+          (when (search-backward-regexp "[^[:space:]\r\n][[:space:]\r\n]+\\=" nil t)
+            (forward-char))
+          (setq start (point))
+          (forward-list)
+          (while (search-forward-regexp
+                  (concat "\\=[[:space:]\r\n]*(" my-log-statement-regexp)
+                  nil t)
+            (backward-up-list)
+            (forward-list))
+          (my-log-statement-add-overlay start (point))))))
+
+  (defun my-log-statement-elide ()
+    (interactive)
+    (save-excursion
+      (goto-char (point-min))
+      (while (search-forward-regexp my-log-statement-regexp nil t)
+        (let (start end (more t))
+          (backward-up-list)
+          (setq start (point))
+          (forward-list)
+          (setq end (point))
+          (narrow-to-region start end)
+          (goto-char (point-min))
+          (while (and more (search-forward-regexp "[^[:space:]]" nil t))
+            (backward-char)
+            (setq start (point))
+            (end-of-line)
+            (setq end (point))
+            (my-log-statement-add-overlay start end)
+            (beginning-of-line)
+            (setq more (= 0 (forward-line 1))))
+          (widen)))))
+
+  (defun my-log-statement-show ()
+    (interactive)
+    (mapc (lambda (overlay) (delete-overlay overlay)) 
+          my-log-statement-hidden-areas)
+    (setq my-log-statement-hidden-areas ()))
+
+  (with-eval-after-load 'clojure-mode
+    (define-key clojure-mode-map (kbd "C-c l h") #'my-log-statement-elide)
+    (define-key clojure-mode-map (kbd "C-c l H") #'my-log-statement-elide-collapse)
+    (define-key clojure-mode-map (kbd "C-c l s") #'my-log-statement-show))
+#+end_src
+
+** Hide/show def contents
+#+begin_src emacs-lisp :results silent
+  (defvar my-def-hidden-areas ())
+  (add-to-invisibility-spec 'ls)
+
+  (defun my-def-add-overlay (start end)
+    (let ((overlay (make-overlay start end)))
+      (setq my-def-hidden-areas (cons overlay my-def-hidden-areas))
+                                          ;    (overlay-put overlay 'invisible 'ls)
+      (overlay-put overlay 'face font-lock-comment-face)
+      (overlay-put overlay 'display (concat "..."))))
+
+  (defun my-def-hide-prefix ()
+    (interactive)
+    (save-excursion
+      (goto-char (point-min))
+      (while (search-forward-regexp
+              "^[[:space:]]*(def[^[:space:]]*" nil t)
+        (let (start end marker (more t))
+          (setq marker (point))
+          (backward-up-list)
+          (setq start (point))
+          (forward-list)
+          (setq end (point))
+          (narrow-to-region start end)
+          (goto-char marker)
+          (while (and more (search-forward-regexp "[[:space:]\r\n]+" nil t))
+            (cond
+             ((not (looking-at "[([]")) (progn
+                                          (forward-sexp)
+                                          (setq more t)))
+             ((looking-at "(") (progn
+                                 (setq start (point))
+                                 (forward-sexp)
+                                 (setq end (point))
+                                 (goto-char start)
+                                 (when (search-forward-regexp "\\[" nil t)
+                                   (backward-char)
+                                   (forward-sexp)
+                                   (my-def-add-overlay (point) (1- end)))
+                                 (goto-char end)
+                                 (setq more t)))
+             ((looking-at "\\[") (progn
+                                   (forward-sexp)
+                                   (my-def-add-overlay (point) (1- (point-max)))
+                                   (setq more nil)))))
+          (widen)))))
+
+  (defun my-def-show-prefix ()
+    (interactive)
+    (mapc (lambda (overlay) (delete-overlay overlay)) 
+          my-def-hidden-areas)
+    (setq my-def-hidden-areas ()))
+
+  (with-eval-after-load 'clojure-mode
+    (define-key clojure-mode-map (kbd "C-c d h") #'my-def-hide-prefix)
+    (define-key clojure-mode-map (kbd "C-c d s") #'my-def-show-prefix))
 #+end_src

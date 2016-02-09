@@ -256,7 +256,8 @@
           (beginning-of-line)
           (string-match "^[[:space:]]*$" (buffer-substring-no-properties (point) end))))
       (indent-for-tab-command)
-    (call-interactively #'complete-symbol)))
+    ;; 2016-02-07 bstiles: Was complete-symbol.
+    (call-interactively #'company-complete)))
 
 ;; (eval-after-load "cider-interaction"
 ;;   '(progn
@@ -369,39 +370,44 @@
 
 ;;; 2013-01-04 bstiles: from https://raw.github.com/lambdatronic/org-babel-example/master/org/potter.org 
 ;; Patch ob-clojure to work with cider
-(declare-function nrepl-send-string-sync "ext:nrepl" (code &optional ns))
 
-(eval-after-load 'ob-clojure
-  '(defun org-babel-execute:clojure (body params)
-     "Execute a block of Clojure code with Babel."
-     (let ((expanded (org-babel-expand-body:clojure body params))
-           result)
-       (case org-babel-clojure-backend
-         (cider
-          (require 'cider)
-          (let ((result-params (cdr (assoc :result-params params))))
-            (setq result
-                  (nrepl-dict-get
-                   ;; 2015-10-27 bstiles: Replaced with cider-nrepl-send-request:eval
-                   ;; (nrepl-sync-request:eval expanded)
-                   (cider-nrepl-sync-request:eval expanded)
-                   (if (or (member "output" result-params)
-                           (member "pp" result-params))
-                       "out"
-                     "value")))))
-         (slime
-          (require 'slime)
-          (with-temp-buffer
-            (insert expanded)
-            (setq result
-                  (slime-eval
-                   `(swank:eval-and-grab-output
-                     ,(buffer-substring-no-properties (point-min) (point-max)))
-                   (cdr (assoc :package params)))))))
-       (org-babel-result-cond (cdr (assoc :result-params params))
-         result
-         (condition-case nil (org-babel-script-escape result)
-           (error result))))))
+;; (declare-function nrepl-send-string-sync "ext:nrepl" (code &optional ns))
+;; (eval-after-load 'ob-clojure
+;;   '(defun org-babel-execute:clojure (body params)
+;;      "Execute a block of Clojure code with Babel."
+;;      (let ((expanded (org-babel-expand-body:clojure body params))
+;;            result)
+;;        (case org-babel-clojure-backend
+;;          (cider
+;;           (require 'cider)
+;;           (let ((result-params (cdr (assoc :result-params params))))
+;;             (setq result
+;;                   (nrepl-dict-get
+;;                    (nrepl-sync-request:eval
+;;                     expanded (cider-current-connection) (cider-current-session)
+;;                     ;; 2016-01-23 bstiles: Use my-org-babel-ns if
+;;                     ;; defined to force execution in a particular
+;;                     ;; namespace. Set as a file local variable.
+;;                     (if (boundp 'my-org-babel-ns)
+;;                         my-org-babel-ns
+;;                       nil))
+;;                    (if (or (member "output" result-params)
+;;                            (member "pp" result-params))
+;;                        "out"
+;;                      "value")))))
+;;          (slime
+;;           (require 'slime)
+;;           (with-temp-buffer
+;;             (insert expanded)
+;;             (setq result
+;;                   (slime-eval
+;;                    `(swank:eval-and-grab-output
+;;                      ,(buffer-substring-no-properties (point-min) (point-max)))
+;;                    (cdr (assoc :package params)))))))
+;;        (org-babel-result-cond (cdr (assoc :result-params params))
+;;          result
+;;          (condition-case nil (org-babel-script-escape result)
+;;            (error result))))))
 
 ;; ========================================================
 ;; Mode associations
@@ -496,6 +502,13 @@
 (copy-face 'font-lock-function-name-face 'my-markdown-bold-face)
 (set-face-foreground 'my-markdown-bold-face "OrangeRed")
 
+(defvar logging-call-face 'logging-call-face)
+(defface logging-call-face
+  '((((class color) (background light)) (:slant italic :foreground "Firebrick4"))
+    (((class color) (background dark)) (:slant italic :foreground "Light Goldenrod")))
+  "Font Lock mode face logging calls."
+  :group 'my-clj-faces)
+
 (mapc
  (lambda (mode)
    (add-hook
@@ -504,11 +517,14 @@
       (font-lock-add-keywords
        nil
        '(
-         ; Reminder comments
+                                        ; Log statements
+         ("(\\(\\(l/\\|log/\\)?\\(d\\(fatal\\|error\\|warn\\|info\\|debug\\|trace\\)f?\\( +\\[?\\(:\\w+ ?\\)+]?\\)?\\)\\)"
+          1 logging-call-face prepend)
+                                        ; Reminder comments
          ("[;]+[ \t]*\\(FIXME\\|XXX\\|DbC\\|\\?\\?\\?\\)" 1 font-lock-warning-face t)
-         ; Temporary definitions
+                                        ; Temporary definitions
          ("\\(\\w*XXX\\w*\\)" 1 font-lock-warning-face t)
-         ; Brackets
+                                        ; Brackets
          ("[][()]" . font-lock-builtin-face)
          )
        t))))
