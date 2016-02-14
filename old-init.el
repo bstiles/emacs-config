@@ -504,30 +504,78 @@
 
 (defvar logging-call-face 'logging-call-face)
 (defface logging-call-face
-  '((((class color) (background light)) (:slant italic :foreground "Firebrick4"))
-    (((class color) (background dark)) (:slant italic :foreground "Light Goldenrod")))
+  '((((class color) (background light)) (:foreground "Slate Gray"))
+    (((class color) (background dark)) (:foreground "Light Slate Gray")))
   "Font Lock mode face logging calls."
   :group 'my-clj-faces)
+
+;;; #_ comments font-locking
+;; Code heavily borrowed from Slime.
+;; https://github.com/slime/slime/blob/master/contrib/slime-fontifying-fu.el#L186
+(defvar my-clojure--log-statement-regexp
+  "\\((\\(l/\\|log/\\)?\\(d\\(fatal\\|error\\|warn\\|info\\|debug\\|trace\\)f?\\( +\\[?\\(:\\w+ ?\\)+]?\\)?\\)\\)"
+  ;(rx "#_" (* " ") (group-n 1 (not (any " "))))
+  "Regexp matching the start of a comment sexp.
+The beginning of match-group 1 should be before the sexp to be
+marked as a comment.  The end of sexp is found with
+`clojure-forward-logical-sexp'.
+
+By default, this only applies to code after the `#_' reader
+macro.  In order to also font-lock the `(comment ...)' macro as a
+comment, you can set the value to:
+    \"#_ *\\\\(?1:[^ ]\\\\)\\\\|\\\\(?1:(comment\\\\_>\\\\)\"")
+
+(defun my-clojure--search-log-statement-internal (limit)
+  (when (search-forward-regexp my-clojure--log-statement-regexp limit t)
+    (let* ((md (match-data))
+           (start (match-beginning 1))
+           (state (syntax-ppss start)))
+      ;; inside string or comment?
+      (if (or (nth 3 state)
+              (nth 4 state))
+          (my-clojure--search-log-statement-internal limit)
+        (goto-char start)
+        (clojure-forward-logical-sexp 1)
+        ;; Data for (match-end 1).
+        (setf (elt md 3) (point))
+        (set-match-data md)
+        t))))
+
+(defun my-clojure--search-log-statement (limit)
+  "Find comment macros and set the match data.
+Search from point up to LIMIT.  The region that should be
+considered a comment is between `(match-beginning 1)'
+and `(match-end 1)'."
+  (let ((result 'retry))
+    (while (and (eq result 'retry) (<= (point) limit))
+      (condition-case nil
+          (setq result (my-clojure--search-log-statement-internal limit))
+        (end-of-file (setq result nil))
+        (scan-error  (setq result 'retry))))
+    result))
+
+(defun my-additional-lispy-font-lock-keywords ()
+  (font-lock-add-keywords
+   nil
+   '(
+                                        ; Log statements
+     (my-clojure--search-log-statement 1 logging-call-face prepend)
+     ;; ("(\\(\\(l/\\|log/\\)?\\(d\\(fatal\\|error\\|warn\\|info\\|debug\\|trace\\)f?\\( +\\[?\\(:\\w+ ?\\)+]?\\)?\\)\\)"
+     ;;  1 font-lock-comment-face prepend)
+                                        ; Reminder comments
+     ("[;]+[ \t]*\\(FIXME\\|XXX\\|DbC\\|\\?\\?\\?\\)" 1 font-lock-warning-face t)
+                                        ; Temporary definitions
+     ("\\(\\w*XXX\\w*\\)" 1 font-lock-warning-face t)
+                                        ; Brackets
+     ("[][()]" . font-lock-builtin-face)
+     )
+   t))
 
 (mapc
  (lambda (mode)
    (add-hook
     mode
-    (lambda ()
-      (font-lock-add-keywords
-       nil
-       '(
-                                        ; Log statements
-         ("(\\(\\(l/\\|log/\\)?\\(d\\(fatal\\|error\\|warn\\|info\\|debug\\|trace\\)f?\\( +\\[?\\(:\\w+ ?\\)+]?\\)?\\)\\)"
-          1 logging-call-face prepend)
-                                        ; Reminder comments
-         ("[;]+[ \t]*\\(FIXME\\|XXX\\|DbC\\|\\?\\?\\?\\)" 1 font-lock-warning-face t)
-                                        ; Temporary definitions
-         ("\\(\\w*XXX\\w*\\)" 1 font-lock-warning-face t)
-                                        ; Brackets
-         ("[][()]" . font-lock-builtin-face)
-         )
-       t))))
+    #'my-additional-lispy-font-lock-keywords))
  '(lisp-mode-hook emacs-lisp-mode-hook clojure-mode-hook))
 
 (mapc
