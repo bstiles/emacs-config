@@ -979,7 +979,7 @@ pre {
  '(ediff-fine-diff-B ((t (:background "Green" :foreground "black"))))
  '(flx-highlight-face ((t (:inherit warning :underline t :weight bold))))
  '(font-lock-builtin-face ((((class color) (background dark)) (:foreground "LightSteelBlue")) (((class color) (background light)) (:foreground "LightSteelBlue4"))))
- '(font-lock-comment-face ((((class color) (background dark)) (:foreground "Gray")) (((class color) (background light)) (:foreground "Gray40"))))
+ '(font-lock-comment-face ((t (:foreground "Gray" :slant italic))))
  '(font-lock-constant-face ((((background light)) (:foreground "black" :weight bold)) (((background dark)) (:foreground "Cyan"))))
  '(font-lock-function-name-face ((((class color) (background dark)) (:foreground "White" :weight bold)) (((class color) (background light)) (:foreground "Red" :weight bold))))
  '(font-lock-keyword-face ((((class color) (background dark)) (:foreground "LightSkyBlue")) (((class color) (background light)) (:foreground "SteelBlue3"))))

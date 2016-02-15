@@ -527,7 +527,7 @@ With additional [[http://endlessparentheses.com/using-prettify-symbols-in-clojur
     (save-excursion
       (goto-char (point-min))
       (while (search-forward-regexp
-              "^[[:space:]]*(def[^[:space:]]*" nil t)
+              "^[[:space:]]*(\\(?:def[^[:space:]]*\\|comment\\)" nil t)
         (let (start end marker (more t))
           (setq marker (point))
           (backward-up-list)
