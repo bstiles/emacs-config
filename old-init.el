@@ -218,7 +218,7 @@
                    (set-background-color "grey30")
                    (set-foreground-color "Wheat")))
    ((= 3 prefix) (progn
-                   (set-background-color "cornsilk2")
+                   (set-background-color "ivory2")
                    (set-foreground-color "navy")))
    ((= 4 prefix) (progn
                    (set-background-color "white")
@@ -567,7 +567,18 @@ and `(match-end 1)'."
                                         ; Temporary definitions
      ("\\(\\w*XXX\\w*\\)" 1 font-lock-warning-face t)
                                         ; Brackets
-     ("[][()]" . font-lock-builtin-face)
+     ("[][(){}]" . font-lock-builtin-face)
+                                        ; Metadata
+     ("\\(\\^:?\\sw\\(?:\\sw\\|\\s_\\)+\\)" 0 font-lock-builtin-face t)
+                                        ; Punctuation, comparisons
+     ("\\_<\\([=<>]=?\\|[~']\\|~@\\) ?\\_>" 1 font-lock-keyword-face)
+                                        ; Clojure function reader form
+                                        ; Must match ( when using compose-region
+     ("\\(#\\)[(\"]" 1 font-lock-builtin-face t)
+                                        ; Clojure functior reader form parameter
+     ("\\_<\\(%[1-9]?\\)\\_>" 1 font-lock-keyword-face t)
+                                        ; Numbers
+     ("\\(?:\\s(\\|\\s)\\|\\s-\\|\\s.\\|\\`\\|^\\)\\(-?\\(?:\\(?:0x[a-fA-F0-9]+\\)\\|\\(?:[0-9]+\\(?:[e.][0-9]+\\)?\\)\\)\\)" 1 font-lock-constant-face)
      )
    t))
 
