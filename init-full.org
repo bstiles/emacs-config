@@ -353,7 +353,7 @@ With additional [[http://endlessparentheses.com/using-prettify-symbols-in-clojur
             ;; ("or" . (?\s (Br . Bl) ?∨))
             ;; ("not" . (?\s (Br . Bl) ?\s (Br . Bl) ?¬))
             ;; ("not=" . (?\s (Br . Bl) ?\s  (Br . Bl) ?\s (Br . Bl) ?≠))
-            ("#(" . (?λ (Br . Bl) 40))
+            ("#(" . (?ϝ (Br . Bl) 40))
             ("fn" . (?\s (Br . Bl) ?λ)))))
   (add-hook 'clojure-mode-hook #'my-clojure-prettify)
   (global-prettify-symbols-mode)
