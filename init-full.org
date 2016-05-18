@@ -109,15 +109,17 @@ See =local-config-Brians-MacBook-Pro.el= for examples.
   (my-global-set-key "C-c g s" 'my-buffer-shell)
   (my-global-set-key "C-c h b" 'helm-buffers-list)
   (my-global-set-key "C-c h i" 'helm-imenu)
-  (my-global-set-key "C-c h p" 'helm-projectile)
+  (my-global-set-key "C-c h p" 'helm-pages)
+  (my-global-set-key "C-c h P" 'helm-projectile)
   ;(my-global-set-key "C-c h g" 'my-helm-ls-git-ls)
   (my-global-set-key "C-c n c" 'cider-connect)
   (my-global-set-key "C-c n j" 'cider-jack-in)
-  (my-global-set-key "C-c n n" 'nrepl-connection-browser)
+  (my-global-set-key "C-c n n" 'cider-connection-browser)
   (my-global-set-key "C-c n q" 'cider-quit)
   (my-global-set-key "C-c n r" 'cider-switch-to-repl-buffer)
   (my-global-set-key "C-c n s" 'cider-scratch)
   (my-global-set-key "C-c n u" 'my-cider-user-ns)
+  (my-global-set-key "C-c n U" 'my-user-clj)
   (my-global-set-key "C-c o A" 'org-align-all-tags)
   (my-global-set-key "C-c o a" 'org-agenda)
   (my-global-set-key "C-c o b h" 'my-hide-blocks-in-subtree)
@@ -153,6 +155,23 @@ See =local-config-Brians-MacBook-Pro.el= for examples.
     (define-key company-active-map (kbd "C-n") #'company-select-next)
     (define-key company-active-map (kbd "C-p") #'company-select-previous))
 #+end_src
+
+** Environment variables on OS X
+Emacs for OS X doesn't pick up the PATH defined in .bashrc/.profile.
+
+#+begin_src emacs-lisp :results silent
+  (use-package exec-path-from-shell
+    :ensure t
+    :pin melpa)
+
+  (if (eq system-type 'darwin)
+      (exec-path-from-shell-initialize))
+
+  (setq explicit-shell-file-name (getenv "SHELL"))
+  (setq shell-file-name (getenv "SHELL"))
+
+#+end_src
+
 ** Projectile
 #+begin_src emacs-lisp :results silent
   (use-package projectile
@@ -271,6 +290,20 @@ See =local-config-Brians-MacBook-Pro.el= for examples.
     :pin melpa)
 #+end_src
 
+** Reason Programming
+#+begin_src emacs-lisp :results silent
+  (setq opam (substring (shell-command-to-string "opam config var prefix") 0 -1))
+  (add-to-list 'load-path (concat opam "/share/emacs/site-lisp"))
+  (setq refmt-command (concat opam "/bin/refmt"))
+
+  (require 'reason-mode)
+  (require 'merlin)
+  (setq merlin-ac-setup t)
+  (add-hook 'reason-mode-hook (lambda ()
+                                (add-hook 'before-save-hook 'refmt-before-save)
+                                (merlin-mode)))
+#+end_src
+
 ** Chores/Emacs hygiene
 
 *** Midnight mode
@@ -310,10 +343,17 @@ Tell the Org Babel tooling where the JAR file is.
 #+end_src
 
 ** CIDER
+
+*** Test helpers
 #+begin_src emacs-lisp :results silent
   (defun my-cider-user-ns ()
     (interactive)
     (cider-repl-set-ns "user"))
+  (defun my-user-clj ()
+    (interactive)
+    (let ((file "dev/user.clj"))
+      (find-file (expand-file-name file (projectile-project-root)))
+      (run-hooks 'projectile-find-file-hook)))
   (defun my-cider-test-function (arg)
     (interactive "P")
     (lexical-let*
@@ -341,22 +381,62 @@ Tell the Org Babel tooling where the JAR file is.
         (funcall run-test))))
 #+end_src
 
+*** Bug fix
+`cider-clojure-interaction-mode` remaps Enter to evaluate.
+#+begin_src emacs-lisp :results silent
+  (add-hook 'cider-clojure-interaction-mode-hook
+            (lambda ()
+              (define-key cider-clojure-interaction-mode-map
+                [remap paredit-newline] nil)))
+#+end_src
+
 ** Prettify symbols
 With additional [[http://endlessparentheses.com/using-prettify-symbols-in-clojure-and-elisp-without-breaking-indentation.html][trickery]].
 #+begin_src emacs-lisp :results silent
   (defun my-clojure-prettify ()
     (mapc (lambda (elt) (push elt prettify-symbols-alist))
           '(
-            ;; (">=" . (?\s (Br . Bl) ?≥))
-            ;; ("<=" . (?\s (Br . Bl) ?≤))
+            (">=" . (?\s
+                     (Br . Bl) ?\s
+                     (Bc . Bc) ?≥))
+            ("<=" . (?\s
+                     (Br . Bl) ?\s
+                     (Bc . Bc) ?≤))
             ;; ("and" . (?\s (Br . Bl) ?\s (Br . Bl) ?∧))
             ;; ("or" . (?\s (Br . Bl) ?∨))
             ;; ("not" . (?\s (Br . Bl) ?\s (Br . Bl) ?¬))
-            ;; ("not=" . (?\s (Br . Bl) ?\s  (Br . Bl) ?\s (Br . Bl) ?≠))
-            ("#(" . (?ϝ (Br . Bl) 40))
-            ("fn" . (?\s (Br . Bl) ?λ)))))
+            ("not=" . (?\s
+                       (Br . Bc) ?=
+                       (Br . Bc) ?=
+                       (Br . Bl) ?=
+                       (Br . Bc) ?=
+                       (Br . Bc) ?\s
+                       (Bc . Bc) ?/))
+            ("->" . (?-
+                     (Bc . Bl) ?-
+                     (Br . Bc) ?>))
+            ("->>" . (?-
+                      (Bc . Bl) ?-
+                      (Br . Bc) ?-
+                      (Br . Bc) ?-
+                      (Br . Bc) ?>
+                      (Bc . Bc) ?>))
+            ("#(" . (?ϝ
+                     (Br . Bl) 40))
+            ("fn" . (?\s (Br . Bl) ?\s
+                         (Bc . Bc) ?λ)))))
   (add-hook 'clojure-mode-hook #'my-clojure-prettify)
   (global-prettify-symbols-mode)
+#+end_src
+
+** Data XML customizations
+*** Use a better glyph for the #xe000 separator character
+#+begin_src emacs-lisp :results silent
+  (add-hook 'nxml-mode-hook
+            (lambda ()
+              (setq buffer-display-table (make-display-table))
+              (aset buffer-display-table #xe000
+                    (vector (make-glyph-code ?▯ 'escape-glyph)))))
 #+end_src
 
 ** Clojure customizations
@@ -524,12 +604,12 @@ With additional [[http://endlessparentheses.com/using-prettify-symbols-in-clojur
       (overlay-put overlay 'face font-lock-comment-face)
       (overlay-put overlay 'display (concat "..."))))
 
-  (defun my-def-hide-prefix ()
+  (defun my-def-hide-doc-string ()
     (interactive)
     (save-excursion
       (goto-char (point-min))
       (while (search-forward-regexp
-              "^[[:space:]]*(\\(?:def[^[:space:]]*\\|comment\\)" nil t)
+              "^[[:space:]]*(\\(?:\\(?:[[:alnum:]]+/\\)?def[^[:space:]]*\\|comment\\)" nil t)
         (let (start end marker (more t))
           (setq marker (point))
           (backward-up-list)
@@ -540,33 +620,146 @@ With additional [[http://endlessparentheses.com/using-prettify-symbols-in-clojur
           (goto-char marker)
           (while (and more (search-forward-regexp "[[:space:]\r\n]+" nil t))
             (cond
-             ((not (looking-at "[([]")) (progn
-                                          (forward-sexp)
-                                          (setq more t)))
-             ((looking-at "(") (progn
-                                 (setq start (point))
-                                 (forward-sexp)
-                                 (setq end (point))
-                                 (goto-char start)
-                                 (when (search-forward-regexp "\\[" nil t)
-                                   (backward-char)
-                                   (forward-sexp)
-                                   (my-def-add-overlay (point) (1- end)))
-                                 (goto-char end)
-                                 (setq more t)))
-             ((looking-at "\\[") (progn
-                                   (forward-sexp)
-                                   (my-def-add-overlay (point) (1- (point-max)))
-                                   (setq more nil)))))
+             ((not (looking-at "[\"([]")) (progn
+                                            (forward-sexp)
+                                            (setq more t)))
+             ((looking-at "[([]") (setq more nil))
+             ((looking-at "\"") (progn
+                                  (setq start (1+ (point)))
+                                  (forward-sexp)
+                                  (my-def-add-overlay start (1- (point)))
+                                  (setq more nil)))))
           (widen)))))
 
-  (defun my-def-show-prefix ()
+  (defun my-def-hide-body-and-or-comment (arg)
+    (save-excursion
+      (goto-char (point-min))
+      (while (search-forward-regexp
+              (cond
+               ((equal :both arg) "^[[:space:]]*(\\(?:\\(?:[[:alnum:]]+/\\)?def[^[:space:]]*\\|comment\\)")
+               ((equal :comment arg) "^[[:space:]]*(comment"))
+              nil t)
+        (let (start end marker (more t))
+          (setq marker (point))
+          (backward-up-list)
+          (setq start (point))
+          (forward-list)
+          (setq end (point))
+          (narrow-to-region start end)
+          (goto-char marker)
+          (if (looking-back "comment")
+              (my-def-add-overlay (point) (1- end))
+            (while (and more (search-forward-regexp "[[:space:]\r\n]+" nil t))
+              (cond
+               ((not (looking-at "[([]")) (progn
+                                            (forward-sexp)
+                                            (setq more t)))
+               ((looking-at "(") (progn
+                                   (setq start (point))
+                                   (forward-sexp)
+                                   (setq end (point))
+                                   (goto-char start)
+                                   (when (search-forward-regexp "\\[" nil t)
+                                     (backward-char)
+                                     (forward-sexp)
+                                     (my-def-add-overlay (point) (1- end)))
+                                   (goto-char end)
+                                   (setq more t)))
+               ((looking-at "\\[") (progn
+                                     (forward-sexp)
+                                     (my-def-add-overlay (point) (1- (point-max)))
+                                     (setq more nil))))))
+          (widen)))))
+
+  (defun my-def-hide-body ()
+    (interactive)
+    (my-def-hide-body-and-or-comment :both))
+
+  (defun my-def-hide-comment ()
+    (interactive)
+    (my-def-hide-body-and-or-comment :comment))
+
+  (defun my-def-hide-def ()
+    (interactive)
+    (save-excursion
+      (goto-char (point-min))
+      (while (search-forward-regexp
+              "^[[:space:]]*(\\(?:[[:alnum:]]+/\\)?def\\(?:schema\\)?[[:space:]]+" nil t)
+        (let (start end marker (more t))
+          (setq marker (point))
+          (backward-up-list)
+          (setq start (point))
+          (forward-list)
+          (setq end (point))
+          (narrow-to-region start end)
+          (goto-char marker)
+          (while (and more (search-forward-regexp "[[:space:]\r\n]*" nil t))
+            (cond
+             ((looking-at "\\^") (progn
+                                   (forward-sexp)
+                                   (setq more t)))
+             (t (progn
+                  (forward-sexp)
+                  (my-def-add-overlay (point) (1- end))
+                  (setq more nil)))))
+          (widen)))))
+
+  (defun my-def-hide-all ()
+    (interactive)
+    (my-def-hide-def)
+    (my-def-hide-doc-string)
+    (my-def-hide-body-and-or-comment :both))
+
+  (defun my-def-show-all ()
     (interactive)
     (mapc (lambda (overlay) (delete-overlay overlay)) 
           my-def-hidden-areas)
     (setq my-def-hidden-areas ()))
 
   (with-eval-after-load 'clojure-mode
-    (define-key clojure-mode-map (kbd "C-c d h") #'my-def-hide-prefix)
-    (define-key clojure-mode-map (kbd "C-c d s") #'my-def-show-prefix))
+    (define-key clojure-mode-map (kbd "C-c d h a") #'my-def-hide-all)
+    (define-key clojure-mode-map (kbd "C-c d h b") #'my-def-hide-body)
+    (define-key clojure-mode-map (kbd "C-c d h c") #'my-def-hide-comment)
+    (define-key clojure-mode-map (kbd "C-c d h d") #'my-def-hide-def)
+    (define-key clojure-mode-map (kbd "C-c d h s") #'my-def-hide-doc-string)
+    (define-key clojure-mode-map (kbd "C-c d s") #'my-def-show-all))
+#+end_src
+
+** Show page structure (based on ^L)
+#+begin_src emacs-lisp :results silent
+  ;; 2016-03-18 bstiles: Override regexp to ignore ;;;;;;.. lines.
+  (with-eval-after-load 'helm-pages
+    (defun helm-pages-get-next-header ()
+      "Get the next non-blank line after POINT."
+      (with-helm-current-buffer
+        (save-restriction
+          (save-excursion
+            (narrow-to-page)
+            (beginning-of-line)
+            (while (and (not (eobp))
+                        (looking-at-p "\\(?:^\\s-*$\\|^;+$\\)"))
+              (forward-line))
+            (let* ((start (progn (beginning-of-line) (point)))
+                   (end (progn (end-of-line) (point))))
+              (buffer-substring start end)))))))
+#+end_src
+
+** Company Mode
+*** Bug fix
+https://github.com/company-mode/company-mode/issues/180
+
+#+begin_src emacs-lisp :results silent
+  (defvar-local my-company-fci-mode-on-p nil)
+
+  (defun my-company-turn-off-fci (&rest ignore)
+    (when (boundp 'fci-mode)
+      (setq my-company-fci-mode-on-p fci-mode)
+      (when fci-mode (fci-mode -1))))
+
+  (defun my-company-maybe-turn-on-fci (&rest ignore)
+    (when my-company-fci-mode-on-p (fci-mode 1)))
+
+  (add-hook 'company-completion-started-hook 'my-company-turn-off-fci)
+  (add-hook 'company-completion-finished-hook 'my-company-maybe-turn-on-fci)
+  (add-hook 'company-completion-cancelled-hook 'my-company-maybe-turn-on-fci)
 #+end_src

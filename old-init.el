@@ -23,7 +23,7 @@
                aquarium-mode
 ;               cider
                coffee-mode
-               css-mode
+               ;; css-mode
                ebnf-mode
                ghc-mod
                grep-buffers
@@ -42,19 +42,6 @@
     (package-initialize))
 
 (require 'benchmark-init)
-
-;; Emacs for OS X doesn't pick up the PATH defined in .bashrc/.profile
-;; 2012-12-18 bstiles: 2>/dev/null works around problem with Bash complaining
-;; about:
-;; bash: cannot set terminal process group (-1): Inappropriate ioctl for
-;; device bash: no job control in this shell 
-(if (eq system-type 'darwin)
-    (exec-path-from-shell-initialize)
-    ;(setenv "PATH" (shell-command-to-string "bash -l -i -c 'echo -n $PATH' 2>/dev/null"))
-  )
-
-(setq explicit-shell-file-name (getenv "SHELL"))
-(setq shell-file-name (getenv "SHELL"))
 
 (eval-after-load "rng-loc"
   '(add-to-list 'rng-schema-locating-files
@@ -80,7 +67,6 @@
 (require 'col-highlight)
 (require 'modeline-posn)
 (require 'irml-mode)
-(require 'clj-refactor)
 (require 'uniquify)
 ;(require 'auto-complete-config)
 ;(require 'ac-nrepl)
@@ -102,7 +88,7 @@
 
 ;(load-file (home-relative-file "elisp/java-decompile-helper.el"))
 (load-library "java-decompile-helper")
-(load-library "css-mode-simple")
+;; (load-library "css-mode-simple")
 
 (autoload 'ghc-init "ghc" nil t)
 (add-hook 'haskell-mode-hook (lambda () (ghc-init) (flymake-mode)))
@@ -157,10 +143,10 @@
 (add-hook 'clojure-mode-hook
           (lambda ()
             (modify-syntax-entry ?. "_")))
-(add-hook 'clojure-mode-hook
-          (lambda ()
-            (clj-refactor-mode 1)
-            (cljr-add-keybindings-with-prefix "M-3")))
+;; (add-hook 'clojure-mode-hook
+;;           (lambda ()
+;;             (clj-refactor-mode 1)
+;;             (cljr-add-keybindings-with-prefix "M-3")))
 
 (mapc (lambda (mode)
         (add-hook mode
@@ -417,7 +403,7 @@
 ;(setq auto-mode-alist (cons '("\\.json$" . javascript-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\\.class$" . java-decompile-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\\.\\(xml\\|xsl\\|rng\\|x?html\\|pom\\)\\'" . nxml-mode) auto-mode-alist))
-(setq auto-mode-alist (cons '("\\.css\\'" . css-mode) auto-mode-alist))
+;; (setq auto-mode-alist (cons '("\\.css\\'" . css-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\\.war$" . archive-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\\.ear$" . archive-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\\.rar$" . archive-mode) auto-mode-alist))
@@ -533,9 +519,19 @@ comment, you can set the value to:
       ;; inside string or comment?
       (if (or (nth 3 state)
               (nth 4 state))
-          (my-clojure--search-log-statement-internal limit)
+          nil
         (goto-char start)
-        (clojure-forward-logical-sexp 1)
+        (let* ((ks (recent-keys t))
+               (len (length ks))
+               (last (elt ks (1- len))))
+          ;; 2016-04-26 bstiles: This check is a workaround for a bug
+          ;; that seems to cause clojure-forward-logical-sexp to get
+          ;; into an infinite loop when entering a backslash at the
+          ;; end of a string (point is before the final ").
+          (if  (or (and (numberp last) (equal last 92))
+                   (and (consp last) (eq 'paredit-backslash (cdr last))))
+              (forward-char 1)
+            (clojure-forward-logical-sexp 1)))
         ;; Data for (match-end 1).
         (setf (elt md 3) (point))
         (set-match-data md)
@@ -546,13 +542,15 @@ comment, you can set the value to:
 Search from point up to LIMIT.  The region that should be
 considered a comment is between `(match-beginning 1)'
 and `(match-end 1)'."
-  (let ((result 'retry))
-    (while (and (eq result 'retry) (<= (point) limit))
-      (condition-case nil
-          (setq result (my-clojure--search-log-statement-internal limit))
-        (end-of-file (setq result nil))
-        (scan-error  (setq result 'retry))))
-    result))
+  (if (< 120 (- (line-end-position) (line-beginning-position)))
+      nil
+    (let ((result 'retry))
+      (while (and (eq result 'retry) (<= (point) limit))
+        (condition-case nil
+            (setq result (my-clojure--search-log-statement-internal limit))
+          (end-of-file (setq result nil))
+          (scan-error  (setq result 'retry))))
+      result)))
 
 (defun my-additional-lispy-font-lock-keywords ()
   (font-lock-add-keywords
@@ -566,19 +564,21 @@ and `(match-end 1)'."
      ("[;]+[ \t]*\\(FIXME\\|XXX\\|DbC\\|\\?\\?\\?\\)" 1 font-lock-warning-face t)
                                         ; Temporary definitions
      ("\\(\\w*XXX\\w*\\)" 1 font-lock-warning-face t)
+                                        ; dbg
+     ("\\(my/\\(?:ppdbg\\|dbg[*]?\\|ps\\|pp\\)\\)\\b" 1 font-lock-warning-face t)
                                         ; Brackets
      ("[][(){}]" . font-lock-builtin-face)
                                         ; Metadata
      ("\\(\\^:?\\sw\\(?:\\sw\\|\\s_\\)+\\)" 0 font-lock-builtin-face t)
                                         ; Punctuation, comparisons
-     ("\\_<\\([=<>]=?\\|[~']\\|~@\\) ?\\_>" 1 font-lock-keyword-face)
+     ("\\_<\\([=<>]=?\\) ?\\_>" 1 font-lock-keyword-face)
                                         ; Clojure function reader form
                                         ; Must match ( when using compose-region
      ("\\(#\\)[(\"]" 1 font-lock-builtin-face t)
                                         ; Clojure functior reader form parameter
      ("\\_<\\(%[1-9]?\\)\\_>" 1 font-lock-keyword-face t)
                                         ; Numbers
-     ("\\(?:\\s(\\|\\s)\\|\\s-\\|\\s.\\|\\`\\|^\\)\\(-?\\(?:\\(?:0x[a-fA-F0-9]+\\)\\|\\(?:[0-9]+\\(?:[e.][0-9]+\\)?\\)\\)\\)" 1 font-lock-constant-face)
+     ("\\(?:\\s(\\|\\s)\\|\\s-\\|\\s.\\|\\`\\|^\\)\\(-?\\(?:\\(?:0x[a-fA-F0-9]+\\)\\|\\(?:[0-9]+\\(?:[e./][0-9]+\\)?\\)\\)\\)" 1 font-lock-constant-face)
      )
    t))
 

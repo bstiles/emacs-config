@@ -46,7 +46,8 @@
  '(cider-refresh-after-fn "sys/resume")
  '(cider-refresh-before-fn "sys/suspend")
  '(cider-repl-history-file "/Users/bstiles/.nrepl-history")
- '(cider-repl-use-pretty-printing t)
+ '(cider-repl-use-clojure-font-lock nil)
+ '(cider-repl-use-pretty-printing nil)
  '(clojure-defun-indents (quote (apply interpose run run* with-precision fresh)))
  '(clojure-defun-style-default-indent t)
  '(clojure-indent-style :always-indent)
@@ -58,6 +59,7 @@
  '(company-lighter-base "")
  '(company-show-numbers t)
  '(company-tooltip-minimum-width 30)
+ '(company-tooltip-offset-display (quote scrollbar))
  '(compilation-scroll-output t)
  '(completion-ignored-extensions
    (quote
@@ -102,14 +104,16 @@
  '(find-exec-terminator "\\;")
  '(find-ls-option (quote ("-exec ls -ld {} \\;" . "-ld")))
  '(flx-ido-use-faces t)
+ '(fringe-mode 12 nil (fringe))
  '(global-hl-line-mode t)
  '(global-hl-sexp-mode nil)
+ '(global-prettify-symbols-mode t)
  '(global-whitespace-mode nil)
  '(graphviz-dot-view-command "open -a \"OmniGraffle Professional 5.app\" \"%s\"")
  '(grep-find-command (quote ("find . -type f -exec grep -nH -e  {} +" . 34)))
  '(grep-find-ignored-directories
    (quote
-    ("SCCS" "RCS" "CVS" "MCVS" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" "build.output" "node_modules")))
+    ("SCCS" "RCS" "CVS" "MCVS" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" "build.output" "node_modules" "out" "target")))
  '(grep-find-ignored-files
    (quote
     ("*.cache.edn" "*.js.map" ".#*" "*.o" "*~" "*.bin" "*.lbin" "*.so" "*.a" "*.ln" "*.blg" "*.bbl" "*.elc" "*.lof" "*.glo" "*.idx" "*.lot" "*.fmt" "*.tfm" "*.class" "*.fas" "*.lib" "*.mem" "*.x86f" "*.sparcf" "*.dfsl" "*.pfsl" "*.d64fsl" "*.p64fsl" "*.lx64fsl" "*.lx32fsl" "*.dx64fsl" "*.dx32fsl" "*.fx64fsl" "*.fx32fsl" "*.sx64fsl" "*.sx32fsl" "*.wx64fsl" "*.wx32fsl" "*.fasl" "*.ufsl" "*.fsl" "*.dxl" "*.lo" "*.la" "*.gmo" "*.mo" "*.toc" "*.aux" "*.cp" "*.fn" "*.ky" "*.pg" "*.tp" "*.vr" "*.cps" "*.fns" "*.kys" "*.pgs" "*.tps" "*.vrs" "*.pyc" "*.pyo")))
@@ -911,6 +915,10 @@ pre {
      ("org" . "http://orgmode.org/elpa/")
      ("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
      ("melpa" . "http://melpa.milkbox.net/packages/"))))
+ '(package-selected-packages
+   (quote
+    (helm-pages twittering-mode groovy-mode yasnippet yaml-mode yafolding wolfram-mode web-mode use-package tuareg swift-mode skewer-mode scala-mode2 request-deferred racket-mode plantuml-mode paredit org-dotemacs multiple-cursors modeline-posn markdown-mode lfe-mode lentic json-mode js-comint javap-mode inflections inf-clojure ido-vertical-mode hydra htmlize hl-sexp highlight-parentheses highlight-indentation helm-projectile helm-idris go-mode git-commit-mode ghci-completion ghc fuzzy fringe-helper flx-ido find-file-in-project fill-column-indicator exec-path-from-shell erlang epoch-view edn dot-mode dockerfile-mode company col-highlight coffee-mode clojure-mode-extra-font-locking cider-spy cider-profile benchmark-init bats-mode auto-highlight-symbol applescript-mode align-cljlet)))
+ '(prettify-symbols-unprettify-at-point nil)
  '(projectile-globally-ignored-directories
    (quote
     (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" "build" "tmp")))
@@ -976,8 +984,16 @@ pre {
  '(cursor ((t (:background "#ff00aa"))))
  '(ecb-token-header-face ((((class color) (background dark)) (:underline t))))
  '(ediff-current-diff-B ((t (:background "#1f7f3f"))))
+ '(ediff-even-diff-A ((t (:background "Grey40"))))
+ '(ediff-even-diff-Ancestor ((t (:background "Grey40"))))
+ '(ediff-even-diff-B ((t (:background "Grey40"))))
+ '(ediff-even-diff-C ((t (:background "Grey40"))))
  '(ediff-fine-diff-A ((t (:background "Red" :foreground "black"))))
  '(ediff-fine-diff-B ((t (:background "Green" :foreground "black"))))
+ '(ediff-odd-diff-A ((t (:background "Grey30"))))
+ '(ediff-odd-diff-Ancestor ((t (:background "gray30"))))
+ '(ediff-odd-diff-B ((t (:background "Grey30"))))
+ '(ediff-odd-diff-C ((t (:background "Grey30"))))
  '(flx-highlight-face ((t (:inherit warning :underline t :weight bold))))
  '(font-lock-builtin-face ((((class color) (background dark)) (:foreground "LightSteelBlue")) (((class color) (background light)) (:foreground "LightSteelBlue4"))))
  '(font-lock-comment-face ((t (:foreground "Gray" :slant italic))))
@@ -1040,7 +1056,7 @@ pre {
  '(org-special-keyword ((((background dark)) (:foreground "Gray70")) (((background light)) (:foreground "gray"))))
  '(org-table ((t (:inherit hl-sexp-face))))
  '(org-tag ((t (:foreground "gray"))))
- '(org-todo ((t (:foreground "Brown" :weight bold))))
+ '(org-todo ((t (:background "yellow" :foreground "firebrick" :weight bold))))
  '(outline-1 ((((background dark)) (:foreground "White" :weight bold)) (((background light)) (:foreground "black" :weight bold))))
  '(outline-2 ((((background dark)) (:foreground "green" :weight bold)) (((background light)) (:foreground "darkgreen" :weight bold))))
  '(outline-3 ((((background dark)) (:foreground "yellow" :weight bold)) (((background light)) (:foreground "goldenrod" :weight bold))))
