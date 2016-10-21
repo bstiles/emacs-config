@@ -304,6 +304,25 @@ Emacs for OS X doesn't pick up the PATH defined in .bashrc/.profile.
                                 (merlin-mode)))
 #+end_src
 
+** JavaScript Programming
+
+*** js2-mode
+#+begin_src emacs-lisp :results silent
+  (use-package js2-mode
+    :ensure t
+    :pin melpa)
+#+end_src
+
+*** tern
+#+begin_src emacs-lisp :results silent
+  (use-package tern
+    :ensure t
+    :pin melpa)
+  (use-package company-tern
+    :ensure t
+    :pin melpa)
+#+end_src
+
 ** Chores/Emacs hygiene
 
 *** Midnight mode
@@ -343,6 +362,11 @@ Tell the Org Babel tooling where the JAR file is.
 #+end_src
 
 ** CIDER
+#+begin_src emacs-lisp :results silent
+  (use-package cider
+   :ensure t
+   :pin melpa-stable)
+#+end_src
 
 *** Test helpers
 #+begin_src emacs-lisp :results silent
@@ -381,7 +405,7 @@ Tell the Org Babel tooling where the JAR file is.
         (funcall run-test))))
 #+end_src
 
-*** Bug fix
+*** Bug fix                                                                      :bug:
 `cider-clojure-interaction-mode` remaps Enter to evaluate.
 #+begin_src emacs-lisp :results silent
   (add-hook 'cider-clojure-interaction-mode-hook
@@ -426,6 +450,41 @@ With additional [[http://endlessparentheses.com/using-prettify-symbols-in-clojur
             ("fn" . (?\s (Br . Bl) ?\s
                          (Bc . Bc) ?λ)))))
   (add-hook 'clojure-mode-hook #'my-clojure-prettify)
+  (defun my-js-prettify ()
+    (mapc (lambda (elt) (push elt prettify-symbols-alist))
+          '(
+            (";" . (?▮))
+            ("&&" . (?\s (Br . Bc) ?∧ (Br . Bc) ?\s))
+            ("||" . (?\s (Br . Bc) ?∨ (Br . Bc) ?\s))
+            ("!" . (?¬))
+            ("!==" . (?≡
+                       (Br . Bc) ?≡
+                       (Br . Bc) ?≡
+                       (Br . Bc) ?≡
+                       (Br . Bc) ?≡
+                       (Bc . Bc) ?/))
+            ("===" . (?≡
+                       (Br . Bc) ?≡
+                       (Br . Bc) ?≡
+                       (Br . Bc) ?≡
+                       (Br . Bc) ?≡))
+            ("!=" . (?=
+                       (Br . Bc) ?=
+                       (Br . Bc) ?=
+                       (Bc . Bc) ?/))
+            ("==" . (?=
+                       (Br . Bc) ?=
+                       (Br . Bc) ?=))
+            (">=" . (?\s
+                     (Br . Bl) ?\s
+                     (Bc . Bc) ?≥))
+            ("<=" . (?\s
+                     (Br . Bl) ?\s
+                     (Bc . Bc) ?≤))
+            ("=>" . (?=
+                     (Bc . Bl) ?=
+                     (Br . Bc) ?≻)))))
+  (add-hook 'js-mode-hook #'my-js-prettify)
   (global-prettify-symbols-mode)
 #+end_src
 
@@ -461,6 +520,35 @@ With additional [[http://endlessparentheses.com/using-prettify-symbols-in-clojur
                     (acl-align-form)))))))
 #+end_src
 
+*** Imenu fix                                                                    :bug:
+#+begin_src emacs-lisp :results silent
+  (with-eval-after-load 'clojure-mode
+    (defun clojure-match-next-def ()
+      "Scans the buffer backwards for the next \"top-level\" definition.
+  Called by `imenu--generic-function'."
+      ;; we have to take into account namespace-definition forms
+      ;; e.g. s/defn 2016-06-15 bstiles: Add \\sw* to capture defs that
+      ;; are indented due to conditional reader forms or do blocks.
+      (when (re-search-backward "^\\Sw*(\\([a-z0-9.-]+/\\)?def\\sw*" nil t)
+        (save-excursion
+          (let (found?
+                (start (point)))
+            (down-list)
+            (forward-sexp)
+            (while (not found?)
+              (forward-sexp)
+              (or (if (char-equal ?[ (char-after (point)))
+                                  (backward-sexp))
+                      (if (char-equal ?) (char-after (point)))
+                    (backward-sexp)))
+              (cl-destructuring-bind (def-beg . def-end) (bounds-of-thing-at-point 'sexp)
+                (if (char-equal ?^ (char-after def-beg))
+                    (progn (forward-sexp) (backward-sexp))
+                  (setq found? t)
+                  (set-match-data (list def-beg def-end)))))
+            (goto-char start))))))
+#+end_src
+
 ** Swiper search
 #+begin_src emacs-lisp :results silent
   (use-package swiper
@@ -476,7 +564,8 @@ With additional [[http://endlessparentheses.com/using-prettify-symbols-in-clojur
     (let ((millis (thing-at-point 'number)))
       (if millis
           (message "%s" (format-time-string "%Y-%m-%d %T UTC"
-                                            (seconds-to-time (/ millis 1000))))
+                                            (seconds-to-time (/ millis 1000))
+                                            t))
         (message "No time under point."))))
 #+end_src
 
@@ -737,7 +826,7 @@ With additional [[http://endlessparentheses.com/using-prettify-symbols-in-clojur
             (narrow-to-page)
             (beginning-of-line)
             (while (and (not (eobp))
-                        (looking-at-p "\\(?:^\\s-*$\\|^;+$\\)"))
+                        (looking-at-p "\\(?:^\\s-*$\\|^;+$\\|^#+$\\)"))
               (forward-line))
             (let* ((start (progn (beginning-of-line) (point)))
                    (end (progn (end-of-line) (point))))
@@ -745,7 +834,7 @@ With additional [[http://endlessparentheses.com/using-prettify-symbols-in-clojur
 #+end_src
 
 ** Company Mode
-*** Bug fix
+*** Bug fix                                                                      :bug:
 https://github.com/company-mode/company-mode/issues/180
 
 #+begin_src emacs-lisp :results silent

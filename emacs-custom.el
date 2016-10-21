@@ -10,7 +10,8 @@
  '(ahs-idle-interval 0.33)
  '(ahs-include
    (quote
-    ((clojure-mode . "^[0-9A-Za-z/_.,:;*+=&%|$#@!^?'>-]+$"))))
+    ((clojurec-mode . "^[0-9A-Za-z/_.,:;*+=&%|$#@!^?'<>-]+$")
+     (clojure-mode . "^[0-9A-Za-z/_.,:;*+=&%|$#@!^?'<>-]+$"))))
  '(ahs-modes
    (quote
     (actionscript-mode apache-mode bat-generic-mode c++-mode c-mode csharp-mode css-mode dos-mode emacs-lisp-mode ini-generic-mode java-mode javascript-mode js-mode lisp-interaction-mode lua-mode latex-mode makefile-mode makefile-gmake-mode markdown-mode moccur-edit-mode outline-mode perl-mode cperl-mode php-mode python-mode rc-generic-mode reg-generic-mode ruby-mode sgml-mode sh-mode squirrel-mode tcl-mode visual-basic-mode clojurec-mode clojurescript-mode clojure-mode)))
@@ -41,6 +42,7 @@
  '(cider-macroexpansion-display-namespaces (quote tidy))
  '(cider-macroexpansion-print-metadata t)
  '(cider-macroexpansion-suppress-namespaces nil)
+ '(cider-mode-line (quote (:eval " cider")))
  '(cider-overlays-use-font-lock t)
  '(cider-prompt-for-symbol nil)
  '(cider-refresh-after-fn "sys/resume")
@@ -48,13 +50,20 @@
  '(cider-repl-history-file "/Users/bstiles/.nrepl-history")
  '(cider-repl-use-clojure-font-lock nil)
  '(cider-repl-use-pretty-printing nil)
- '(clojure-defun-indents (quote (apply interpose run run* with-precision fresh)))
+ '(clojure-defun-indents
+   (quote
+    (apply interpose run run* with-precision fresh assoc assoc! fdef)))
  '(clojure-defun-style-default-indent t)
- '(clojure-indent-style :always-indent)
+ '(clojure-indent-style :always-align)
  '(coffee-command (concat (getenv "HOME") "/bin/coffee"))
  '(coffee-tab-width 2)
  '(column-number-mode t)
  '(comment-auto-fill-only-comments t)
+ '(company-backends
+   (quote
+    (merlin-company-backend company-tern company-bbdb company-nxml company-css company-eclim company-semantic company-clang company-xcode company-cmake company-capf company-files
+                            (company-dabbrev-code company-gtags company-etags company-keywords)
+                            company-oddmuse company-dabbrev)))
  '(company-idle-delay nil)
  '(company-lighter-base "")
  '(company-show-numbers t)
@@ -87,7 +96,7 @@
  '(eldoc-idle-delay 0.25)
  '(emerge-diff-options "--strip-trailing-cr")
  '(emerge-diff3-program "gdiff3")
- '(epg-gpg-program "gpg2")
+ '(epg-gpg-program "/usr/local/bin/gpg2")
  '(eshell-ask-to-save-history nil)
  '(eshell-cmpl-cycle-completions nil)
  '(eshell-cmpl-expand-before-complete t)
@@ -113,7 +122,7 @@
  '(grep-find-command (quote ("find . -type f -exec grep -nH -e  {} +" . 34)))
  '(grep-find-ignored-directories
    (quote
-    ("SCCS" "RCS" "CVS" "MCVS" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" "build.output" "node_modules" "out" "target")))
+    ("SCCS" "RCS" "CVS" "MCVS" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" "build.output" "node_modules" "out" "target" "make.tmp")))
  '(grep-find-ignored-files
    (quote
     ("*.cache.edn" "*.js.map" ".#*" "*.o" "*~" "*.bin" "*.lbin" "*.so" "*.a" "*.ln" "*.blg" "*.bbl" "*.elc" "*.lof" "*.glo" "*.idx" "*.lot" "*.fmt" "*.tfm" "*.class" "*.fas" "*.lib" "*.mem" "*.x86f" "*.sparcf" "*.dfsl" "*.pfsl" "*.d64fsl" "*.p64fsl" "*.lx64fsl" "*.lx32fsl" "*.dx64fsl" "*.dx32fsl" "*.fx64fsl" "*.fx32fsl" "*.sx64fsl" "*.sx32fsl" "*.wx64fsl" "*.wx32fsl" "*.fasl" "*.ufsl" "*.fsl" "*.dxl" "*.lo" "*.la" "*.gmo" "*.mo" "*.toc" "*.aux" "*.cp" "*.fn" "*.ky" "*.pg" "*.tp" "*.vr" "*.cps" "*.fns" "*.kys" "*.pgs" "*.tps" "*.vrs" "*.pyc" "*.pyo")))
@@ -812,6 +821,7 @@ pre {
   }
 </style>")
  '(org-indent-boundary-char 166)
+ '(org-latex-packages-alist (quote (("" "tabularx" nil))))
  '(org-load-hook
    (quote
     ((lambda nil
@@ -917,7 +927,7 @@ pre {
      ("melpa" . "http://melpa.milkbox.net/packages/"))))
  '(package-selected-packages
    (quote
-    (helm-pages twittering-mode groovy-mode yasnippet yaml-mode yafolding wolfram-mode web-mode use-package tuareg swift-mode skewer-mode scala-mode2 request-deferred racket-mode plantuml-mode paredit org-dotemacs multiple-cursors modeline-posn markdown-mode lfe-mode lentic json-mode js-comint javap-mode inflections inf-clojure ido-vertical-mode hydra htmlize hl-sexp highlight-parentheses highlight-indentation helm-projectile helm-idris go-mode git-commit-mode ghci-completion ghc fuzzy fringe-helper flx-ido find-file-in-project fill-column-indicator exec-path-from-shell erlang epoch-view edn dot-mode dockerfile-mode company col-highlight coffee-mode clojure-mode-extra-font-locking cider-spy cider-profile benchmark-init bats-mode auto-highlight-symbol applescript-mode align-cljlet)))
+    (cider cider-mode utop company-tern companytern tern swiper helm-pages twittering-mode groovy-mode yasnippet yaml-mode yafolding wolfram-mode web-mode use-package tuareg swift-mode skewer-mode scala-mode2 request-deferred racket-mode plantuml-mode paredit org-dotemacs multiple-cursors modeline-posn markdown-mode lfe-mode json-mode js-comint javap-mode inflections inf-clojure ido-vertical-mode hydra htmlize hl-sexp highlight-parentheses highlight-indentation helm-projectile helm-idris go-mode git-commit-mode ghci-completion ghc fuzzy fringe-helper flx-ido find-file-in-project fill-column-indicator exec-path-from-shell erlang epoch-view edn dot-mode dockerfile-mode company col-highlight coffee-mode clojure-mode-extra-font-locking benchmark-init bats-mode auto-highlight-symbol applescript-mode align-cljlet)))
  '(prettify-symbols-unprettify-at-point nil)
  '(projectile-globally-ignored-directories
    (quote
@@ -932,6 +942,7 @@ pre {
  '(py-jython-command (concat (getenv "HOME") "/bin/jython"))
  '(py-shell-switch-buffers-on-execute nil)
  '(python-shell-enable-font-lock nil)
+ '(python-shell-font-lock-enable nil)
  '(read-buffer-completion-ignore-case t)
  '(safe-local-variable-values
    (quote
@@ -956,6 +967,7 @@ pre {
  '(uniquify-buffer-name-style (quote post-forward) nil (uniquify))
  '(uniquify-separator nil)
  '(use-dialog-box nil)
+ '(utop-command "opam config exec -- utop -emacs")
  '(vc-follow-symlinks nil)
  '(visual-line-fringe-indicators (quote (left-curly-arrow right-curly-arrow)))
  '(whitespace-global-modes t)
@@ -1022,6 +1034,7 @@ pre {
  '(ido-vertical-first-match-face ((((background dark)) (:inherit ido-first-match :background "firebrick")) (((background light)) (:inherit ido-first-match :background "pink"))))
  '(ido-vertical-match-face ((t (:inherit font-lock-function-name-face :underline t :weight bold))))
  '(jde-java-font-lock-modifier-face ((((class color) (background dark)) (:foreground "LightSteelBlue")) (((class color) (background light)) (:foreground "LightSteelBlue"))))
+ '(js2-function-param ((t (:foreground "SeaGreen3"))))
  '(js2-function-param-face ((t (:foreground "Green"))))
  '(message-cited-text ((((class color) (background dark)) (:foreground "gray"))))
  '(message-cited-text-face ((((class color) (background dark)) (:foreground "gray"))) t)

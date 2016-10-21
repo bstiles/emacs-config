@@ -400,7 +400,8 @@
 ;; ========================================================
 
 (setq auto-mode-alist (cons '("\\.md$" . markdown-mode) auto-mode-alist))
-;(setq auto-mode-alist (cons '("\\.json$" . javascript-mode) auto-mode-alist))
+(setq auto-mode-alist (cons '("\\.js$" . js2-mode) auto-mode-alist))
+;;; (setq auto-mode-alist (cons '("\\.json$" . javascript-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\\.class$" . java-decompile-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\\.\\(xml\\|xsl\\|rng\\|x?html\\|pom\\)\\'" . nxml-mode) auto-mode-alist))
 ;; (setq auto-mode-alist (cons '("\\.css\\'" . css-mode) auto-mode-alist))
@@ -597,6 +598,8 @@ and `(match-end 1)'."
       (font-lock-add-keywords
        nil
        '(
+         ; Javascript arrow
+         ("\\(=>\\)" 1 font-lock-function-name-face t)
          ; XML tags
          ("</?\\([A-Za-z][A-Za-z0-9]*/?\\)" 1 font-lock-builtin-face t)
          ; ESP delimiters
@@ -612,7 +615,9 @@ and `(match-end 1)'."
          ("\\+\\+\\|--" . font-lock-warning-face)
          ("\\+=\\|-=\\|~=\\|%=\\|/=\\|*=\\||=\\|&=\\|\\^=" . font-lock-warning-face)
          ; Side-effect free operators
-         ("[=!]==\\|[<>!=]=\\|[][(){}<>.,;?:+-/*!~%|&^]" . font-lock-builtin-face)
+         ("[=!]==\\|[<>!=]=\\|[][(){}<>.,?:+-/*!~%|&^]" . font-lock-builtin-face)
+         ; Javascript semicolon
+         ("[;]" . font-lock-builtin-face)
          ; Assignment operators
          ("=" . font-lock-warning-face)
          ; Reminder comments
@@ -623,7 +628,7 @@ and `(match-end 1)'."
          ("\\(\\<\\w+\\)[[:space:]]*=[[:space:]]*function\\>" 1 font-lock-function-name-face t)
          )
        t))))
- '(java-mode-hook python-mode-hook))
+ '(java-mode-hook python-mode-hook js-mode-hook))
 
 (font-lock-add-keywords
  'xml-mode
@@ -863,7 +868,7 @@ and `(match-end 1)'."
                ("nREPL connections" (mode . nrepl-connections-buffer-mode))
                ("Dired" (mode . dired-mode))
                ("Clojure" (mode . clojure-mode))
-               ("Clojure" (mode . clojure-mode))
+               ("ClojureC" (mode . clojurec-mode))
                ("ClojureScript" (mode . clojurescript-mode))
                ("Org" (mode . org-mode))
                ("nXML" (mode . nxml-mode))
@@ -1198,9 +1203,10 @@ top-over-bottom."
 ;;; and so doesn't pick up my color changes. Also, it appears that
 ;;; cider-scale-background-color is called early before I initially
 ;;; set the background-color to DarkSlateGray.
-(defadvice my-set-colors (after fix-cider-error-color activate)
-  (when (fboundp #'cider-scale-background-color)
-    (setq cider-stacktrace-frames-background-color (cider-scale-background-color))))
+;; 2016-06-01 bstiles: Disabled workaround (seems to work now)
+;; (defadvice my-set-colors (after fix-cider-error-color activate)
+;;   (when (fboundp #'cider-scale-background-color)
+;;     (setq cider-stacktrace-frames-background-color (cider-scale-background-color))))
 
 (defun comint-carriage-motion (start end)
   "Interpret carriage control characters in the region from START to END.

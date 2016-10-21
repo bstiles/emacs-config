@@ -11,6 +11,12 @@
 (my-make-find-file-fn my-file-org-capture "~/org/capture.org")
 (my-global-set-key "C-c o c" 'my-file-org-capture)
 
+(my-make-find-file-fn my-file-org-ccm "~/CCM/ccm.org")
+(my-global-set-key "C-c o C" 'my-file-org-ccm)
+
+(my-make-find-file-fn my-file-org-ca-guns "~/org-personal/ca-guns.org")
+(my-global-set-key "C-c o g" 'my-file-org-ca-guns)
+
 (my-make-find-file-fn my-file-journal "~/org/journal.org")
 (my-global-set-key "C-c o j" 'my-file-journal)
 
