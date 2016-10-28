@@ -295,16 +295,19 @@ Emacs for OS X doesn't pick up the PATH defined in .bashrc/.profile.
 
 ** Reason Programming
 #+begin_src emacs-lisp :results silent
-  (setq opam (substring (shell-command-to-string "opam config var prefix") 0 -1))
-  (add-to-list 'load-path (concat opam "/share/emacs/site-lisp"))
-  (setq refmt-command (concat opam "/bin/refmt"))
+  ;; 2016-10-28 bstiles: Re-enable after figuring out how to
+  ;; automatically install the dependencies
 
-  (require 'reason-mode)
-  (require 'merlin)
-  (setq merlin-ac-setup t)
-  (add-hook 'reason-mode-hook (lambda ()
-                                (add-hook 'before-save-hook 'refmt-before-save)
-                                (merlin-mode)))
+  ; (setq opam (substring (shell-command-to-string "opam config var prefix") 0 -1))
+  ; (add-to-list 'load-path (concat opam "/share/emacs/site-lisp"))
+  ; (setq refmt-command (concat opam "/bin/refmt"))
+
+  ; (require 'reason-mode)
+  ; (require 'merlin)
+  ; (setq merlin-ac-setup t)
+  ; (add-hook 'reason-mode-hook (lambda ()
+  ;                               (add-hook 'before-save-hook 'refmt-before-save)
+  ;                               (merlin-mode)))
 #+end_src
 
 ** JavaScript Programming
