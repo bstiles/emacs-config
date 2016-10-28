@@ -96,7 +96,6 @@
  '(eldoc-idle-delay 0.25)
  '(emerge-diff-options "--strip-trailing-cr")
  '(emerge-diff3-program "gdiff3")
- '(epg-gpg-program "/usr/local/bin/gpg2")
  '(eshell-ask-to-save-history nil)
  '(eshell-cmpl-cycle-completions nil)
  '(eshell-cmpl-expand-before-complete t)
