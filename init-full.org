@@ -215,6 +215,9 @@ Emacs for OS X doesn't pick up the PATH defined in .bashrc/.profile.
 
 *** Turn on helm support
 #+begin_src emacs-lisp :results silent
+  (use-package 'helm-projectile
+    :ensure t
+    :pin melpa)
   (require 'helm-org)
 #+end_src
 
