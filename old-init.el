@@ -41,8 +41,6 @@
 (if (>= (string-to-number emacs-version) 24)
     (package-initialize))
 
-(require 'benchmark-init)
-
 (eval-after-load "rng-loc"
   '(add-to-list 'rng-schema-locating-files
                 (expand-file-name "lisp/html5-el/schemas.xml"
