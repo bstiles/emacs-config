@@ -450,6 +450,20 @@ Tell the Org Babel tooling where the JAR file is.
     :pin melpa)
 #+end_src
 
+** Ido
+#+begin_src emacs-lisp :results silent
+  (use-package ido-vertical-mode
+    :ensure t
+    :pin melpa)
+  (use-package flx-ido
+    :ensure t
+    :pin melpa)
+  (ido-mode 0)
+  (flx-ido-mode 1)
+  (setq ido-use-faces nil)
+  (ido-vertical-mode 1)
+#+end_src
+
 ** Modeline
 #+begin_src emacs-lisp :results silent
   (use-package modeline-posn

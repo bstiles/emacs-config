@@ -88,10 +88,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(ido-mode 0)
-(flx-ido-mode 1)
-(setq ido-use-faces nil)
-(ido-vertical-mode 1)
 (projectile-global-mode)
 (recentf-mode 1)
 (with-temp-buffer
