@@ -44,5 +44,6 @@ echo "Linking/writing initialization files to $HOME/.emacs.d/..."
 [ ! -e "$machine_id_file" ] \
     || abort "ERROR: $machine_id_file already exists."
 
+mkdir -p "$(dirname "$init_file")"
 ln -s "../${here#$HOME/}/init.el" "$init_file"
 printf '(setq my-machine-identifier "%s")' "$machine" > "$machine_id_file"
