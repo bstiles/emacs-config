@@ -427,6 +427,15 @@ Tell the Org Babel tooling where the JAR file is.
                 [remap paredit-newline] nil)))
 #+end_src
 
+** Highlighting
+#+begin_src emacs-lisp :results silent
+  (use-package highlight-parentheses
+    :ensure t
+    :pin melpa)
+  (use-package highlight-indentation
+    :ensure t
+    :pin melpa)
+#+end_src
 ** Prettify symbols
 With additional [[http://endlessparentheses.com/using-prettify-symbols-in-clojure-and-elisp-without-breaking-indentation.html][trickery]].
 #+begin_src emacs-lisp :results silent

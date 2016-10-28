@@ -54,8 +54,6 @@
 (require 'cc-mode)
 (require 'picture)
 (require 'generic-x)
-(require 'highlight-parentheses)
-(require 'highlight-indentation)
 (require 'hl-sexp-overrides-bs)
 (require 'clojure-mode)                 ; Needed for bug fix below
 (require 'find-file-in-project)
