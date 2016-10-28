@@ -438,6 +438,9 @@ Tell the Org Babel tooling where the JAR file is.
   (use-package col-highlight
     :ensure t
     :pin melpa)
+  (use-package auto-highlight-symbol
+    :ensure t
+    :pin melpa)
 #+end_src
 
 ** Modeline
