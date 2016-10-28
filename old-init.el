@@ -56,7 +56,6 @@
 (require 'generic-x)
 (require 'hl-sexp-overrides-bs)
 (require 'clojure-mode)                 ; Needed for bug fix below
-(require 'find-file-in-project)
 (require 'org)
 (require 'col-highlight)
 (require 'modeline-posn)
