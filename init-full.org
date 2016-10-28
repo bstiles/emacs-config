@@ -336,6 +336,13 @@ Emacs for OS X doesn't pick up the PATH defined in .bashrc/.profile.
     :pin melpa)
 #+end_src
 
+** Markdown
+#+begin_src emacs-lisp :results silent
+  (use-package markdown-mode
+    :ensure t
+    :pin melpa)
+#+end_src
+
 ** Chores/Emacs hygiene
 
 *** Midnight mode
