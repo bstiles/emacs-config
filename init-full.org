@@ -381,6 +381,13 @@ Tell the Org Babel tooling where the JAR file is.
   (setq org-plantuml-jar-path plantuml-jar-path)
 #+end_src
 
+** Paredit
+#+begin_src emacs-lisp :results silent
+  (use-package paredit
+    :ensure t
+    :pin melpa)
+#+end_src
+
 ** CIDER
 #+begin_src emacs-lisp :results silent
   (use-package cider
