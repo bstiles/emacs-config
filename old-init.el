@@ -24,7 +24,6 @@
 ;               cider
                coffee-mode
                ;; css-mode
-               ebnf-mode
                ghc-mod
                grep-buffers
                hlint
@@ -46,7 +45,6 @@
                 (expand-file-name "lisp/html5-el/schemas.xml"
                                   user-emacs-directory)))
 (require 'coffee-mode)                  ; Needed for js2 for some reason
-(require 'ebnf-mode)
 (require 'whattf-dt)
 (require 'jka-compr)
 (require 'ange-ftp)
