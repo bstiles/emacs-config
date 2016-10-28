@@ -30,6 +30,7 @@ function abort_and_display_help {
 [[ ${1-} = @(--help|-h) ]] && display_help && exit 0
 
 init_file="$HOME/.emacs.d/init.el"
+lisp_dir="$HOME/.emacs.d/lisp"
 machine=${1?Must specify machine-identifier}
 machine_id_file="$HOME/.emacs.d/machine-identifier.el"
 
@@ -46,4 +47,5 @@ echo "Linking/writing initialization files to $HOME/.emacs.d/..."
 
 mkdir -p "$(dirname "$init_file")"
 ln -s "../${here#$HOME/}/init.el" "$init_file"
+ln -s "../${here#$HOME/}/lisp" "$lisp_dir"
 printf '(setq my-machine-identifier "%s")' "$machine" > "$machine_id_file"
