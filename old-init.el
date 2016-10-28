@@ -57,12 +57,8 @@
 (require 'hl-sexp-overrides-bs)
 (require 'clojure-mode)                 ; Needed for bug fix below
 (require 'org)
-(require 'col-highlight)
-(require 'modeline-posn)
 (require 'irml-mode)
 (require 'uniquify)
-;(require 'auto-complete-config)
-;(require 'ac-nrepl)
 (require 'org-edn)
 (require 'auto-highlight-symbol)
 (require 'dabbrev)
