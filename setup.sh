@@ -49,3 +49,4 @@ mkdir -p "$(dirname "$init_file")"
 ln -s "../${here#$HOME/}/init.el" "$init_file"
 ln -s "../${here#$HOME/}/lisp" "$lisp_dir"
 printf '(setq my-machine-identifier "%s")' "$machine" > "$machine_id_file"
+open "$here"/fonts/*.ttf
