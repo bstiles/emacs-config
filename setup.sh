@@ -42,6 +42,8 @@ echo "Linking/writing initialization files to $HOME/.emacs.d/..."
 # Check first that we're in a clean state before writing anything
 [ ! -e "$init_file" ] \
    || abort "ERROR: $init_file already exists"
+[ ! -e "$lisp_dir" ] \
+   || abort "ERROR: $lisp_dir already exists"
 [ ! -e "$machine_id_file" ] \
     || abort "ERROR: $machine_id_file already exists."
 
