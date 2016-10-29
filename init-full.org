@@ -458,6 +458,9 @@ Tell the Org Babel tooling where the JAR file is.
   (use-package hl-sexp
     :ensure t
     :pin melpa)
+  (use-package fill-column-indicator
+    :ensure t
+    :pin melpa)
 #+end_src
 
 ** Ido
