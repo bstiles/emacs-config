@@ -8,8 +8,8 @@
 
 (setq my-top 22)
 (setq my-left 0); 0
-(setq my-width-cols 189); 174 183 166
-(setq my-height-rows 57); 52 54 48
+(setq my-width-cols 176); 189 174 183 166
+(setq my-height-rows 52); 57 52 54 48
 (setq my-dock-height 22); 100 0
 (setq my-dock-width 0); 30 0
 
@@ -56,6 +56,7 @@
 (require 'generic-x)
 (require 'hl-sexp-overrides-bs)
 (require 'clojure-mode)                 ; Needed for bug fix below
+(require 'find-file-in-project)
 (require 'org)
 (require 'irml-mode)
 (require 'uniquify)
@@ -161,10 +162,15 @@
                                 (width . ,my-width-cols)
                                 (height . ,my-height-rows)
                                 (left . ,my-left)
-                                (top . ,my-top)))))
+                                (top . ,my-top))))
+         (term-defaults '((background-color . "Gray20")
+                            (foreground-color . "Wheat")
+                            (cursor-color . "#ff00aa")
+                            (mouse-color . "White"))))
   (add-to-list 'window-system-default-frame-alist `(ns . ,ns-defaults))
   (add-to-list 'window-system-default-frame-alist `(x . ,common-defaults))
-  (add-to-list 'window-system-default-frame-alist `(w32 . ,common-defaults)))
+  (add-to-list 'window-system-default-frame-alist `(w32 . ,common-defaults))
+  (add-to-list 'window-system-default-frame-alist `(nil . ,term-defaults)))
 
 ;; (if window-system
 ;;     (progn
@@ -186,7 +192,7 @@
                    (set-background-color "DarkSlateGray")
                    (set-foreground-color "Wheat")))
    ((= 2 prefix) (progn
-                   (set-background-color "grey30")
+                   (set-background-color "grey24")
                    (set-foreground-color "Wheat")))
    ((= 3 prefix) (progn
                    (set-background-color "ivory2")
@@ -609,6 +615,8 @@ and `(match-end 1)'."
          ("[/#*][ \t]*\\(FIXME\\|XXX\\|DbC\\|\\?\\?\\?\\)" 1 font-lock-warning-face t)
          ; Temporary definitions
          ("\\(\\w*XXX\\w*\\)" 1 font-lock-warning-face t)
+         ; DEBUG output statements
+         ("\\([$._a-zA-Z0-9]*DEBUG[$._a-zA-Z0-9]*\\)" 1 font-lock-comment-face t)
          ; Javascript functions
          ("\\(\\<\\w+\\)[[:space:]]*=[[:space:]]*function\\>" 1 font-lock-function-name-face t)
          )

@@ -11,7 +11,8 @@
  '(ahs-include
    (quote
     ((clojurec-mode . "^[0-9A-Za-z/_.,:;*+=&%|$#@!^?'<>-]+$")
-     (clojure-mode . "^[0-9A-Za-z/_.,:;*+=&%|$#@!^?'<>-]+$"))))
+     (clojure-mode . "^[0-9A-Za-z/_.,:;*+=&%|$#@!^?'<>-]+$")
+     (clojurescript-mode . "^[0-9A-Za-z/_.,:;*+=&%|$#@!^?'<>-]+$"))))
  '(ahs-modes
    (quote
     (actionscript-mode apache-mode bat-generic-mode c++-mode c-mode csharp-mode css-mode dos-mode emacs-lisp-mode ini-generic-mode java-mode javascript-mode js-mode lisp-interaction-mode lua-mode latex-mode makefile-mode makefile-gmake-mode markdown-mode moccur-edit-mode outline-mode perl-mode cperl-mode php-mode python-mode rc-generic-mode reg-generic-mode ruby-mode sgml-mode sh-mode squirrel-mode tcl-mode visual-basic-mode clojurec-mode clojurescript-mode clojure-mode)))
@@ -61,9 +62,9 @@
  '(comment-auto-fill-only-comments t)
  '(company-backends
    (quote
-    (merlin-company-backend company-tern company-bbdb company-nxml company-css company-eclim company-semantic company-clang company-xcode company-cmake company-capf company-files
-                            (company-dabbrev-code company-gtags company-etags company-keywords)
-                            company-oddmuse company-dabbrev)))
+    (company-tern company-bbdb company-nxml company-css company-eclim company-semantic company-clang company-xcode company-cmake company-capf company-files
+                  (company-dabbrev-code company-gtags company-etags company-keywords)
+                  company-oddmuse company-dabbrev)))
  '(company-idle-delay nil)
  '(company-lighter-base "")
  '(company-show-numbers t)
@@ -113,6 +114,7 @@
  '(find-ls-option (quote ("-exec ls -ld {} \\;" . "-ld")))
  '(flx-ido-use-faces t)
  '(fringe-mode 12 nil (fringe))
+ '(git-commit-summary-max-length 50)
  '(global-hl-line-mode t)
  '(global-hl-sexp-mode nil)
  '(global-prettify-symbols-mode t)
@@ -575,11 +577,11 @@ pre {
    (quote
     ((emacs-lisp . t)
      (dot . t)
-     (python . t)
-     (clojure . t)
-     (sh . t)
      (java . t)
-     (plantuml . t))))
+     (plantuml . t)
+     (python . t)
+     (shell . t)
+     (clojure . t))))
  '(org-babel-post-tangle-hook nil)
  '(org-babel-results-keyword "results")
  '(org-capture-templates
@@ -926,7 +928,7 @@ pre {
      ("melpa" . "http://melpa.milkbox.net/packages/"))))
  '(package-selected-packages
    (quote
-    (cider cider-mode utop company-tern companytern tern swiper helm-pages twittering-mode groovy-mode yasnippet yaml-mode yafolding wolfram-mode web-mode use-package tuareg swift-mode skewer-mode scala-mode2 request-deferred racket-mode plantuml-mode paredit org-dotemacs multiple-cursors modeline-posn markdown-mode lfe-mode json-mode js-comint javap-mode inflections inf-clojure ido-vertical-mode hydra htmlize hl-sexp highlight-parentheses highlight-indentation helm-projectile helm-idris go-mode git-commit-mode ghci-completion ghc fuzzy fringe-helper flx-ido fill-column-indicator exec-path-from-shell erlang epoch-view edn dot-mode dockerfile-mode company col-highlight coffee-mode clojure-mode-extra-font-locking bats-mode auto-highlight-symbol applescript-mode align-cljlet)))
+    (smali-mode git-commit find-file-in-project projectile cider cider-mode utop company-tern companytern tern swiper helm-pages twittering-mode groovy-mode yasnippet yaml-mode yafolding wolfram-mode web-mode use-package tuareg swift-mode skewer-mode scala-mode2 request-deferred racket-mode plantuml-mode paredit org-dotemacs multiple-cursors modeline-posn markdown-mode lfe-mode json-mode js-comint javap-mode inflections inf-clojure ido-vertical-mode hydra htmlize hl-sexp highlight-parentheses highlight-indentation helm-projectile helm-idris go-mode git-commit-mode ghci-completion ghc fuzzy fringe-helper flx-ido fill-column-indicator exec-path-from-shell erlang epoch-view edn dot-mode dockerfile-mode company col-highlight coffee-mode clojure-mode-extra-font-locking bats-mode auto-highlight-symbol applescript-mode align-cljlet)))
  '(prettify-symbols-unprettify-at-point nil)
  '(projectile-globally-ignored-directories
    (quote
@@ -960,6 +962,7 @@ pre {
  '(show-paren-mode t)
  '(show-trailing-whitespace nil)
  '(slime-net-coding-system (quote utf-8-unix))
+ '(sql-postgres-program "/Applications/Postgres.app/Contents/Versions/9.6/bin/psql")
  '(sql-sqlite-program "sqlite3")
  '(tramp-verbose 2)
  '(truncate-partial-width-windows nil)
@@ -978,7 +981,7 @@ pre {
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:foreground "Wheat" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 170 :width normal :family "Menlo"))))
+ '(default ((t (:inherit nil :stipple nil :background "DarkSlateGray" :foreground "Wheat" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 140 :width normal :foundry "nil" :family "Menlo"))))
  '(ahs-definition-face ((((background dark)) (:background "#bb3222" :underline t)) (((background light)) (:background "Yellow" :underline t))))
  '(ahs-face ((((background dark)) (:background "#992000")) (((background light)) (:background "Yellow"))))
  '(ahs-plugin-defalt-face ((t (:background "#206600"))))

@@ -179,6 +179,13 @@ Emacs for OS X doesn't pick up the PATH defined in .bashrc/.profile.
     :pin melpa)
 #+end_src
 
+** Find File In Project
+#+begin_src emacs-lisp :results silent
+  (use-package find-file-in-project
+    :ensure t
+    :pin melpa)
+#+end_src
+
 ** Org customizations
 
 *** Set agenda files for current project
@@ -329,6 +336,13 @@ Emacs for OS X doesn't pick up the PATH defined in .bashrc/.profile.
     :pin melpa)
 #+end_src
 
+*** json-mode
+#+begin_src emacs-lisp :results silent
+  (use-package json-mode
+    :ensure t
+    :pin melpa)
+#+end_src
+
 ** Coffee Programming
 #+begin_src emacs-lisp :results silent
   (use-package coffee-mode
@@ -351,6 +365,24 @@ For cleaning up buffers not recently used. Provides
 displayed recently.
 #+begin_src emacs-lisp :results silent
   (require 'midnight)
+#+end_src
+
+** XML/HTML commands
+
+*** Escape text
+#+begin_src emacs-lisp :results silent
+  (defun my-escape-xml ()
+    (interactive)
+    (let ((escaped (xml-escape-string (buffer-substring (mark) (point)))))
+      (insert escaped)
+      (delete-active-region)))
+#+end_src
+
+** YAML
+#+begin_src emacs-lisp :results silent
+  (use-package yaml-mode
+    :ensure t
+    :pin melpa)
 #+end_src
 
 ** Dockerfiles
@@ -480,6 +512,13 @@ Tell the Org Babel tooling where the JAR file is.
 ** Modeline
 #+begin_src emacs-lisp :results silent
   (use-package modeline-posn
+    :ensure t
+    :pin melpa)
+#+end_src
+
+** Git Commit
+#+begin_src emacs-lisp :results silent
+  (use-package git-commit
     :ensure t
     :pin melpa)
 #+end_src
@@ -886,6 +925,12 @@ With additional [[http://endlessparentheses.com/using-prettify-symbols-in-clojur
 
 ** Show page structure (based on ^L)
 #+begin_src emacs-lisp :results silent
+  (use-package helm-pages
+    :ensure t
+    :pin melpa)
+#+end_src
+
+#+begin_src emacs-lisp :results silent
   ;; 2016-03-18 bstiles: Override regexp to ignore ;;;;;;.. lines.
   (with-eval-after-load 'helm-pages
     (defun helm-pages-get-next-header ()
@@ -896,7 +941,7 @@ With additional [[http://endlessparentheses.com/using-prettify-symbols-in-clojur
             (narrow-to-page)
             (beginning-of-line)
             (while (and (not (eobp))
-                        (looking-at-p "\\(?:^\\s-*$\\|^;+$\\|^#+$\\)"))
+                        (looking-at-p "\\(?:^\\s-*$\\|^\\s-*;+$\\|^\\s-*#+$\\|^\\s-*/+$\\)"))
               (forward-line))
             (let* ((start (progn (beginning-of-line) (point)))
                    (end (progn (end-of-line) (point))))
