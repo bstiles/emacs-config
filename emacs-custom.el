@@ -843,7 +843,7 @@ pre {
      #[nil "\300\301\302\303\304$\207"
            [org-add-hook change-major-mode-hook org-babel-show-result-all append local]
            5]
-     org-babel-result-hide-spec org-babel-hide-all-hashes auto-fill-mode)))
+     org-babel-result-hide-spec org-babel-hide-all-hashes auto-fill-mode)) t)
  '(org-priority-faces
    (quote
     ((65 . font-lock-warning-face)
