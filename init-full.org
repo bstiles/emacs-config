@@ -293,6 +293,14 @@ Emacs for OS X doesn't pick up the PATH defined in .bashrc/.profile.
     :pin melpa)
 #+end_src
 
+** IPython/Jupyter
+#+begin_src emacs-lisp :results silent
+  (use-package ein
+    :ensure t
+    :pin melpa)
+
+#+end_src
+
 ** OCaml Programming
 #+begin_src emacs-lisp :results silent
   (use-package tuareg

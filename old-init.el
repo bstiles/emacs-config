@@ -8,10 +8,10 @@
 
 (setq my-top 22)
 (setq my-left 0); 0
-(setq my-width-cols 176); 189 174 183 166
-(setq my-height-rows 52); 57 52 54 48
+(setq my-width-cols 189); 176 189 174 183 166
+(setq my-height-rows 57); 57 52 54 48
 (setq my-dock-height 22); 100 0
-(setq my-dock-width 0); 30 0
+(setq my-dock-width 30); 30 0
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -621,7 +621,7 @@ and `(match-end 1)'."
          ("\\(\\<\\w+\\)[[:space:]]*=[[:space:]]*function\\>" 1 font-lock-function-name-face t)
          )
        t))))
- '(java-mode-hook python-mode-hook js-mode-hook))
+ '(c-mode-hook java-mode-hook python-mode-hook js-mode-hook))
 
 (font-lock-add-keywords
  'xml-mode

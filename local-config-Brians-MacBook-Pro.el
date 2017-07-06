@@ -17,6 +17,9 @@
 (my-make-find-file-fn my-file-org-ca-guns "~/org-personal/ca-guns.org")
 (my-global-set-key "C-c o g" 'my-file-org-ca-guns)
 
+(my-make-find-file-fn my-file-ipt "~/org/ipt.org")
+(my-global-set-key "C-c o i" 'my-file-ipt)
+
 (my-make-find-file-fn my-file-journal "~/org/journal.org")
 (my-global-set-key "C-c o j" 'my-file-journal)
 

@@ -553,9 +553,7 @@ pre {
     (("I" "Show TODO items in INBOXes" tags "CATEGORY={Inbox}-TODO=\"DONE\"+TODO={.+}" nil)
      ("x" "All but DONE and MAYBE" tags "+TODO={PAUSED\\|IDEA\\|TODO\\|NEXT\\|WAIT\\|ACTIVE\\|DELEGATED}" nil)
      ("P" "Show Projects" tags "Type=\"project\"" nil))))
- '(org-agenda-files
-   (quote
-    ("~/org/one-ring.org" "/Users/bstiles/iRise/Projects/bnw/README.org" "/Users/bstiles/iRise/Projects/bnw/my.stuff/my.TODO.org" "/Users/bstiles/iRise/Projects/bnw/Envs/AWS/requirise/requirise-stack.org" "/Users/bstiles/iRise/Projects/bnw/Envs/AWS/editor/editor-stack.org" "/Users/bstiles/iRise/Projects/bnw/doc/PREREQUISITES.org" "/Users/bstiles/iRise/Projects/bnw/doc/notes/trello-api.org" "/Users/bstiles/iRise/Projects/bnw/doc/DOC.org" "/Users/bstiles/iRise/Projects/bnw/demo/integrations/stack.org" "/Users/bstiles/iRise/Projects/bnw/demo/integrations/INTEGRATIONS.org" "/Users/bstiles/iRise/Projects/bnw/demo/integrations/environments.org" "/Users/bstiles/iRise/Projects/bnw/demo/integrations/docker-registry-stack.org" "/Users/bstiles/iRise/Projects/bnw/demo/dev-envs/DEMO.org" "/Users/bstiles/iRise/Projects/bnw/demo/Animal Farm.org" "/Users/bstiles/iRise/Projects/bnw/config/config.org")))
+ '(org-agenda-files (quote ("~/org/one-ring.org")))
  '(org-agenda-fontify-priorities (quote cookies))
  '(org-agenda-prefix-format
    (quote
@@ -928,14 +926,14 @@ pre {
      ("melpa" . "http://melpa.milkbox.net/packages/"))))
  '(package-selected-packages
    (quote
-    (smali-mode git-commit find-file-in-project projectile cider cider-mode utop company-tern companytern tern swiper helm-pages twittering-mode groovy-mode yasnippet yaml-mode yafolding wolfram-mode web-mode use-package tuareg swift-mode skewer-mode scala-mode2 request-deferred racket-mode plantuml-mode paredit org-dotemacs multiple-cursors modeline-posn markdown-mode lfe-mode json-mode js-comint javap-mode inflections inf-clojure ido-vertical-mode hydra htmlize hl-sexp highlight-parentheses highlight-indentation helm-projectile helm-idris go-mode git-commit-mode ghci-completion ghc fuzzy fringe-helper flx-ido fill-column-indicator exec-path-from-shell erlang epoch-view edn dot-mode dockerfile-mode company col-highlight coffee-mode clojure-mode-extra-font-locking bats-mode auto-highlight-symbol applescript-mode align-cljlet)))
+    (ein swagger-to-org org smali-mode git-commit find-file-in-project projectile cider cider-mode utop company-tern companytern tern swiper helm-pages twittering-mode groovy-mode yasnippet yaml-mode yafolding wolfram-mode web-mode use-package tuareg swift-mode skewer-mode scala-mode2 request-deferred racket-mode plantuml-mode paredit org-dotemacs multiple-cursors modeline-posn markdown-mode lfe-mode json-mode js-comint javap-mode inflections inf-clojure ido-vertical-mode hydra htmlize hl-sexp highlight-parentheses highlight-indentation helm-projectile helm-idris go-mode git-commit-mode ghci-completion ghc fuzzy fringe-helper flx-ido fill-column-indicator exec-path-from-shell erlang epoch-view edn dot-mode dockerfile-mode company col-highlight coffee-mode clojure-mode-extra-font-locking bats-mode auto-highlight-symbol applescript-mode align-cljlet)))
  '(prettify-symbols-unprettify-at-point nil)
  '(projectile-globally-ignored-directories
    (quote
     (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" "build" "tmp")))
  '(projectile-project-root-files
    (quote
-    ("rebar.config" "project.clj" "pom.xml" "build.sbt" "build.gradle" "Gemfile" "requirements.txt" "package.json" "gulpfile.js" "Gruntfile.js" "bower.json" "composer.json" ".git" ".projectile")))
+    (".projectile" ".git" "rebar.config" "project.clj" "pom.xml" "build.sbt" "build.gradle" "Gemfile" "requirements.txt" "gulpfile.js" "Gruntfile.js" "bower.json" "composer.json")))
  '(projectile-project-root-files-bottom-up nil)
  '(projectile-switch-project-action (quote projectile-dired))
  '(prolog-system (quote swi))
@@ -944,6 +942,7 @@ pre {
  '(py-shell-switch-buffers-on-execute nil)
  '(python-shell-enable-font-lock nil)
  '(python-shell-font-lock-enable nil)
+ '(python-shell-interpreter "python3")
  '(read-buffer-completion-ignore-case t)
  '(safe-local-variable-values
    (quote
