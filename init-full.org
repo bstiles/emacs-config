@@ -65,6 +65,11 @@ appropriate file is determined by =machine-identifier.el= created by
         user-mail-address "bstiles@bstiles.net")
 #+end_src
 
+** Global save hooks
+#+begin_src emacs-lisp :results silent
+  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+#+end_src
+
 ** Key bindings
 Key bindings should be set with =my-global-set-key= or =my-define-key=
 (defined in =init.el=) which are thin wrappers around =global-set-key=
@@ -107,6 +112,7 @@ See =local-config-Brians-MacBook-Pro.el= for examples.
   (my-global-set-key "C-c C" 'my-set-colors)
   (my-global-set-key "C-c g G" 'my-rgrep-in-project)
   (my-global-set-key "C-c g s" 'my-buffer-shell)
+  (my-global-set-key "C-c g o" 'ff-find-other-file)
   (my-global-set-key "C-c h b" 'helm-buffers-list)
   (my-global-set-key "C-c h i" 'helm-imenu)
   (my-global-set-key "C-c h p" 'helm-pages)
@@ -114,22 +120,25 @@ See =local-config-Brians-MacBook-Pro.el= for examples.
   ;(my-global-set-key "C-c h g" 'my-helm-ls-git-ls)
   (my-global-set-key "C-c n c" 'cider-connect)
   (my-global-set-key "C-c n j" 'cider-jack-in)
-  (my-global-set-key "C-c n n" 'cider-connection-browser)
+  (my-global-set-key "C-c n n" 'sesman-browser)
   (my-global-set-key "C-c n q" 'cider-quit)
   (my-global-set-key "C-c n r" 'cider-switch-to-repl-buffer)
+  (my-global-set-key "C-c n R" 'my-cider-ns-refresh)
   (my-global-set-key "C-c n s" 'cider-scratch)
   (my-global-set-key "C-c n u" 'my-cider-user-ns)
   (my-global-set-key "C-c n U" 'my-user-clj)
-  (my-global-set-key "C-c o A" 'org-align-all-tags)
+  (my-global-set-key "C-c o A" 'my-org-align-all-tags)
   (my-global-set-key "C-c o a" 'org-agenda)
   (my-global-set-key "C-c o b h" 'my-hide-blocks-in-subtree)
   (my-global-set-key "C-c o b H" 'org-hide-block-all)
+  (my-global-set-key "C-c o b R" 'my-org-babel-remove-results)
   (my-global-set-key "C-c o b s" 'my-show-blocks-in-subtree)
   (my-global-set-key "C-c o b S" 'org-show-block-all)
   (my-global-set-key "C-c o h h" 'helm-org-in-buffer-headings)
   (my-global-set-key "C-c o h n" 'my-helm-org-named-blocks)
   (my-global-set-key "C-c o F" 'my-set-org-agenda-files)
   (my-global-set-key "C-c o l" 'orgstruct-mode)
+  (my-global-set-key "C-c o L" 'my-org-insert-logbook-clocktable)
   (my-global-set-key "C-c o r" 'org-capture)
   (my-global-set-key "C-c o t" 'orgtbl-mode)
   (my-global-set-key "C-c o T" 'my-org-table-to-gfm-table)
@@ -137,8 +146,8 @@ See =local-config-Brians-MacBook-Pro.el= for examples.
   (my-global-set-key "C-c s r" 'skewer-repl)
   (my-global-set-key "C-c s R" 'my-skewer-reload)
   (my-global-set-key "C-c s s" 'my-skewer-soft-reload-HACK)
-  (my-global-set-key "C-c T" 'my-cider-test-function)
   (my-global-set-key "C-c C-t" 'my-show-time)
+  (my-global-set-key "C-c C-w" 'toggle-word-wrap)
   (my-global-set-key "C-x C-b" 'helm-buffers-list)
   (my-global-set-key "C-x B" 'ibuffer)
   (my-global-set-key "C-M-S-h" 'auto-highlight-symbol-mode)
@@ -154,6 +163,14 @@ See =local-config-Brians-MacBook-Pro.el= for examples.
   (with-eval-after-load 'company
     (define-key company-active-map (kbd "C-n") #'company-select-next)
     (define-key company-active-map (kbd "C-p") #'company-select-previous))
+#+end_src
+
+** Install packages from source
+#+begin_src emacs-lisp :results silent
+  (use-package quelpa
+    :ensure t
+    :pin melpa)
+
 #+end_src
 
 ** Environment variables on OS X
@@ -177,6 +194,7 @@ Emacs for OS X doesn't pick up the PATH defined in .bashrc/.profile.
   (use-package projectile
     :ensure t
     :pin melpa)
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 #+end_src
 
 ** Find File In Project
@@ -188,13 +206,20 @@ Emacs for OS X doesn't pick up the PATH defined in .bashrc/.profile.
 
 ** Org customizations
 
+*** Align all tags
+#+begin_src emacs-lisp :results silent
+  (defun my-org-align-all-tags ()
+    (interactive)
+    (org-align-tags t))
+#+end_src
+
 *** Set agenda files for current project
 #+begin_src emacs-lisp :results silent
   (require 'find-lisp)
   (require 'projectile)
   (defun my-set-org-agenda-files ()
     (interactive)
-    
+
     (let ((files
            (let ((filep 'find-lisp-default-file-predicate)
                  (dirp (lambda (dir parent)
@@ -261,6 +286,27 @@ Emacs for OS X doesn't pick up the PATH defined in .bashrc/.profile.
         (kill-buffer template-buffer))))
 #+end_src
 
+** NodeJS REPL
+#+begin_src emacs-lisp :results silent
+  (use-package nodejs-repl
+    :ensure t
+    :pin marmalade)
+
+  (add-hook 'js-mode-hook
+            (lambda ()
+              (define-key js-mode-map (kbd "C-x C-e") 'nodejs-repl-send-last-expression)
+              (define-key js-mode-map (kbd "C-c C-r") 'nodejs-repl-send-region)
+              (define-key js-mode-map (kbd "C-c C-l") 'nodejs-repl-load-file)
+              (define-key js-mode-map (kbd "C-c C-z") 'nodejs-repl-switch-to-repl)))
+
+  ;; (defun nvm-which ()
+  ;;   (let* ((shell (concat (getenv "SHELL") " -l -c 'nvm which'"))
+  ;;          (output (shell-command-to-string shell)))
+  ;;     (cadr (split-string output "[\n]+" t))))
+
+  ;; (setq nodejs-repl-command #'nvm-which)
+#+end_src
+
 ** Skewer
 #+begin_src emacs-lisp :results silent
   (use-package skewer-mode
@@ -286,6 +332,32 @@ Emacs for OS X doesn't pick up the PATH defined in .bashrc/.profile.
             (comint-send-input)))))
 #+end_src
 
+** Graphviz
+#+begin_src emacs-lisp :results silent
+  (use-package graphviz-dot-mode
+    :ensure t
+    :pin melpa)
+#+end_src
+
+** Clojure Programming (inf-clojure)
+#+begin_src emacs-lisp :results silent
+  (use-package inf-clojure
+    :ensure t
+    :pin melpa)
+#+end_src
+
+** Swift Programming
+#+begin_src emacs-lisp :results silent
+  (use-package swift-mode
+    :ensure t
+    :pin melpa)
+#+end_src
+#+begin_src emacs-lisp :results silent
+  (use-package flycheck-swift
+    :ensure t
+    :pin melpa)
+#+end_src
+
 ** Go Programming
 #+begin_src emacs-lisp :results silent
   (use-package go-mode
@@ -293,22 +365,48 @@ Emacs for OS X doesn't pick up the PATH defined in .bashrc/.profile.
     :pin melpa)
 #+end_src
 
-** IPython/Jupyter
+** Erlang Programming
 #+begin_src emacs-lisp :results silent
-  (use-package ein
+  (use-package erlang
     :ensure t
     :pin melpa)
-
+  (add-hook 'erlang-mode-hook (lambda () (setq font-lock-maximum-decoration t)))
 #+end_src
+
 
 ** OCaml Programming
 #+begin_src emacs-lisp :results silent
   (use-package tuareg
     :ensure t
     :pin melpa)
+
+  ;; ## added by OPAM user-setup for emacs / base ## 56ab50dc8996d2bb95e7856a6eddb17b ## you can edit, but keep this line
+  (require 'opam-user-setup "~/.emacs.d/opam-user-setup.el")
+  ;; ## end of OPAM user-setup addition for emacs / base ## keep this line
+#+end_src
+
+#+begin_src emacs-lisp :results silent
+  (use-package utop
+    :ensure t
+    :pin melpa)
+#+end_src
+
+#+begin_src emacs-lisp :results silent
+  (use-package dune
+    :ensure t
+    :pin melpa)
 #+end_src
 
 ** Reason Programming
+#+begin_src emacs-lisp :results silent
+  ;; (require 'utop)
+  ;; (setq utop-command "opam config exec -- rtop -emacs")
+  ;; (add-hook 'reason-mode-hook #'utop-minor-mode)
+  ;; (add-hook 'reason-mode-hook (lambda ()
+  ;;   (add-hook 'before-save-hook 'refmt-before-save)
+  ;;   (merlin-mode)))
+#+end_src
+
 #+begin_src emacs-lisp :results silent
   ;; 2016-10-28 bstiles: Re-enable after figuring out how to
   ;; automatically install the dependencies
@@ -414,6 +512,7 @@ displayed recently.
   (use-package plantuml-mode
    :ensure t
    :pin melpa)
+  (add-hook 'plantuml-mode-hook (lambda () (setq tab-width 4)))
 #+end_src
 
 Tell the Org Babel tooling where the JAR file is.
@@ -432,7 +531,21 @@ Tell the Org Babel tooling where the JAR file is.
 #+begin_src emacs-lisp :results silent
   (use-package cider
    :ensure t
-   :pin melpa-stable)
+   :pin melpa)
+#+end_src
+
+*** Refresh
+#+begin_src emacs-lisp :results silent
+  (defun my-cider-ns-refresh (arg)
+    (interactive "P")
+    (cider-switch-to-repl-buffer)
+    (cider-repl--find-prompt)
+    (if (null arg)
+        (insert "(my/refresh)")
+      (if (eq 4 (car arg))
+          (insert "(my/refresh :all)")
+        (insert "(my/refresh :nuke)")))
+    (execute-kbd-macro (kbd "RET")))
 #+end_src
 
 *** Test helpers
@@ -445,31 +558,32 @@ Tell the Org Babel tooling where the JAR file is.
     (let ((file "dev/user.clj"))
       (find-file (expand-file-name file (projectile-project-root)))
       (run-hooks 'projectile-find-file-hook)))
-  (defun my-cider-test-function (arg)
-    (interactive "P")
-    (lexical-let*
-        ((buf (current-buffer))
-         (run-test (lambda ()
-                     (with-current-buffer buf
-                       (let* ((start nil)
-                              (fn (save-excursion
-                                    (goto-char (cider-defun-at-point-start-pos))
-                                    (forward-word)
-                                    (skip-syntax-forward " ")
-                                    (setq start (point))
-                                    (forward-sexp)
-                                    (buffer-substring-no-properties start (point)))))
-                         (cider-interactive-eval (concat "(test #'" fn ")")))))))
-      (if (null arg)
-          (cider-interactive-eval
-           (cider-defun-at-point)
-           (lambda (result)
-             (nrepl-dbind-response result (err)
-               (if err
-                   (message (s-trim err))
-                 (funcall run-test))))
-           (cider--region-for-defun-at-point))
-        (funcall run-test))))
+  ;; 2019-05-27 bstiles: Obsolete
+  ;; (defun my-cider-test-function (arg)
+  ;;   (interactive "P")
+  ;;   (lexical-let*
+  ;;       ((buf (current-buffer))
+  ;;        (run-test (lambda ()
+  ;;                    (with-current-buffer buf
+  ;;                      (let* ((start nil)
+  ;;                             (fn (save-excursion
+  ;;                                   (goto-char (cider-defun-at-point-start-pos))
+  ;;                                   (forward-word)
+  ;;                                   (skip-syntax-forward " ")
+  ;;                                   (setq start (point))
+  ;;                                   (forward-sexp)
+  ;;                                   (buffer-substring-no-properties start (point)))))
+  ;;                        (cider-interactive-eval (concat "(test #'" fn ")")))))))
+  ;;     (if (null arg)
+  ;;         (cider-interactive-eval
+  ;;          (cider-defun-at-point)
+  ;;          (lambda (result)
+  ;;            (nrepl-dbind-response result (err)
+  ;;              (if err
+  ;;                  (message (s-trim err))
+  ;;                (funcall run-test))))
+  ;;          (cider--region-for-defun-at-point))
+  ;;       (funcall run-test))))
 #+end_src
 
 *** Bug fix                                                                      :bug:
@@ -553,15 +667,21 @@ With additional [[http://endlessparentheses.com/using-prettify-symbols-in-clojur
                        (Br . Bc) ?=
                        (Br . Bc) ?\s
                        (Bc . Bc) ?/))
+            ("<-" . (?≺
+                     (Br . Bc) ?-
+                     (Br . Bc) ?-))
             ("->" . (?-
                      (Bc . Bl) ?-
-                     (Br . Bc) ?>))
+                     (Br . Bc) ?≻))
+            ("=>" . (?=
+                     (Bc . Bl) ?=
+                     (Br . Bc) ?≻))
             ("->>" . (?-
                       (Bc . Bl) ?-
                       (Br . Bc) ?-
                       (Br . Bc) ?-
-                      (Br . Bc) ?>
-                      (Bc . Bc) ?>))
+                      (Br . Bc) ?≻
+                      (Bc . Bc) ?≻))
             ("#(" . (?ϝ
                      (Br . Bl) 40))
             ("fn" . (?\s (Br . Bl) ?\s
@@ -602,6 +722,83 @@ With additional [[http://endlessparentheses.com/using-prettify-symbols-in-clojur
                      (Bc . Bl) ?=
                      (Br . Bc) ?≻)))))
   (add-hook 'js-mode-hook #'my-js-prettify)
+  (defun my-ocaml-prettify ()
+    (mapc (lambda (elt) (push elt prettify-symbols-alist))
+          '(
+            ("&&" . (?\s (Br . Bc) ?∧ (Br . Bc) ?\s))
+            ("||" . (?\s (Br . Bc) ?∨ (Br . Bc) ?\s))
+            ("not" . (?\s (?¬) ?\s))
+            ("!=" . (?≡
+                     (Br . Bc) ?≡
+                     (Br . Bc) ?≡
+                     (Bc . Bc) ?/))
+            ("==" . (?≡
+                     (Br . Bc) ?≡
+                     (Br . Bc) ?≡))
+            ("<>" . (?=
+                     (Br . Bc) ?=
+                     (Br . Bc) ?=
+                     (Bc . Bc) ?/))
+            (">=" . (?\s
+                     (Br . Bl) ?\s
+                     (Bc . Bc) ?≥))
+            ("<=" . (?\s
+                     (Br . Bl) ?\s
+                     (Bc . Bc) ?≤))
+            ("<-" . (?≺
+                     (Bc . Bl) ?-
+                     (Br . Bc) ?-))
+            ("->" . (?-
+                     (Bc . Bl) ?-
+                     (Br . Bc) ?≻))
+            ("|>" . (?\s
+                     (Br . Bc) ?▶
+                     (Br . Bc) ?\s))
+            ("[|" . (?\[
+                     (Bc . Bl) ?\[
+                     (Br . Bc) ?\s))
+            ("|]" . (?\s
+                     (Bc . Bl) ?\]
+                     (Br . Bc) ?\])))))
+  (add-hook 'tuareg-mode-hook #'my-ocaml-prettify)
+  (defun my-erlang-prettify ()
+    (mapc (lambda (elt) (push elt prettify-symbols-alist))
+          '(
+            ("." . (?▮))
+            ("=/=" . (?≡
+                      (Br . Bc) ?≡
+                      (Br . Bc) ?≡
+                      (Br . Bc) ?≡
+                      (Br . Bc) ?≡
+                      (Bc . Bc) ?/))
+            ("=:=" . (?≡
+                      (Br . Bc) ?≡
+                      (Br . Bc) ?≡
+                      (Br . Bc) ?≡
+                      (Br . Bc) ?≡))
+            ("/=" . (?=
+                     (Br . Bc) ?=
+                     (Br . Bc) ?=
+                     (Bc . Bc) ?/))
+            ("==" . (?=
+                     (Br . Bc) ?=
+                     (Br . Bc) ?=))
+            (">=" . (?\s
+                     (Br . Bl) ?\s
+                     (Bc . Bc) ?≥))
+            ("=<" . (?\s
+                     (Br . Bl) ?\s
+                     (Bc . Bc) ?≤))
+            ("<-" . (?≺
+                     (Bc . Bl) ?-
+                     (Br . Bc) ?-))
+            ("->" . (?-
+                     (Bc . Bl) ?-
+                     (Br . Bc) ?≻))
+            ("=>" . (?=
+                     (Bc . Bl) ?=
+                     (Br . Bc) ?≻)))))
+  (add-hook 'erlang-mode-hook #'my-erlang-prettify)
   (global-prettify-symbols-mode)
 #+end_src
 
@@ -709,7 +906,7 @@ With additional [[http://endlessparentheses.com/using-prettify-symbols-in-clojur
 
   (defun my-log-view-show-prefix ()
     (interactive)
-    (mapc (lambda (overlay) (delete-overlay overlay)) 
+    (mapc (lambda (overlay) (delete-overlay overlay))
           my-log-view-hidden-areas)
     (setq my-log-view-hidden-areas ()))
 
@@ -788,7 +985,7 @@ With additional [[http://endlessparentheses.com/using-prettify-symbols-in-clojur
 
   (defun my-log-statement-show ()
     (interactive)
-    (mapc (lambda (overlay) (delete-overlay overlay)) 
+    (mapc (lambda (overlay) (delete-overlay overlay))
           my-log-statement-hidden-areas)
     (setq my-log-statement-hidden-areas ()))
 
@@ -918,7 +1115,7 @@ With additional [[http://endlessparentheses.com/using-prettify-symbols-in-clojur
 
   (defun my-def-show-all ()
     (interactive)
-    (mapc (lambda (overlay) (delete-overlay overlay)) 
+    (mapc (lambda (overlay) (delete-overlay overlay))
           my-def-hidden-areas)
     (setq my-def-hidden-areas ()))
 
@@ -974,4 +1171,20 @@ https://github.com/company-mode/company-mode/issues/180
   (add-hook 'company-completion-started-hook 'my-company-turn-off-fci)
   (add-hook 'company-completion-finished-hook 'my-company-maybe-turn-on-fci)
   (add-hook 'company-completion-cancelled-hook 'my-company-maybe-turn-on-fci)
+#+end_src
+
+** Org-babel remove result blocks
+#+begin_src emacs-lisp :results silent
+  (defun my-org-babel-remove-results ()
+    (interactive)
+    (org-babel-map-src-blocks nil (org-babel-remove-result)))
+#+end_src
+
+** Org insert logbook/clocktable
+#+begin_src emacs-lisp :results silent
+  (defun my-org-insert-logbook-clocktable (arg)
+    (interactive "P")
+    (if arg
+        (insert "#+BEGIN: clocktable :scope subtree :maxlevel 10\n#+CAPTION: Clock summary at\n#+END:")
+      (insert ":LOGBOOK:\n:END:")))
 #+end_src

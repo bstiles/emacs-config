@@ -8,9 +8,9 @@
 
 (setq my-top 22)
 (setq my-left 0); 0
-(setq my-width-cols 189); 176 189 174 183 166
+(setq my-width-cols 204); 176 189 174 183 166
 (setq my-height-rows 57); 57 52 54 48
-(setq my-dock-height 22); 100 0
+(setq my-dock-height 90); 100 0
 (setq my-dock-width 30); 30 0
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -31,6 +31,7 @@
                html5-el
                irml-mode
                java-decompile-helper
+               ;;plantuml-mode
                moz
                org-extensions
                ))
@@ -66,6 +67,7 @@
 (require 'ediff)
 (require 'emerge)
 (require 'markdown-mode)
+(require 'plantuml-mode)
 (require 'js)
 (require 'locate)
 (require 'find-dired)
@@ -259,7 +261,7 @@
 
 
 (add-hook 'cider-repl-mode-hook
-          (lambda () 
+          (lambda ()
             (enable-paredit-mode)))
 
 ;; ========================================================
@@ -345,7 +347,7 @@
 
 (setq org-babel-sh-command "bash")
 
-;;; 2013-01-04 bstiles: from https://raw.github.com/lambdatronic/org-babel-example/master/org/potter.org 
+;;; 2013-01-04 bstiles: from https://raw.github.com/lambdatronic/org-babel-example/master/org/potter.org
 ;; Patch ob-clojure to work with cider
 
 ;; (declare-function nrepl-send-string-sync "ext:nrepl" (code &optional ns))
@@ -1168,7 +1170,7 @@ top-over-bottom."
                                   ?*)))
             (line
              (cond
-              ((and (org-bound-and-true-p org-inlinetask-show-first-star)
+              ((and (bound-and-true-p org-inlinetask-show-first-star)
                     (eq heading 'inlinetask))
                (concat org-indent-inlinetask-first-star
                        (org-add-props (substring stars 1) nil 'face 'org-hide)))

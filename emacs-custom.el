@@ -39,15 +39,21 @@
  '(browse-url-firefox-program "/Applications/Firefox.app/Contents/MacOS/firefox-bin")
  '(canlock-password "e7415257d290faf90e7bedf1524d44d0fb6b3a2c")
  '(cider-auto-jump-to-error nil)
+ '(cider-auto-mode t)
+ '(cider-clojure-cli-command "clojure")
+ '(cider-clojure-cli-parameters
+   "-A:emacs-repl -A:emacs-repl-local --init /Users/bstiles/my.clj -m nrepl.cmdline --middleware '%s'")
  '(cider-font-lock-dynamically (quote (deprecated)))
+ '(cider-lein-command "/Users/bstiles/bin/on-the-path/lein")
  '(cider-macroexpansion-display-namespaces (quote tidy))
  '(cider-macroexpansion-print-metadata t)
  '(cider-macroexpansion-suppress-namespaces nil)
  '(cider-mode-line (quote (:eval " cider")))
+ '(cider-ns-refresh-after-fn "user/resume")
+ '(cider-ns-refresh-before-fn "user/suspend")
+ '(cider-ns-refresh-show-log-buffer t)
  '(cider-overlays-use-font-lock t)
  '(cider-prompt-for-symbol nil)
- '(cider-refresh-after-fn "sys/resume")
- '(cider-refresh-before-fn "sys/suspend")
  '(cider-repl-history-file "/Users/bstiles/.nrepl-history")
  '(cider-repl-use-clojure-font-lock nil)
  '(cider-repl-use-pretty-printing nil)
@@ -55,7 +61,7 @@
    (quote
     (apply interpose run run* with-precision fresh assoc assoc! fdef)))
  '(clojure-defun-style-default-indent t)
- '(clojure-indent-style :always-align)
+ '(clojure-indent-style (quote always-indent))
  '(coffee-command (concat (getenv "HOME") "/bin/coffee"))
  '(coffee-tab-width 2)
  '(column-number-mode t)
@@ -97,6 +103,8 @@
  '(eldoc-idle-delay 0.25)
  '(emerge-diff-options "--strip-trailing-cr")
  '(emerge-diff3-program "gdiff3")
+ '(erldoc-man-index
+   "file:///usr/local/Cellar/erlang/21.3.3/share/doc/erlang/doc/man_index.html")
  '(eshell-ask-to-save-history nil)
  '(eshell-cmpl-cycle-completions nil)
  '(eshell-cmpl-expand-before-complete t)
@@ -119,6 +127,7 @@
  '(global-hl-sexp-mode nil)
  '(global-prettify-symbols-mode t)
  '(global-whitespace-mode nil)
+ '(graphviz-dot-indent-width 2)
  '(graphviz-dot-view-command "open -a \"OmniGraffle Professional 5.app\" \"%s\"")
  '(grep-find-command (quote ("find . -type f -exec grep -nH -e  {} +" . 34)))
  '(grep-find-ignored-directories
@@ -147,7 +156,7 @@
    (quote
     (helm-source-projectile-recentf-list helm-source-projectile-buffers-list helm-source-projectile-files-list helm-source-projectile-projects)))
  '(helm-split-window-default-side (quote right))
- '(helm-truncate-lines t t)
+ '(helm-truncate-lines t)
  '(highlight-symbol-idle-delay 0.5)
  '(highlight-symbol-on-navigation-p t)
  '(hl-paren-background-colors (quote ("black" "black" "black")))
@@ -204,7 +213,6 @@
  '(imenu-auto-rescan t)
  '(indent-tabs-mode nil)
  '(indicate-buffer-boundaries (quote left))
- '(inf-clojure-program "planck -r")
  '(inferior-js-program-command "/Users/bstiles/bin/rhino.py")
  '(ispell-program-name "aspell")
  '(jka-compr-compression-info-list
@@ -252,6 +260,8 @@
  '(jka-compr-load-suffixes (quote (".gz")))
  '(js-indent-level 2)
  '(js2-basic-offset 2)
+ '(js2-strict-trailing-comma-warning nil)
+ '(kotlin-tab-width 4)
  '(locate-command "mdfind")
  '(major-mode (quote text-mode))
  '(markdown-coding-system (quote utf-8))
@@ -550,10 +560,16 @@ pre {
  '(ns-pop-up-frames nil)
  '(org-agenda-custom-commands
    (quote
-    (("I" "Show TODO items in INBOXes" tags "CATEGORY={Inbox}-TODO=\"DONE\"+TODO={.+}" nil)
-     ("x" "All but DONE and MAYBE" tags "+TODO={PAUSED\\|IDEA\\|TODO\\|NEXT\\|WAIT\\|ACTIVE\\|DELEGATED}" nil)
-     ("P" "Show Projects" tags "Type=\"project\"" nil))))
- '(org-agenda-files (quote ("~/org/one-ring.org")))
+    (("I" "Show Big Ideas" tags "Type=\"big-idea\"" nil)
+     ("x" "All but DONE/MAY?/WISH" tags
+      #("+TODO={TODO\\|NEXT\\|HOLD}" 6 24
+        (regexp t))
+      nil)
+     ("P" "Show Projects" tags "Type=\"project\"" nil)
+     ("B" "Show Billing Ledgers" tags "Type=\"billing\"" nil))))
+ '(org-agenda-files
+   (quote
+    ("~/CCM/ccm.org" "~/iRise/irise.org" "~/SmartKable/Administrative/smartkable.org" "~/Stiles Technologies/Administrative/stilestech-administrative.org" "~/Stiles Technologies/Administrative/stilestech.org" "~/org/one-ring.org" "~/org-personal/today.org" "~/org-personal/personal.org" "~/org-personal/finances.org" "~/org-personal/shooting.org")))
  '(org-agenda-fontify-priorities (quote cookies))
  '(org-agenda-prefix-format
    (quote
@@ -565,7 +581,7 @@ pre {
  '(org-agenda-sorting-strategy
    (quote
     ((agenda habit-down time-up priority-down category-keep)
-     (todo category-down)
+     (todo category-up)
      (tags priority-down category-keep)
      (search category-keep))))
  '(org-agenda-span 30)
@@ -579,7 +595,8 @@ pre {
      (plantuml . t)
      (python . t)
      (shell . t)
-     (clojure . t))))
+     (clojure . t)
+     (sql . t))))
  '(org-babel-post-tangle-hook nil)
  '(org-babel-results-keyword "results")
  '(org-capture-templates
@@ -596,6 +613,7 @@ pre {
  '(org-default-priority 67)
  '(org-ditaa-jar-path "/Users/bstiles/.emacs.d/lisp/org-extensions/ditaa.jar")
  '(org-drawers (quote ("PROPERTIES" "CLOCK" "LOGBOOK" "DATA")))
+ '(org-enforce-todo-dependencies t)
  '(org-export-backends (quote (ascii html icalendar latex man md texinfo)))
  '(org-from-is-user-regexp "\\<Brian Stiles\\>")
  '(org-html-head
@@ -714,6 +732,10 @@ pre {
     font-size: smaller;
     overflow-x: scroll;
   }
+  .scrollable-results pre.example,pre.src {
+    max-height: 20rem;
+    overflow-y: scroll;
+  }
   code {
     font-family: \"menlo\", \"lucida sans typewriter\", \"courier\", monospace;
     color: #600;
@@ -818,6 +840,9 @@ pre {
   #postamble :link, #postamble :visited {
     color: #999;
   }
+  .org-svg {
+    width: auto;
+  }
 </style>")
  '(org-indent-boundary-char 166)
  '(org-latex-packages-alist (quote (("" "tabularx" nil))))
@@ -832,6 +857,7 @@ pre {
          (if
              (file-exists-p lob)
              (org-babel-lob-ingest)))))))
+ '(org-log-done (quote time))
  '(org-log-into-drawer t)
  '(org-md-headline-style (quote atx))
  '(org-mobile-directory "~/Dropbox/Apps/MobileOrg")
@@ -843,7 +869,10 @@ pre {
      #[nil "\300\301\302\303\304$\207"
            [org-add-hook change-major-mode-hook org-babel-show-result-all append local]
            5]
-     org-babel-result-hide-spec org-babel-hide-all-hashes auto-fill-mode)) t)
+     org-babel-result-hide-spec org-babel-hide-all-hashes auto-fill-mode)))
+ '(org-modules
+   (quote
+    (org-bbdb org-bibtex org-docview org-gnus org-habit org-info org-inlinetask org-irc org-mhe org-rmail org-tempo org-w3m)))
  '(org-priority-faces
    (quote
     ((65 . font-lock-warning-face)
@@ -853,69 +882,19 @@ pre {
  '(org-src-fontify-natively t)
  '(org-startup-folded nil)
  '(org-startup-indented t)
- '(org-structure-template-alist
-   (quote
-    (("s" "#+begin_src ?
-
-#+end_src" "<src lang=\"?\">
-
-</src>")
-     ("e" "#+begin_example
-?
-#+end_example" "<example>
-?
-</example>")
-     ("q" "#+begin_quote
-?
-#+end_quote" "<quote>
-?
-</quote>")
-     ("v" "#+begin_verse
-?
-#+end_verse" "<verse>
-?
-</verse>")
-     ("V" "#+begin_verbatim
-?
-#+end_verbatim" "<verbatim>
-?
-</verbatim>")
-     ("c" "#+BEGIN_COMMENT
-?
-#+END_COMMENT")
-     ("l" "#+begin_latex
-?
-#+end_latex" "<literal style=\"latex\">
-?
-</literal>")
-     ("L" "#+latex: " "<literal style=\"latex\">?</literal>")
-     ("h" "#+begin_html
-?
-#+end_html" "<literal style=\"html\">
-?
-</literal>")
-     ("H" "#+html: " "<literal style=\"html\">?</literal>")
-     ("a" "#+begin_ascii
-?
-#+end_ascii")
-     ("A" "#+ascii: ")
-     ("i" "#+index: ?" "#+index: ?")
-     ("I" "#+include: %file ?" "<include file=%file markup=\"?\">"))))
  '(org-tags-column -88)
  '(org-time-stamp-custom-formats (quote ("<%m/%d/%y %a>" . "<%m/%d %a>")))
  '(org-todo-keyword-faces
    (quote
-    (("IDEA" :foreground "White" :weight bold :inverse-video t)
-     ("NEXT" :foreground "Red" :background "Black" :weight bold :inverse-video t)
-     ("DELEGATED" :foreground "Gold" :background "Black" :weight bold :inverse-video t)
-     ("ACTIVE" :foreground "Yellow" :background "Black" :weight bold :inverse-video t)
-     ("PAUSED" :foreground "pink" :background "black" :weight bold :inverse-video t)
-     ("WAIT" :foreground "pink" :weight bold :inverse-video t)
-     ("BUG" . warning)
-     ("MAYBE" . "Dark gray"))))
+    (("NEXT" . "Red")
+     ("WISH" . "Gold")
+     ("HOLD" . "Pink")
+     ("MAY?" . "Pink")
+     ("TEST" . "Pink")
+     ("????" . "Red"))))
  '(org-todo-keywords
    (quote
-    ((type "MAYBE(m!)" "PAUSED(p!)" "BUG(b!)" "IDEA(i!)" "TODO(t!)" "NEXT(n!)" "WAIT(w!)" "ACTIVE(a!)" "DELEGATED(D!)" "DONE(d!)"))))
+    ((type "NEXT(n)" "TODO(t)" "MAY?(m)" "WISH(w)" "HOLD(h)" "DONE(d)"))))
  '(oz-prefix "/Applications/Mozart.app/Contents/Resources")
  '(package-archives
    (quote
@@ -926,15 +905,15 @@ pre {
      ("melpa" . "http://melpa.milkbox.net/packages/"))))
  '(package-selected-packages
    (quote
-    (ein swagger-to-org org smali-mode git-commit find-file-in-project projectile cider cider-mode utop company-tern companytern tern swiper helm-pages twittering-mode groovy-mode yasnippet yaml-mode yafolding wolfram-mode web-mode use-package tuareg swift-mode skewer-mode scala-mode2 request-deferred racket-mode plantuml-mode paredit org-dotemacs multiple-cursors modeline-posn markdown-mode lfe-mode json-mode js-comint javap-mode inflections inf-clojure ido-vertical-mode hydra htmlize hl-sexp highlight-parentheses highlight-indentation helm-projectile helm-idris go-mode git-commit-mode ghci-completion ghc fuzzy fringe-helper flx-ido fill-column-indicator exec-path-from-shell erlang epoch-view edn dot-mode dockerfile-mode company col-highlight coffee-mode clojure-mode-extra-font-locking bats-mode auto-highlight-symbol applescript-mode align-cljlet)))
+    (nodejs-repl jsonnet-mode feature-mode plantuml-mode ocp-indent dune swiper dockerfile-mode markdown-mode tuareg find-file-in-project quelpa use-package git-commit graphviz-dot-mode kotlin-mode swift-mode gradle-mode spiral flycheck-swift reason-mode swagger-to-org smali-mode cider cider-mode utop company-tern companytern helm-pages twittering-mode groovy-mode yasnippet yaml-mode yafolding wolfram-mode web-mode skewer-mode scala-mode2 racket-mode paredit org-dotemacs multiple-cursors modeline-posn lfe-mode json-mode js-comint javap-mode inflections inf-clojure ido-vertical-mode hydra htmlize hl-sexp highlight-parentheses highlight-indentation helm-projectile helm-idris go-mode git-commit-mode ghci-completion ghc fuzzy fringe-helper flx-ido fill-column-indicator exec-path-from-shell erlang epoch-view edn dot-mode company col-highlight coffee-mode clojure-mode-extra-font-locking bats-mode auto-highlight-symbol applescript-mode align-cljlet)))
  '(prettify-symbols-unprettify-at-point nil)
  '(projectile-globally-ignored-directories
    (quote
     (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" "build" "tmp")))
  '(projectile-project-root-files
    (quote
-    (".projectile" ".git" "rebar.config" "project.clj" "pom.xml" "build.sbt" "build.gradle" "Gemfile" "requirements.txt" "gulpfile.js" "Gruntfile.js" "bower.json" "composer.json")))
- '(projectile-project-root-files-bottom-up nil)
+    (".git" "rebar.config" "project.clj" "pom.xml" "build.sbt" "build.gradle" "Gemfile" "requirements.txt" "gulpfile.js" "Gruntfile.js" "bower.json" "composer.json" "deps.edn")))
+ '(projectile-project-root-files-bottom-up (quote (".projectile")))
  '(projectile-switch-project-action (quote projectile-dired))
  '(prolog-system (quote swi))
  '(py-default-interpreter (quote jython))
@@ -942,7 +921,7 @@ pre {
  '(py-shell-switch-buffers-on-execute nil)
  '(python-shell-enable-font-lock nil)
  '(python-shell-font-lock-enable nil)
- '(python-shell-interpreter "python3")
+ '(python-shell-interpreter "python2")
  '(read-buffer-completion-ignore-case t)
  '(safe-local-variable-values
    (quote
@@ -961,9 +940,11 @@ pre {
  '(show-paren-mode t)
  '(show-trailing-whitespace nil)
  '(slime-net-coding-system (quote utf-8-unix))
- '(sql-postgres-program "/Applications/Postgres.app/Contents/Versions/9.6/bin/psql")
+ '(sql-mysql-options (quote ("-A")))
+ '(sql-mysql-program "/usr/local/opt/mariadb@10.2/bin/mysql")
+ '(sql-postgres-program "/usr/local/bin/psql")
  '(sql-sqlite-program "sqlite3")
- '(tramp-verbose 2)
+ '(tramp-verbose 2 nil (tramp))
  '(truncate-partial-width-windows nil)
  '(uniquify-buffer-name-style (quote post-forward) nil (uniquify))
  '(uniquify-separator nil)
@@ -1035,6 +1016,7 @@ pre {
  '(ido-vertical-first-match-face ((((background dark)) (:inherit ido-first-match :background "firebrick")) (((background light)) (:inherit ido-first-match :background "pink"))))
  '(ido-vertical-match-face ((t (:inherit font-lock-function-name-face :underline t :weight bold))))
  '(jde-java-font-lock-modifier-face ((((class color) (background dark)) (:foreground "LightSteelBlue")) (((class color) (background light)) (:foreground "LightSteelBlue"))))
+ '(js2-external-variable ((t (:background "black" :foreground "Red" :weight bold))))
  '(js2-function-param ((t (:foreground "SeaGreen3"))))
  '(js2-function-param-face ((t (:foreground "Green"))))
  '(message-cited-text ((((class color) (background dark)) (:foreground "gray"))))
@@ -1064,22 +1046,23 @@ pre {
  '(org-block-background ((t (:inherit hl-sexp-face))))
  '(org-block-begin-line ((t (:background "#274545" :foreground "#80af9f" :overline t :weight normal))))
  '(org-block-end-line ((t (:background "#274545" :foreground "firebrick" :underline t :weight normal))))
- '(org-done ((t (:foreground "Gray" :inverse-video t :weight bold))))
+ '(org-done ((t (:foreground "Gray60"))))
  '(org-link ((t (:underline "Grey"))))
  '(org-meta-line ((t (:foreground "#80af9f" :weight normal))))
  '(org-special-keyword ((((background dark)) (:foreground "Gray70")) (((background light)) (:foreground "gray"))))
  '(org-table ((t (:inherit hl-sexp-face))))
- '(org-tag ((t (:foreground "gray"))))
- '(org-todo ((t (:background "yellow" :foreground "firebrick" :weight bold))))
+ '(org-tag ((t (:foreground "wheat"))))
+ '(org-todo ((t (:background "Black" :foreground "DarkSlateGray2" :slant italic :weight bold))))
  '(outline-1 ((((background dark)) (:foreground "White" :weight bold)) (((background light)) (:foreground "black" :weight bold))))
  '(outline-2 ((((background dark)) (:foreground "green" :weight bold)) (((background light)) (:foreground "darkgreen" :weight bold))))
  '(outline-3 ((((background dark)) (:foreground "yellow" :weight bold)) (((background light)) (:foreground "goldenrod" :weight bold))))
  '(outline-4 ((((background dark)) (:foreground "orange" :weight bold)) (((background light)) (:foreground "darkcyan" :weight bold))))
  '(outline-5 ((((background dark)) (:foreground "lightgreen" :weight bold)) (((background light)) (:foreground "green3" :weight bold))))
  '(outline-6 ((t (:foreground "yellow3" :weight bold))))
- '(outline-7 ((t (:foreground "orange3" :weight bold))))
+ '(outline-7 ((t (:foreground "cyan2" :weight bold))))
  '(outline-8 ((t (:foreground "gray" :weight bold))))
  '(sh-heredoc ((((class color) (min-colors 88) (background dark)) (:foreground "yellow1")) (((class color) (background dark)) (:foreground "yellow")) (((class color) (background light)) (:foreground "tan1")) (t nil)))
  '(trailing-whitespace ((((class color) (background dark)) (:background "red1" :box (:line-width 1 :color "red")))))
+ '(tuareg-font-lock-operator-face ((t (:foreground "LightSteelBlue"))))
  '(variable-pitch ((t (:weight light :height 1.1 :width normal :family "Helvetica Neue"))))
  '(whitespace-line ((t (:background "gray20" :underline "Yellow")))))
