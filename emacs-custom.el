@@ -569,7 +569,7 @@ pre {
      ("B" "Show Billing Ledgers" tags "Type=\"billing\"" nil))))
  '(org-agenda-files
    (quote
-    ("~/CCM/ccm.org" "~/iRise/irise.org" "~/SmartKable/Administrative/smartkable.org" "~/Stiles Technologies/Administrative/stilestech-administrative.org" "~/Stiles Technologies/Administrative/stilestech.org" "~/org/one-ring.org" "~/org-personal/today.org" "~/org-personal/personal.org" "~/org-personal/finances.org" "~/org-personal/shooting.org")))
+    ("~/org-personal/today.org" "~/CCM/ccm.org" "~/iRise/irise.org" "~/SmartKable/Administrative/smartkable.org" "~/Stiles Technologies/Administrative/stilestech-administrative.org" "~/Stiles Technologies/Administrative/stilestech.org" "~/org/one-ring.org" "~/org-personal/personal.org" "~/org-personal/finances.org" "~/org-personal/shooting.org")))
  '(org-agenda-fontify-priorities (quote cookies))
  '(org-agenda-prefix-format
    (quote
