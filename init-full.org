@@ -545,7 +545,8 @@ Tell the Org Babel tooling where the JAR file is.
       (if (eq 4 (car arg))
           (insert "(my/refresh :all)")
         (insert "(my/refresh :nuke)")))
-    (execute-kbd-macro (kbd "RET")))
+    (execute-kbd-macro (kbd "RET"))
+    (cider-switch-to-last-clojure-buffer))
 #+end_src
 
 *** Test helpers

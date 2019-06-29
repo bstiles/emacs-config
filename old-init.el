@@ -1372,6 +1372,12 @@ Make backspaces delete the previous character."
    nrepl-mode-hook))
 
 (add-hook 'cider-mode-hook #'eldoc-mode)
+
+(eval-after-load 'cider-ns
+  (defun cider-ns-refresh (&optional mode)
+    (interactive "P")
+    (message "cider-ns-refresh is broken. Use C-c n R")))
+
 ;; (add-hook 'js2-mode-hook
 ;;           (lambda ()
 ;;             (local-set-key (kbd "C-M-x") 'js-send-last-sexp-and-go)
