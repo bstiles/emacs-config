@@ -258,6 +258,14 @@ Emacs for OS X doesn't pick up the PATH defined in .bashrc/.profile.
   (define-key org-mode-map (kbd "C-c h i") 'helm-org-in-buffer-headings)
 #+end_src
 
+*** Kotlin support in Babel
+#+begin_src emacs-lisp :results silent
+  (use-package ob-kotlin
+    :ensure t
+    :pin melpa)
+  (require 'ob-kotlin)
+#+end_src
+
 ** File system
 #+begin_src emacs-lisp :results silent
   (require 'dired-x)
