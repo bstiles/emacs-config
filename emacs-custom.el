@@ -97,7 +97,7 @@
     (("^\\*cider-repl.*" display-buffer-pop-up-window
       (inhibit-same-window . t)))))
  '(ediff-diff3-options "--strip-trailing-cr")
- '(ediff-diff3-program "gdiff3")
+ '(ediff-diff3-program "diff3")
  '(ediff-keep-variants nil)
  '(ediff-split-window-function (quote split-window-horizontally))
  '(eldoc-idle-delay 0.25)
