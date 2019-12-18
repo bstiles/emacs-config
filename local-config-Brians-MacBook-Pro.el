@@ -34,10 +34,10 @@
 (my-make-find-file-fn my-file-journal "~/org/journal.org")
 (my-global-set-key "C-c o j" 'my-file-journal)
 
-(my-make-find-file-fn my-file-org-smartkable "~/SmartKable/Administrative/smartkable.org")
+(my-make-find-file-fn my-file-org-smartkable "~/SK/Administrative/smartkable.org")
 (my-global-set-key "C-c o k" 'my-file-org-smartkable)
 
-(my-make-find-file-fn my-file-org-smartkable-time-cards "~/SmartKable/Administrative/smartkable-time-cards.org")
+(my-make-find-file-fn my-file-org-smartkable-time-cards "~/SK/Administrative/smartkable-time-cards.org")
 (my-global-set-key "C-c o K" 'my-file-org-smartkable-time-cards)
 
 (my-make-find-file-fn my-file-org "~/org")

@@ -42,7 +42,7 @@
  '(cider-auto-mode t)
  '(cider-clojure-cli-command "clojure")
  '(cider-clojure-cli-parameters
-   "-A:emacs-repl -A:emacs-repl-local --init /Users/bstiles/my.clj -m nrepl.cmdline --middleware '%s'")
+   "-A:emacs-repl:emacs-repl-local:dev --init ~/my.clj -m nrepl.cmdline --middleware '%s'")
  '(cider-font-lock-dynamically (quote (deprecated)))
  '(cider-lein-command "/Users/bstiles/bin/on-the-path/lein")
  '(cider-macroexpansion-display-namespaces (quote tidy))
@@ -86,12 +86,13 @@
  '(confirm-kill-emacs (quote yes-or-no-p))
  '(dabbrev-check-all-buffers t)
  '(dired-guess-shell-alist-user (quote (("[.]pdf" "open"))))
+ '(dired-listing-switches "-alv")
  '(dired-omit-extensions
    (quote
     (".beam" ".vee" ".jam" ".hi" ".svn/" "CVS/" ".o" "~" ".bin" ".lbin" ".so" ".a" ".ln" ".blg" ".bbl" ".elc" ".lof" ".glo" ".idx" ".lot" ".dvi" ".fmt" ".tfm" ".class" ".fas" ".lib" ".mem" ".x86f" ".sparcf" ".fasl" ".ufsl" ".fsl" ".dxl" ".pfsl" ".dfsl" ".lo" ".la" ".gmo" ".mo" ".toc" ".aux" ".cp" ".fn" ".ky" ".pg" ".tp" ".cps" ".fns" ".kys" ".pgs" ".tps" ".vrs" ".pyc" ".pyo" ".DS_Store" ".idx" ".lof" ".lot" ".glo" ".blg" ".bbl" ".cp" ".cps" ".fn" ".fns" ".ky" ".kys" ".pg" ".pgs" ".tp" ".tps" ".vr" ".vrs")))
  '(dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|.*~\\|CVS\\|.DS_Store")
  '(dired-recursive-copies (quote top))
- '(dired-use-ls-dired nil)
+ '(dired-use-ls-dired (quote unspecified))
  '(display-buffer-alist
    (quote
     (("^\\*cider-repl.*" display-buffer-pop-up-window
@@ -129,13 +130,16 @@
  '(global-whitespace-mode nil)
  '(graphviz-dot-indent-width 2)
  '(graphviz-dot-view-command "open -a \"OmniGraffle Professional 5.app\" \"%s\"")
+ '(grep-command "grep  -nH --null -e ")
  '(grep-find-command (quote ("find . -type f -exec grep -nH -e  {} +" . 34)))
  '(grep-find-ignored-directories
    (quote
-    ("SCCS" "RCS" "CVS" "MCVS" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" "build.output" "node_modules" "out" "target" "make.tmp")))
+    ("SCCS" "RCS" "CVS" "MCVS" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" "build.output" "node_modules" "out" "target" "build" "make.tmp")))
  '(grep-find-ignored-files
    (quote
     ("*.cache.edn" "*.js.map" ".#*" "*.o" "*~" "*.bin" "*.lbin" "*.so" "*.a" "*.ln" "*.blg" "*.bbl" "*.elc" "*.lof" "*.glo" "*.idx" "*.lot" "*.fmt" "*.tfm" "*.class" "*.fas" "*.lib" "*.mem" "*.x86f" "*.sparcf" "*.dfsl" "*.pfsl" "*.d64fsl" "*.p64fsl" "*.lx64fsl" "*.lx32fsl" "*.dx64fsl" "*.dx32fsl" "*.fx64fsl" "*.fx32fsl" "*.sx64fsl" "*.sx32fsl" "*.wx64fsl" "*.wx32fsl" "*.fasl" "*.ufsl" "*.fsl" "*.dxl" "*.lo" "*.la" "*.gmo" "*.mo" "*.toc" "*.aux" "*.cp" "*.fn" "*.ky" "*.pg" "*.tp" "*.vr" "*.cps" "*.fns" "*.kys" "*.pgs" "*.tps" "*.vrs" "*.pyc" "*.pyo")))
+ '(grep-find-template
+   "find <D> <X> -type f <F> -exec grep <C> -nH --null -e <R> \\{\\} +")
  '(grep-highlight-matches nil)
  '(grep-setup-hook
    (quote
@@ -143,6 +147,9 @@
        (set-variable
         (quote truncate-lines)
         t)))))
+ '(grep-template "grep <X> <C> -nH --null -e <R> <F>")
+ '(grep-use-null-device nil)
+ '(grep-use-null-filename-separator t)
  '(helm-buffer-skip-remote-checking t)
  '(helm-buffers-fuzzy-matching t)
  '(helm-candidate-number-limit 100)
@@ -569,7 +576,7 @@ pre {
      ("B" "Show Billing Ledgers" tags "Type=\"billing\"" nil))))
  '(org-agenda-files
    (quote
-    ("~/org-personal/today.org" "~/CCM/ccm.org" "~/iRise/irise.org" "~/SmartKable/Administrative/smartkable.org" "~/Stiles Technologies/Administrative/stilestech-administrative.org" "~/Stiles Technologies/Administrative/stilestech.org" "~/org/one-ring.org" "~/org-personal/personal.org" "~/org-personal/finances.org" "~/org-personal/shooting.org")))
+    ("~/org-personal/today.org" "~/CCM/ccm.org" "~/iRise/irise.org" "~/SK/Administrative/smartkable.org" "~/Stiles Technologies/Administrative/stilestech-administrative.org" "~/Stiles Technologies/Administrative/stilestech.org" "~/org/one-ring.org" "~/org-personal/personal.org" "~/org-personal/finances.org" "~/org-personal/shooting.org")))
  '(org-agenda-fontify-priorities (quote cookies))
  '(org-agenda-prefix-format
    (quote
@@ -905,7 +912,7 @@ pre {
      ("melpa" . "http://melpa.milkbox.net/packages/"))))
  '(package-selected-packages
    (quote
-    (bitbake ob-kotlin flymake-shellcheck nodejs-repl jsonnet-mode feature-mode plantuml-mode ocp-indent dune swiper dockerfile-mode markdown-mode tuareg find-file-in-project quelpa use-package git-commit graphviz-dot-mode kotlin-mode swift-mode gradle-mode spiral flycheck-swift reason-mode swagger-to-org smali-mode cider cider-mode utop company-tern companytern helm-pages twittering-mode groovy-mode yasnippet yaml-mode yafolding wolfram-mode web-mode skewer-mode scala-mode2 racket-mode paredit org-dotemacs multiple-cursors modeline-posn lfe-mode json-mode js-comint javap-mode inflections inf-clojure ido-vertical-mode hydra htmlize hl-sexp highlight-parentheses highlight-indentation helm-projectile helm-idris go-mode git-commit-mode ghci-completion ghc fuzzy fringe-helper flx-ido fill-column-indicator exec-path-from-shell erlang epoch-view edn dot-mode company col-highlight coffee-mode clojure-mode-extra-font-locking bats-mode auto-highlight-symbol applescript-mode align-cljlet)))
+    (swiper git-commit cider plantuml-mode yaml-mode markdown-mode dune utop tuareg erlang go-mode swift-mode inf-clojure graphviz-dot-mode helm-projectile find-file-in-project projectile quelpa use-package helm-org nim-mode cmake-mode luarocks company-lua lua-mode bitbake ob-kotlin flymake-shellcheck nodejs-repl jsonnet-mode dockerfile-mode gradle-mode spiral flycheck-swift swagger-to-org smali-mode cider-mode company-tern companytern helm-pages twittering-mode groovy-mode yasnippet yafolding wolfram-mode web-mode skewer-mode scala-mode2 racket-mode paredit org-dotemacs multiple-cursors modeline-posn lfe-mode json-mode js-comint javap-mode inflections ido-vertical-mode hydra htmlize hl-sexp highlight-parentheses highlight-indentation helm-idris git-commit-mode ghci-completion ghc fuzzy fringe-helper flx-ido fill-column-indicator exec-path-from-shell epoch-view edn dot-mode col-highlight coffee-mode clojure-mode-extra-font-locking bats-mode auto-highlight-symbol applescript-mode align-cljlet)))
  '(prettify-symbols-unprettify-at-point nil)
  '(projectile-globally-ignored-directories
    (quote
@@ -944,7 +951,7 @@ pre {
  '(sql-mysql-program "/usr/local/opt/mariadb@10.2/bin/mysql")
  '(sql-postgres-program "/usr/local/bin/psql")
  '(sql-sqlite-program "sqlite3")
- '(tramp-verbose 2 nil (tramp))
+ '(tramp-verbose 2)
  '(truncate-partial-width-windows nil)
  '(uniquify-buffer-name-style (quote post-forward) nil (uniquify))
  '(uniquify-separator nil)
@@ -1001,6 +1008,7 @@ pre {
  '(font-lock-type-face ((((class grayscale) (background light)) (:foreground "Gray90" :weight bold)) (((class grayscale) (background dark)) (:foreground "DimGray" :weight bold)) (((class color) (min-colors 88) (background light)) (:foreground "DarkGoldenrod")) (((class color) (min-colors 88) (background dark)) (:foreground "LightGoldenrod3")) (((class color) (min-colors 16) (background light)) (:foreground "ForestGreen")) (((class color) (min-colors 16) (background dark)) (:foreground "PaleGreen")) (((class color) (min-colors 8)) (:foreground "green")) (t (:underline t :weight bold))))
  '(font-lock-variable-name-face ((((class color) (background dark)) (:foreground "Khaki" :weight bold)) (((class color) (background light)) (:foreground "DarkGreen" :weight bold))))
  '(font-lock-warning-face ((((class color) (background dark)) (:bold t :foreground "Salmon")) (((class color) (background light)) (:bold t :foreground "Red"))))
+ '(fringe ((t (:background "grey10" :foreground "wheat4"))))
  '(gnus-header-content-face ((((class color) (background dark)) (:italic t :foreground "green"))) t)
  '(gnus-header-name-face ((((class color) (background dark)) (:foreground "YellowGreen"))) t)
  '(gnus-header-subject-face ((((class color) (background dark)) (:foreground "Yellow"))) t)
