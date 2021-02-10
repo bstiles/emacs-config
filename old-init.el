@@ -38,7 +38,7 @@
   (add-to-list 'load-path (expand-file-name (format "lisp/%s/" dir)
                                             user-emacs-directory)))
 
-(if (>= (string-to-number emacs-version) 24)
+(if (and (>= (string-to-number emacs-version) 24) (< emacs-major-version 27))
     (package-initialize))
 
 (eval-after-load "rng-loc"
@@ -876,7 +876,7 @@ and `(match-end 1)'."
                ("Conf" (mode . conf-javaprop-mode))
                ("Text" (mode . text-mode))
                ("Archive" (mode . archive-mode))
-               ("Python" (mode . python-mode))
+               ("Python" (mode . elpy-mode))
                ("Emacs-Lisp" (mode . emacs-lisp-mode))
                ("Custom" (mode . Custom-mode))
                ))))
@@ -973,6 +973,19 @@ about what flexible matching means in this context."
   (save-excursion
     (goto-char (point-min))
     (let ((template-buffer (find-file-noselect (home-relative-file "bin/00_NEW_SCRIPT_TEMPLATE.sh")))
+          start
+          end)
+      (save-excursion
+        (set-buffer template-buffer)
+        (setq start (point-min) end (point-max)))
+      (insert-buffer-substring template-buffer start end)
+      (kill-buffer template-buffer))))
+
+(defun my-shell-options-template ()
+  "Adds boilerplate options parsing to the current buffer suitable for a shell script."
+  (interactive)
+  (save-excursion
+    (let ((template-buffer (find-file-noselect (home-relative-file "bin/00_SCRIPT_OPTIONS_TEMPLATE.sh")))
           start
           end)
       (save-excursion

@@ -118,7 +118,8 @@ for quick access to commonly used files."
   ;; Bootstrap `use-package'
   (require 'package)
   (setq package-enable-at-startup nil)
-  (package-initialize)
+  (when (< emacs-major-version 27)
+    (package-initialize))
   (unless (package-installed-p 'use-package)
     (package-refresh-contents)
     (package-install 'use-package))
@@ -138,7 +139,7 @@ for quick access to commonly used files."
 
   (use-package org :ensure t :pin org)
   ;; (use-package org-plus-contrib :ensure t :pin org)
-  (use-package org-dotemacs :ensure t :pin marmalade)
+;;  (use-package org-dotemacs :ensure t :pin marmalade)
   (org-babel-load-file (expand-file-name "init-full.org" my-emacs-config-dir))
 
 ;;; XXX 2015-01-06 bstiles: Use remainder of old init.el while

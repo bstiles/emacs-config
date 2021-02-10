@@ -67,7 +67,14 @@ appropriate file is determined by =machine-identifier.el= created by
 
 ** Global save hooks
 #+begin_src emacs-lisp :results silent
-  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+  (defvar my-delete-trailing-whitespace-on-save t)
+  (defun my-delete-trailing-whitespace ()
+    (if my-delete-trailing-whitespace-on-save
+        (delete-trailing-whitespace)))
+  (add-hook 'before-save-hook 'my-delete-trailing-whitespace)
+  (defun my-inhibit-delete-traling-whitespace ()
+    (interactive)
+    (set (make-local-variable 'my-delete-trailing-whitespace-on-save) nil))
 #+end_src
 
 ** Key bindings
@@ -277,7 +284,7 @@ Emacs for OS X doesn't pick up the PATH defined in .bashrc/.profile.
   ;; - syntax highlighted html.
   (use-package htmlize
     :ensure t
-    :pin marmalade)
+    :pin melpa)
 
   (defun my-html-template ()
     "Adds boilerplate to the current buffer suitable for an HTML file."
@@ -298,7 +305,7 @@ Emacs for OS X doesn't pick up the PATH defined in .bashrc/.profile.
 #+begin_src emacs-lisp :results silent
   (use-package nodejs-repl
     :ensure t
-    :pin marmalade)
+    :pin melpa)
 
   (add-hook 'js-mode-hook
             (lambda ()
@@ -416,6 +423,14 @@ Emacs for OS X doesn't pick up the PATH defined in .bashrc/.profile.
   (use-package dune
     :ensure t
     :pin melpa)
+#+end_src
+
+** Python Programming
+#+begin_src emacs-lisp :results silent
+  (use-package elpy
+    :ensure t
+    :init
+    (elpy-enable))
 #+end_src
 
 ** Reason Programming
@@ -693,6 +708,8 @@ Tell the Org Babel tooling where the JAR file is.
     :pin melpa)
   (ido-mode 0)
   (flx-ido-mode 1)
+  ;; disable ido faces to see flx highlights.
+  (setq ido-enable-flex-matching t)
   (setq ido-use-faces nil)
   (ido-vertical-mode 1)
 #+end_src

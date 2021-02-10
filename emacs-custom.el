@@ -6,36 +6,31 @@
  '(ac-auto-show-menu nil)
  '(ac-auto-start nil)
  '(ac-use-quick-help nil)
- '(ahs-default-range (quote ahs-range-whole-buffer))
+ '(ahs-default-range 'ahs-range-whole-buffer)
  '(ahs-idle-interval 0.33)
  '(ahs-include
-   (quote
-    ((clojurec-mode . "^[0-9A-Za-z/_.,:;*+=&%|$#@!^?'<>-]+$")
+   '((clojurec-mode . "^[0-9A-Za-z/_.,:;*+=&%|$#@!^?'<>-]+$")
      (clojure-mode . "^[0-9A-Za-z/_.,:;*+=&%|$#@!^?'<>-]+$")
-     (clojurescript-mode . "^[0-9A-Za-z/_.,:;*+=&%|$#@!^?'<>-]+$"))))
+     (clojurescript-mode . "^[0-9A-Za-z/_.,:;*+=&%|$#@!^?'<>-]+$")))
  '(ahs-modes
-   (quote
-    (actionscript-mode apache-mode bat-generic-mode c++-mode c-mode csharp-mode css-mode dos-mode emacs-lisp-mode ini-generic-mode java-mode javascript-mode js-mode lisp-interaction-mode lua-mode latex-mode makefile-mode makefile-gmake-mode markdown-mode moccur-edit-mode outline-mode perl-mode cperl-mode php-mode python-mode rc-generic-mode reg-generic-mode ruby-mode sgml-mode sh-mode squirrel-mode tcl-mode visual-basic-mode clojurec-mode clojurescript-mode clojure-mode)))
+   '(actionscript-mode apache-mode bat-generic-mode c++-mode c-mode csharp-mode css-mode dos-mode emacs-lisp-mode ini-generic-mode java-mode javascript-mode js-mode lisp-interaction-mode lua-mode latex-mode makefile-mode makefile-gmake-mode markdown-mode moccur-edit-mode outline-mode perl-mode cperl-mode php-mode python-mode rc-generic-mode reg-generic-mode ruby-mode sgml-mode sh-mode squirrel-mode tcl-mode visual-basic-mode clojurec-mode clojurescript-mode clojure-mode))
  '(ahs-plugin-bod-modes
-   (quote
-    (emacs-lisp-mode lisp-interaction-mode c++-mode clojurescript-mode clojurec-mode clojure-mode)))
+   '(emacs-lisp-mode lisp-interaction-mode c++-mode clojurescript-mode clojurec-mode clojure-mode))
  '(align-c++-modes
-   (quote
-    (c++-mode c-mode java-mode coffee-mode javascript-mode js2-mode)))
+   '(c++-mode c-mode java-mode coffee-mode javascript-mode js2-mode))
  '(align-lisp-modes
-   (quote
-    (emacs-lisp-mode lisp-interaction-mode lisp-mode scheme-mode)))
- '(align-text-modes (quote (text-mode outline-mode)))
- '(ange-ftp-ftp-program-args (quote ("-i" "-n" "-g" "-v")))
- '(archive-zip-expunge (quote ("/Users/bstiles/bin/irise-zip" "-d" "-q")))
- '(archive-zip-extract (quote ("/Users/bstiles/bin/irise-unzip" "-qq" "-c")))
- '(archive-zip-update (quote ("/Users/bstiles/bin/irise-zip" "-q")))
- '(archive-zip-update-case (quote ("/Users/bstiles/bin/irise-zip" "-q" "-k")))
+   '(emacs-lisp-mode lisp-interaction-mode lisp-mode scheme-mode))
+ '(align-text-modes '(text-mode outline-mode))
+ '(ange-ftp-ftp-program-args '("-i" "-n" "-g" "-v"))
+ '(archive-zip-expunge '("/Users/bstiles/bin/irise-zip" "-d" "-q"))
+ '(archive-zip-extract '("/Users/bstiles/bin/irise-unzip" "-qq" "-c"))
+ '(archive-zip-update '("/Users/bstiles/bin/irise-zip" "-q"))
+ '(archive-zip-update-case '("/Users/bstiles/bin/irise-zip" "-q" "-k"))
  '(backup-by-copying-when-linked t)
  '(blink-cursor-blinks 0)
  '(blink-cursor-interval 0.5)
  '(bookmark-default-file (expand-file-name ".emacs.bmk" user-emacs-directory))
- '(browse-url-browser-function (quote browse-url-chrome-browser))
+ '(browse-url-browser-function 'browse-url-chrome-browser)
  '(browse-url-firefox-program "/Applications/Firefox.app/Contents/MacOS/firefox-bin")
  '(canlock-password "e7415257d290faf90e7bedf1524d44d0fb6b3a2c")
  '(cider-auto-jump-to-error nil)
@@ -43,12 +38,12 @@
  '(cider-clojure-cli-command "clojure")
  '(cider-clojure-cli-parameters
    "-A:emacs-repl:emacs-repl-local:dev --init ~/my.clj -m nrepl.cmdline --middleware '%s'")
- '(cider-font-lock-dynamically (quote (deprecated)))
+ '(cider-font-lock-dynamically '(deprecated))
  '(cider-lein-command "/Users/bstiles/bin/on-the-path/lein")
- '(cider-macroexpansion-display-namespaces (quote tidy))
+ '(cider-macroexpansion-display-namespaces 'tidy)
  '(cider-macroexpansion-print-metadata t)
  '(cider-macroexpansion-suppress-namespaces nil)
- '(cider-mode-line (quote (:eval " cider")))
+ '(cider-mode-line '(:eval " cider"))
  '(cider-ns-refresh-after-fn "user/resume")
  '(cider-ns-refresh-before-fn "user/suspend")
  '(cider-ns-refresh-show-log-buffer t)
@@ -58,49 +53,42 @@
  '(cider-repl-use-clojure-font-lock nil)
  '(cider-repl-use-pretty-printing nil)
  '(clojure-defun-indents
-   (quote
-    (apply interpose run run* with-precision fresh assoc assoc! fdef)))
+   '(apply interpose run run* with-precision fresh assoc assoc! fdef))
  '(clojure-defun-style-default-indent t)
- '(clojure-indent-style (quote always-indent))
+ '(clojure-indent-style 'always-indent)
  '(coffee-command (concat (getenv "HOME") "/bin/coffee"))
  '(coffee-tab-width 2)
  '(column-number-mode t)
  '(comment-auto-fill-only-comments t)
  '(company-backends
-   (quote
-    (company-tern company-bbdb company-nxml company-css company-eclim company-semantic company-clang company-xcode company-cmake company-capf company-files
+   '(company-tern company-bbdb company-nxml company-css company-eclim company-semantic company-clang company-xcode company-cmake company-capf company-files
                   (company-dabbrev-code company-gtags company-etags company-keywords)
-                  company-oddmuse company-dabbrev)))
+                  company-oddmuse company-dabbrev))
  '(company-idle-delay nil)
  '(company-lighter-base "")
  '(company-show-numbers t)
  '(company-tooltip-minimum-width 30)
- '(company-tooltip-offset-display (quote scrollbar))
+ '(company-tooltip-offset-display 'scrollbar)
  '(compilation-scroll-output t)
  '(completion-ignored-extensions
-   (quote
-    (".svn/" "CVS/" ".o" "~" ".bin" ".lbin" ".so" ".a" ".ln" ".blg" ".bbl" ".elc" ".lof" ".glo" ".idx" ".lot" ".dvi" ".fmt" ".tfm" ".pdf" ".class" ".fas" ".lib" ".mem" ".x86f" ".sparcf" ".fasl" ".ufsl" ".fsl" ".dxl" ".pfsl" ".dfsl" ".lo" ".la" ".gmo" ".mo" ".toc" ".aux" ".cp" ".fn" ".ky" ".pg" ".tp" ".cps" ".fns" ".kys" ".pgs" ".tps" ".vrs" ".pyc" ".pyo" ".DS_Store")))
- '(completion-styles
-   (quote
-    (basic partial-completion emacs22 partial-completion)))
- '(confirm-kill-emacs (quote yes-or-no-p))
+   '(".svn/" "CVS/" ".o" "~" ".bin" ".lbin" ".so" ".a" ".ln" ".blg" ".bbl" ".elc" ".lof" ".glo" ".idx" ".lot" ".dvi" ".fmt" ".tfm" ".pdf" ".class" ".fas" ".lib" ".mem" ".x86f" ".sparcf" ".fasl" ".ufsl" ".fsl" ".dxl" ".pfsl" ".dfsl" ".lo" ".la" ".gmo" ".mo" ".toc" ".aux" ".cp" ".fn" ".ky" ".pg" ".tp" ".cps" ".fns" ".kys" ".pgs" ".tps" ".vrs" ".pyc" ".pyo" ".DS_Store"))
+ '(completion-styles '(basic partial-completion emacs22 partial-completion))
+ '(confirm-kill-emacs 'yes-or-no-p)
  '(dabbrev-check-all-buffers t)
- '(dired-guess-shell-alist-user (quote (("[.]pdf" "open"))))
+ '(dired-guess-shell-alist-user '(("[.]pdf" "open")))
  '(dired-listing-switches "-alv")
  '(dired-omit-extensions
-   (quote
-    (".beam" ".vee" ".jam" ".hi" ".svn/" "CVS/" ".o" "~" ".bin" ".lbin" ".so" ".a" ".ln" ".blg" ".bbl" ".elc" ".lof" ".glo" ".idx" ".lot" ".dvi" ".fmt" ".tfm" ".class" ".fas" ".lib" ".mem" ".x86f" ".sparcf" ".fasl" ".ufsl" ".fsl" ".dxl" ".pfsl" ".dfsl" ".lo" ".la" ".gmo" ".mo" ".toc" ".aux" ".cp" ".fn" ".ky" ".pg" ".tp" ".cps" ".fns" ".kys" ".pgs" ".tps" ".vrs" ".pyc" ".pyo" ".DS_Store" ".idx" ".lof" ".lot" ".glo" ".blg" ".bbl" ".cp" ".cps" ".fn" ".fns" ".ky" ".kys" ".pg" ".pgs" ".tp" ".tps" ".vr" ".vrs")))
+   '(".beam" ".vee" ".jam" ".hi" ".svn/" "CVS/" ".o" "~" ".bin" ".lbin" ".so" ".a" ".ln" ".blg" ".bbl" ".elc" ".lof" ".glo" ".idx" ".lot" ".dvi" ".fmt" ".tfm" ".class" ".fas" ".lib" ".mem" ".x86f" ".sparcf" ".fasl" ".ufsl" ".fsl" ".dxl" ".pfsl" ".dfsl" ".lo" ".la" ".gmo" ".mo" ".toc" ".aux" ".cp" ".fn" ".ky" ".pg" ".tp" ".cps" ".fns" ".kys" ".pgs" ".tps" ".vrs" ".pyc" ".pyo" ".DS_Store" ".idx" ".lof" ".lot" ".glo" ".blg" ".bbl" ".cp" ".cps" ".fn" ".fns" ".ky" ".kys" ".pg" ".pgs" ".tp" ".tps" ".vr" ".vrs"))
  '(dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|.*~\\|CVS\\|.DS_Store")
- '(dired-recursive-copies (quote top))
- '(dired-use-ls-dired (quote unspecified))
+ '(dired-recursive-copies 'top)
+ '(dired-use-ls-dired 'unspecified)
  '(display-buffer-alist
-   (quote
-    (("^\\*cider-repl.*" display-buffer-pop-up-window
-      (inhibit-same-window . t)))))
+   '(("^\\*cider-repl.*" display-buffer-pop-up-window
+      (inhibit-same-window . t))))
  '(ediff-diff3-options "--strip-trailing-cr")
  '(ediff-diff3-program "diff3")
  '(ediff-keep-variants nil)
- '(ediff-split-window-function (quote split-window-horizontally))
+ '(ediff-split-window-function 'split-window-horizontally)
  '(eldoc-idle-delay 0.25)
  '(emerge-diff-options "--strip-trailing-cr")
  '(emerge-diff3-program "gdiff3")
@@ -113,14 +101,13 @@
  '(eshell-exit-hook nil)
  '(eshell-history-size 128000)
  '(eshell-output-filter-functions
-   (quote
-    (eshell-postoutput-scroll-to-bottom eshell-handle-control-codes eshell-watch-for-password-prompt)))
+   '(eshell-postoutput-scroll-to-bottom eshell-handle-control-codes eshell-watch-for-password-prompt))
  '(eshell-save-history-on-exit nil)
- '(explicit-bash-args (quote ("--noediting" "--login" "-i")))
+ '(explicit-bash-args '("--noediting" "--login" "-i"))
  '(fci-rule-color "SlateGray")
  '(fci-rule-column 80)
  '(find-exec-terminator "\\;")
- '(find-ls-option (quote ("-exec ls -ld {} \\;" . "-ld")))
+ '(find-ls-option '("-exec ls -ld {} \\;" . "-ld"))
  '(flx-ido-use-faces t)
  '(fringe-mode 12 nil (fringe))
  '(git-commit-summary-max-length 50)
@@ -131,25 +118,19 @@
  '(graphviz-dot-indent-width 2)
  '(graphviz-dot-view-command "open -a \"OmniGraffle Professional 5.app\" \"%s\"")
  '(grep-command "grep  -nH --null -e ")
- '(grep-find-command (quote ("find . -type f -exec grep -nH -e  {} +" . 34)))
+ '(grep-find-command '("find . -type f -exec grep -nH -e  {} +" . 34))
  '(grep-find-ignored-directories
-   (quote
-    ("SCCS" "RCS" "CVS" "MCVS" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" "build.output" "node_modules" "out" "target" "build" "make.tmp")))
+   '("SCCS" "RCS" "CVS" "MCVS" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" "build.output" "node_modules" "out" "target" "build" "make.tmp"))
  '(grep-find-ignored-files
-   (quote
-    ("*.cache.edn" "*.js.map" ".#*" "*.o" "*~" "*.bin" "*.lbin" "*.so" "*.a" "*.ln" "*.blg" "*.bbl" "*.elc" "*.lof" "*.glo" "*.idx" "*.lot" "*.fmt" "*.tfm" "*.class" "*.fas" "*.lib" "*.mem" "*.x86f" "*.sparcf" "*.dfsl" "*.pfsl" "*.d64fsl" "*.p64fsl" "*.lx64fsl" "*.lx32fsl" "*.dx64fsl" "*.dx32fsl" "*.fx64fsl" "*.fx32fsl" "*.sx64fsl" "*.sx32fsl" "*.wx64fsl" "*.wx32fsl" "*.fasl" "*.ufsl" "*.fsl" "*.dxl" "*.lo" "*.la" "*.gmo" "*.mo" "*.toc" "*.aux" "*.cp" "*.fn" "*.ky" "*.pg" "*.tp" "*.vr" "*.cps" "*.fns" "*.kys" "*.pgs" "*.tps" "*.vrs" "*.pyc" "*.pyo")))
+   '("*.cache.edn" "*.js.map" ".#*" "*.o" "*~" "*.bin" "*.lbin" "*.so" "*.a" "*.ln" "*.blg" "*.bbl" "*.elc" "*.lof" "*.glo" "*.idx" "*.lot" "*.fmt" "*.tfm" "*.class" "*.fas" "*.lib" "*.mem" "*.x86f" "*.sparcf" "*.dfsl" "*.pfsl" "*.d64fsl" "*.p64fsl" "*.lx64fsl" "*.lx32fsl" "*.dx64fsl" "*.dx32fsl" "*.fx64fsl" "*.fx32fsl" "*.sx64fsl" "*.sx32fsl" "*.wx64fsl" "*.wx32fsl" "*.fasl" "*.ufsl" "*.fsl" "*.dxl" "*.lo" "*.la" "*.gmo" "*.mo" "*.toc" "*.aux" "*.cp" "*.fn" "*.ky" "*.pg" "*.tp" "*.vr" "*.cps" "*.fns" "*.kys" "*.pgs" "*.tps" "*.vrs" "*.pyc" "*.pyo"))
  '(grep-find-template
    "find <D> <X> -type f <F> -exec grep <C> -nH --null -e <R> \\{\\} +")
  '(grep-highlight-matches nil)
- '(grep-setup-hook
-   (quote
-    ((lambda nil
-       (set-variable
-        (quote truncate-lines)
-        t)))))
+ '(grep-setup-hook '((lambda nil (set-variable 'truncate-lines t))))
  '(grep-template "grep <X> <C> -nH --null -e <R> <F>")
  '(grep-use-null-device nil)
  '(grep-use-null-filename-separator t)
+ '(helm-buffer-max-length 30)
  '(helm-buffer-skip-remote-checking t)
  '(helm-buffers-fuzzy-matching t)
  '(helm-candidate-number-limit 100)
@@ -160,20 +141,20 @@
  '(helm-org-headings-fontify t)
  '(helm-org-headings-max-depth 8)
  '(helm-projectile-sources-list
-   (quote
-    (helm-source-projectile-recentf-list helm-source-projectile-buffers-list helm-source-projectile-files-list helm-source-projectile-projects)))
- '(helm-split-window-default-side (quote right))
+   '(helm-source-projectile-recentf-list helm-source-projectile-buffers-list helm-source-projectile-files-list helm-source-projectile-projects))
+ '(helm-split-window-default-side 'right)
  '(helm-truncate-lines t)
+ '(highlight-parentheses-background-colors '("black" "black" "black"))
+ '(highlight-parentheses-colors '("green" "red" "wheat" "wheat" "wheat" "wheat"))
  '(highlight-symbol-idle-delay 0.5)
  '(highlight-symbol-on-navigation-p t)
- '(hl-paren-background-colors (quote ("black" "black" "black")))
- '(hl-paren-colors (quote ("green" "red" "wheat" "wheat" "wheat" "wheat")))
+ '(hl-paren-background-colors '("black" "black" "black"))
+ '(hl-paren-colors '("green" "red" "wheat" "wheat" "wheat" "wheat"))
  '(httpd-port 49401)
- '(ibuffer-default-sorting-mode (quote recency))
- '(ibuffer-filter-group-name-face (quote font-lock-function-name-face))
+ '(ibuffer-default-sorting-mode 'recency)
+ '(ibuffer-filter-group-name-face 'font-lock-function-name-face)
  '(ibuffer-fontification-alist
-   (quote
-    ((5
+   '((5
       (buffer-modified-p)
       font-lock-warning-face)
      (10 buffer-read-only font-lock-constant-face)
@@ -195,12 +176,10 @@
       (memq major-mode ibuffer-help-buffer-modes)
       font-lock-comment-face)
      (35
-      (eq major-mode
-          (quote dired-mode))
-      font-lock-function-name-face))))
+      (eq major-mode 'dired-mode)
+      font-lock-function-name-face)))
  '(ibuffer-formats
-   (quote
-    ((mark modified read-only " "
+   '((mark modified read-only " "
            (name 32 32 :left :elide)
            " "
            (size 9 -1 :right)
@@ -209,22 +188,21 @@
            " " filename-and-process)
      (mark " "
            (name 32 32 :left :elide)
-           " " filename))))
+           " " filename)))
  '(ibuffer-old-time 72)
  '(ibuffer-show-empty-filter-groups t)
  '(ibuffer-use-other-window t)
  '(ido-max-prospects 50)
  '(ido-max-window-height 0.5)
  '(ido-use-faces t)
- '(ido-vertical-define-keys (quote C-n-C-p-up-down-left-right))
+ '(ido-vertical-define-keys 'C-n-C-p-up-down-left-right)
  '(imenu-auto-rescan t)
  '(indent-tabs-mode nil)
- '(indicate-buffer-boundaries (quote left))
+ '(indicate-buffer-boundaries 'left)
  '(inferior-js-program-command "/Users/bstiles/bin/rhino.py")
  '(ispell-program-name "aspell")
  '(jka-compr-compression-info-list
-   (quote
-    (["\\.i[Dd]oc\\'" "saving iDoc" "cat" nil "stripping iDoc header" "tail"
+   '(["\\.i[Dd]oc\\'" "saving iDoc" "cat" nil "stripping iDoc header" "tail"
       ("-c" "+17")
       nil nil "iRise iDoc"]
      ["\\.i[Bb]loc\\'" "saving iBloc" "cat" nil "stripping iBloc header" "tail"
@@ -263,15 +241,15 @@
       t t "\3757zXZ "]
      ["\\.dz\\'" nil nil nil "uncompressing" "gzip"
       ("-c" "-q" "-d")
-      nil t "\213"])))
- '(jka-compr-load-suffixes (quote (".gz")))
+      nil t "\213"]))
+ '(jka-compr-load-suffixes '(".gz"))
  '(js-indent-level 2)
  '(js2-basic-offset 2)
  '(js2-strict-trailing-comma-warning nil)
  '(kotlin-tab-width 4)
  '(locate-command "mdfind")
- '(major-mode (quote text-mode))
- '(markdown-coding-system (quote utf-8))
+ '(major-mode 'text-mode)
+ '(markdown-coding-system 'utf-8)
  '(markdown-command "multimarkdown")
  '(markdown-css-path "")
  '(markdown-xhtml-header-content
@@ -555,73 +533,66 @@ pre {
     border: none; }
 </style>")
  '(mode-line-format
-   (quote
-    ("%e" mode-line-front-space mode-line-mule-info mode-line-client mode-line-modified mode-line-remote mode-line-frame-identification mode-line-buffer-identification "   " mode-line-position "  " mode-line-modes mode-line-misc-info mode-line-end-spaces)))
+   '("%e" mode-line-front-space mode-line-mule-info mode-line-client mode-line-modified mode-line-remote mode-line-frame-identification mode-line-buffer-identification "   " mode-line-position "  " mode-line-modes mode-line-misc-info mode-line-end-spaces))
  '(mode-require-final-newline t)
- '(mouse-wheel-scroll-amount (quote (1 ((shift) . 1) ((control)))))
+ '(mouse-wheel-scroll-amount '(1 ((shift) . 1) ((control))))
  '(nrepl-buffer-name-show-port t)
  '(nrepl-force-ssh-for-remote-hosts t)
  '(nrepl-log-messages nil)
  '(nrepl-sync-request-timeout 30)
- '(ns-alternate-modifier (quote none))
+ '(ns-alternate-modifier 'none)
  '(ns-pop-up-frames nil)
  '(org-agenda-custom-commands
-   (quote
-    (("I" "Show Big Ideas" tags "Type=\"big-idea\"" nil)
+   '(("I" "Show Big Ideas" tags "Type=\"big-idea\"" nil)
      ("x" "All but DONE/MAY?/WISH" tags
       #("+TODO={TODO\\|NEXT\\|HOLD}" 6 24
         (regexp t))
       nil)
      ("P" "Show Projects" tags "Type=\"project\"" nil)
-     ("B" "Show Billing Ledgers" tags "Type=\"billing\"" nil))))
+     ("B" "Show Billing Ledgers" tags "Type=\"billing\"" nil)))
  '(org-agenda-files
-   (quote
-    ("~/org-personal/today.org" "~/CCM/ccm.org" "~/iRise/irise.org" "~/SK/Administrative/smartkable.org" "~/Stiles Technologies/Administrative/stilestech-administrative.org" "~/Stiles Technologies/Administrative/stilestech.org" "~/org/one-ring.org" "~/org-personal/personal.org" "~/org-personal/finances.org" "~/org-personal/shooting.org")))
- '(org-agenda-fontify-priorities (quote cookies))
+   '("~/org-personal/today.org" "~/CCM/ccm.org" "~/iRise/irise.org" "~/SK/Administrative/smartkable.org" "~/Stiles Technologies/Administrative/stilestech-administrative.org" "~/Stiles Technologies/Administrative/stilestech.org" "~/org/one-ring.org" "~/org-personal/personal.org" "~/org-personal/finances.org" "~/org-personal/shooting.org"))
+ '(org-agenda-fontify-priorities 'cookies)
  '(org-agenda-prefix-format
-   (quote
-    ((agenda . " %i %-16:c%?-12t% s")
+   '((agenda . " %i %-16:c%?-12t% s")
      (timeline . "  % s")
      (todo . " %i %-16:c")
      (tags . " %i %-16:c")
-     (search . " %i %-16:c"))))
+     (search . " %i %-16:c")))
  '(org-agenda-sorting-strategy
-   (quote
-    ((agenda habit-down time-up priority-down category-keep)
+   '((agenda habit-down time-up priority-down category-keep)
      (todo category-up)
      (tags priority-down category-keep)
-     (search category-keep))))
+     (search category-keep)))
  '(org-agenda-span 30)
  '(org-agenda-todo-keyword-format "%-6s")
- '(org-babel-clojure-backend (quote cider))
+ '(org-babel-clojure-backend 'cider)
  '(org-babel-load-languages
-   (quote
-    ((emacs-lisp . t)
+   '((emacs-lisp . t)
      (dot . t)
      (java . t)
      (plantuml . t)
      (python . t)
      (shell . t)
      (clojure . t)
-     (sql . t))))
+     (sql . t)))
  '(org-babel-post-tangle-hook nil)
  '(org-babel-results-keyword "results")
  '(org-capture-templates
-   (quote
-    (("i" "INBOX" entry
+   '(("i" "INBOX" entry
       (file+olp "~/org/one-ring.org" "INBOX")
       "" :prepend t)
      ("j" "Journal" entry
       (file+datetree "~/org/journal.org")
-      "" :prepend t))))
- '(org-catch-invisible-edits (quote error))
+      "" :prepend t)))
+ '(org-catch-invisible-edits 'error)
  '(org-clock-into-drawer 3)
  '(org-confirm-babel-evaluate nil)
  '(org-default-priority 67)
  '(org-ditaa-jar-path "/Users/bstiles/.emacs.d/lisp/org-extensions/ditaa.jar")
- '(org-drawers (quote ("PROPERTIES" "CLOCK" "LOGBOOK" "DATA")))
+ '(org-drawers '("PROPERTIES" "CLOCK" "LOGBOOK" "DATA"))
  '(org-enforce-todo-dependencies t)
- '(org-export-backends (quote (ascii html icalendar latex man md texinfo)))
+ '(org-export-backends '(ascii html icalendar latex man md texinfo))
  '(org-from-is-user-regexp "\\<Brian Stiles\\>")
  '(org-html-head
    "<style type=\"text/css\">
@@ -852,10 +823,10 @@ pre {
   }
 </style>")
  '(org-indent-boundary-char 166)
- '(org-latex-packages-alist (quote (("" "tabularx" nil))))
+ '(org-latex-packages-alist '(("" "tabularx" nil)))
+ '(org-link-from-user-regexp "\\<Brian Stiles\\>")
  '(org-load-hook
-   (quote
-    ((lambda nil
+   '((lambda nil
        (let
            ((lob
              (concat
@@ -863,76 +834,66 @@ pre {
               "/org/lob.org")))
          (if
              (file-exists-p lob)
-             (org-babel-lob-ingest)))))))
- '(org-log-done (quote time))
+             (org-babel-lob-ingest))))))
+ '(org-log-done 'time)
  '(org-log-into-drawer t)
- '(org-md-headline-style (quote atx))
+ '(org-md-headline-style 'atx)
  '(org-mobile-directory "~/Dropbox/Apps/MobileOrg")
  '(org-mode-hook
-   (quote
-    (#[nil "\300\301\302\303\304$\207"
+   '(#[nil "\300\301\302\303\304$\207"
            [org-add-hook change-major-mode-hook org-show-block-all append local]
            5]
      #[nil "\300\301\302\303\304$\207"
            [org-add-hook change-major-mode-hook org-babel-show-result-all append local]
            5]
-     org-babel-result-hide-spec org-babel-hide-all-hashes auto-fill-mode)))
+     org-babel-result-hide-spec org-babel-hide-all-hashes auto-fill-mode))
  '(org-modules
-   (quote
-    (org-bbdb org-bibtex org-docview org-gnus org-habit org-info org-inlinetask org-irc org-mhe org-rmail org-tempo org-w3m)))
+   '(org-bbdb org-bibtex org-docview org-gnus org-habit org-info org-inlinetask org-irc org-mhe org-rmail org-tempo org-w3m))
  '(org-priority-faces
-   (quote
-    ((65 . font-lock-warning-face)
-     (66 . font-lock-warning-face))))
- '(org-refile-targets (quote ((org-agenda-files :level . 1))))
- '(org-refile-use-outline-path (quote file))
+   '((65 . font-lock-warning-face)
+     (66 . font-lock-warning-face)))
+ '(org-refile-targets '((org-agenda-files :level . 1)))
+ '(org-refile-use-outline-path 'file)
  '(org-src-fontify-natively t)
  '(org-startup-folded nil)
  '(org-startup-indented t)
  '(org-tags-column -88)
- '(org-time-stamp-custom-formats (quote ("<%m/%d/%y %a>" . "<%m/%d %a>")))
+ '(org-time-stamp-custom-formats '("<%m/%d/%y %a>" . "<%m/%d %a>"))
  '(org-todo-keyword-faces
-   (quote
-    (("NEXT" . "Red")
+   '(("NEXT" . "Red")
      ("WISH" . "Gold")
      ("HOLD" . "Pink")
      ("MAY?" . "Pink")
      ("TEST" . "Pink")
-     ("????" . "Red"))))
+     ("????" . "Red")))
  '(org-todo-keywords
-   (quote
-    ((type "NEXT(n)" "TODO(t)" "MAY?(m)" "WISH(w)" "HOLD(h)" "DONE(d)"))))
+   '((type "NEXT(n)" "TODO(t)" "MAY?(m)" "WISH(w)" "HOLD(h)" "DONE(d)")))
  '(oz-prefix "/Applications/Mozart.app/Contents/Resources")
  '(package-archives
-   (quote
-    (("gnu" . "http://elpa.gnu.org/packages/")
-     ("marmalade" . "http://marmalade-repo.org/packages/")
-     ("org" . "http://orgmode.org/elpa/")
-     ("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
-     ("melpa" . "http://melpa.milkbox.net/packages/"))))
+   '(("gnu" . "https://elpa.gnu.org/packages/")
+     ("org" . "https://orgmode.org/elpa/")
+     ("melpa-stable" . "https://stable.melpa.org/packages/")
+     ("melpa" . "https://melpa.org/packages/")))
  '(package-selected-packages
-   (quote
-    (swiper git-commit cider plantuml-mode yaml-mode markdown-mode dune utop tuareg erlang go-mode swift-mode inf-clojure graphviz-dot-mode helm-projectile find-file-in-project projectile quelpa use-package helm-org nim-mode cmake-mode luarocks company-lua lua-mode bitbake ob-kotlin flymake-shellcheck nodejs-repl jsonnet-mode dockerfile-mode gradle-mode spiral flycheck-swift swagger-to-org smali-mode cider-mode company-tern companytern helm-pages twittering-mode groovy-mode yasnippet yafolding wolfram-mode web-mode skewer-mode scala-mode2 racket-mode paredit org-dotemacs multiple-cursors modeline-posn lfe-mode json-mode js-comint javap-mode inflections ido-vertical-mode hydra htmlize hl-sexp highlight-parentheses highlight-indentation helm-idris git-commit-mode ghci-completion ghc fuzzy fringe-helper flx-ido fill-column-indicator exec-path-from-shell epoch-view edn dot-mode col-highlight coffee-mode clojure-mode-extra-font-locking bats-mode auto-highlight-symbol applescript-mode align-cljlet)))
+   '(powershell elpy wolfram swiper git-commit cider plantuml-mode yaml-mode markdown-mode dune utop tuareg erlang go-mode swift-mode inf-clojure graphviz-dot-mode helm-projectile find-file-in-project projectile quelpa use-package helm-org nim-mode cmake-mode luarocks company-lua lua-mode bitbake ob-kotlin flymake-shellcheck nodejs-repl jsonnet-mode dockerfile-mode gradle-mode spiral flycheck-swift swagger-to-org smali-mode cider-mode company-tern companytern helm-pages twittering-mode groovy-mode yasnippet yafolding wolfram-mode web-mode skewer-mode scala-mode2 racket-mode paredit org-dotemacs multiple-cursors modeline-posn lfe-mode json-mode js-comint javap-mode inflections ido-vertical-mode hydra htmlize hl-sexp highlight-parentheses highlight-indentation helm-idris git-commit-mode ghci-completion ghc fuzzy fringe-helper flx-ido fill-column-indicator exec-path-from-shell epoch-view edn dot-mode col-highlight coffee-mode clojure-mode-extra-font-locking bats-mode auto-highlight-symbol applescript-mode align-cljlet))
  '(prettify-symbols-unprettify-at-point nil)
+ '(projectile-completion-system 'ido)
  '(projectile-globally-ignored-directories
-   (quote
-    (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" "build" "tmp")))
+   '(".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" "build" "tmp"))
  '(projectile-project-root-files
-   (quote
-    (".git" "rebar.config" "project.clj" "pom.xml" "build.sbt" "build.gradle" "Gemfile" "requirements.txt" "gulpfile.js" "Gruntfile.js" "bower.json" "composer.json" "deps.edn")))
- '(projectile-project-root-files-bottom-up (quote (".projectile")))
- '(projectile-switch-project-action (quote projectile-dired))
- '(prolog-system (quote swi))
- '(py-default-interpreter (quote jython))
+   '(".git" "rebar.config" "project.clj" "pom.xml" "build.sbt" "build.gradle" "Gemfile" "requirements.txt" "gulpfile.js" "Gruntfile.js" "bower.json" "composer.json" "deps.edn"))
+ '(projectile-project-root-files-bottom-up '(".projectile"))
+ '(projectile-switch-project-action 'projectile-dired)
+ '(prolog-system 'swi)
+ '(py-default-interpreter 'jython)
  '(py-jython-command (concat (getenv "HOME") "/bin/jython"))
  '(py-shell-switch-buffers-on-execute nil)
  '(python-shell-enable-font-lock nil)
  '(python-shell-font-lock-enable nil)
- '(python-shell-interpreter "python2")
+ '(python-shell-interpreter "python3")
  '(read-buffer-completion-ignore-case t)
  '(safe-local-variable-values
-   (quote
-    ((eval load-file "../../irml-mode.el")
+   '((eval load-file "../../irml-mode.el")
      (eval load-file "../../ob-irml.el")
      (eval load-file "../../ob-jsinclude.el")
      (eval load-file "../../ob-nxml.el")
@@ -941,34 +902,35 @@ pre {
      (TeX-command-default . "ConTeXt-XeTeX")
      (show-trailing-whitespace . t)
      (org-babel-noweb-wrap-start . "{{")
-     (org-babel-noweb-wrap-end . "}}"))))
+     (org-babel-noweb-wrap-end . "}}")))
  '(scroll-bar-mode nil)
- '(send-mail-function (quote mailclient-send-it))
+ '(send-mail-function 'mailclient-send-it)
  '(show-paren-mode t)
  '(show-trailing-whitespace nil)
- '(slime-net-coding-system (quote utf-8-unix))
- '(sql-mysql-options (quote ("-A")))
+ '(slime-net-coding-system 'utf-8-unix)
+ '(sql-mysql-options '("-A"))
  '(sql-mysql-program "/usr/local/opt/mariadb@10.2/bin/mysql")
  '(sql-postgres-program "/usr/local/bin/psql")
  '(sql-sqlite-program "sqlite3")
  '(tramp-verbose 2)
  '(truncate-partial-width-windows nil)
- '(uniquify-buffer-name-style (quote post-forward) nil (uniquify))
+ '(uniquify-buffer-name-style 'post-forward nil (uniquify))
  '(uniquify-separator nil)
  '(use-dialog-box nil)
  '(utop-command "opam config exec -- utop -emacs")
  '(vc-follow-symlinks nil)
- '(visual-line-fringe-indicators (quote (left-curly-arrow right-curly-arrow)))
+ '(visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
  '(whitespace-global-modes t)
  '(whitespace-style
-   (quote
-    (face tabs trailing space-before-tab newline indentation empty space-after-tab lines-tail))))
+   '(face tabs trailing space-before-tab newline indentation empty space-after-tab lines-tail))
+ '(wolfram-indent 4)
+ '(wolfram-program "wolframscript"))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "DarkSlateGray" :foreground "Wheat" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 140 :width normal :foundry "nil" :family "Menlo"))))
+ '(default ((t (:inherit nil :stipple nil :background "DarkSlateGray" :foreground "Wheat" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 140 :width normal :foundry "nil" :family "JetBrains Mono"))))
  '(ahs-definition-face ((((background dark)) (:background "#bb3222" :underline t)) (((background light)) (:background "Yellow" :underline t))))
  '(ahs-face ((((background dark)) (:background "#992000")) (((background light)) (:background "Yellow"))))
  '(ahs-plugin-defalt-face ((t (:background "#206600"))))
@@ -1027,7 +989,7 @@ pre {
  '(js2-external-variable ((t (:background "black" :foreground "Red" :weight bold))))
  '(js2-function-param ((t (:foreground "SeaGreen3"))))
  '(js2-function-param-face ((t (:foreground "Green"))))
- '(message-cited-text ((((class color) (background dark)) (:foreground "gray"))))
+ '(message-cited-text ((((class color) (background dark)) (:foreground "gray"))) t)
  '(message-cited-text-face ((((class color) (background dark)) (:foreground "gray"))) t)
  '(message-header-cc ((((class color) (background dark)) (:bold t :foreground "green2"))))
  '(message-header-cc-face ((((class color) (background dark)) (:bold t :foreground "green2"))) t)
