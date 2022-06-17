@@ -257,6 +257,9 @@ Emacs for OS X doesn't pick up the PATH defined in .bashrc/.profile.
   (use-package helm-projectile
     :ensure t
     :pin melpa)
+  (use-package helm-org
+    :ensure t
+    :pin melpa)
   (require 'helm-org)
 #+end_src
 
@@ -386,43 +389,27 @@ Emacs for OS X doesn't pick up the PATH defined in .bashrc/.profile.
     :pin melpa)
 #+end_src
 
-** Go Programming
-#+begin_src emacs-lisp :results silent
-  (use-package go-mode
-    :ensure t
-    :pin melpa)
-#+end_src
-
-** Erlang Programming
-#+begin_src emacs-lisp :results silent
-  (use-package erlang
-    :ensure t
-    :pin melpa)
-  (add-hook 'erlang-mode-hook (lambda () (setq font-lock-maximum-decoration t)))
-#+end_src
-
-
 ** OCaml Programming
 #+begin_src emacs-lisp :results silent
-  (use-package tuareg
-    :ensure t
-    :pin melpa)
+  ;; (use-package tuareg
+  ;;   :ensure t
+  ;;   :pin melpa)
 
   ;; ## added by OPAM user-setup for emacs / base ## 56ab50dc8996d2bb95e7856a6eddb17b ## you can edit, but keep this line
-  (require 'opam-user-setup "~/.emacs.d/opam-user-setup.el")
+  ;; (require 'opam-user-setup "~/.emacs.d/opam-user-setup.el")
   ;; ## end of OPAM user-setup addition for emacs / base ## keep this line
 #+end_src
 
 #+begin_src emacs-lisp :results silent
-  (use-package utop
-    :ensure t
-    :pin melpa)
+  ;; (use-package utop
+  ;;   :ensure t
+  ;;   :pin melpa)
 #+end_src
 
 #+begin_src emacs-lisp :results silent
-  (use-package dune
-    :ensure t
-    :pin melpa)
+  ;; (use-package dune
+  ;;   :ensure t
+  ;;   :pin melpa)
 #+end_src
 
 ** Python Programming
@@ -470,24 +457,17 @@ Emacs for OS X doesn't pick up the PATH defined in .bashrc/.profile.
 
 *** tern
 #+begin_src emacs-lisp :results silent
-  (use-package tern
-    :ensure t
-    :pin melpa)
-  (use-package company-tern
-    :ensure t
-    :pin melpa)
+  ;; (use-package tern
+  ;;   :ensure t
+  ;;   :pin melpa)
+  ;; (use-package company-tern
+  ;;   :ensure t
+  ;;   :pin melpa)
 #+end_src
 
 *** json-mode
 #+begin_src emacs-lisp :results silent
   (use-package json-mode
-    :ensure t
-    :pin melpa)
-#+end_src
-
-** Coffee Programming
-#+begin_src emacs-lisp :results silent
-  (use-package coffee-mode
     :ensure t
     :pin melpa)
 #+end_src
@@ -684,15 +664,12 @@ Tell the Org Babel tooling where the JAR file is.
   (use-package highlight-indentation
     :ensure t
     :pin melpa)
-  (use-package col-highlight
-    :ensure t
-    :pin melpa)
   (use-package auto-highlight-symbol
     :ensure t
     :pin melpa)
-  (use-package hl-sexp
-    :ensure t
-    :pin melpa)
+  ;; (use-package hl-sexp
+  ;;   :ensure t
+  ;;   :pin melpa)
   (use-package fill-column-indicator
     :ensure t
     :pin melpa)
@@ -716,9 +693,9 @@ Tell the Org Babel tooling where the JAR file is.
 
 ** Modeline
 #+begin_src emacs-lisp :results silent
-  (use-package modeline-posn
-    :ensure t
-    :pin melpa)
+  ;; (use-package modeline-region
+  ;;   :ensure t
+  ;;   :pin gnu)
 #+end_src
 
 ** Git Commit

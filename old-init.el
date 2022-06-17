@@ -9,7 +9,7 @@
 (setq my-top 22)
 (setq my-left 0); 0
 (setq my-width-cols 204); 176 189 174 183 166
-(setq my-height-rows 57); 57 52 54 48
+(setq my-height-rows 55); 57 52 54 48
 (setq my-dock-height 90); 100 0
 (setq my-dock-width 30); 30 0
 
@@ -22,12 +22,11 @@
 (dolist (dir '(
                aquarium-mode
 ;               cider
-               coffee-mode
                ;; css-mode
                ghc-mod
                grep-buffers
                hlint
-               hl-sexp-overrides-bs
+;               hl-sexp-overrides-bs
                html5-el
                irml-mode
                java-decompile-helper
@@ -45,7 +44,6 @@
   '(add-to-list 'rng-schema-locating-files
                 (expand-file-name "lisp/html5-el/schemas.xml"
                                   user-emacs-directory)))
-(require 'coffee-mode)                  ; Needed for js2 for some reason
 (require 'whattf-dt)
 (require 'jka-compr)
 (require 'ange-ftp)
@@ -55,11 +53,11 @@
 (require 'cc-mode)
 (require 'picture)
 (require 'generic-x)
-(require 'hl-sexp-overrides-bs)
-(require 'clojure-mode)                 ; Needed for bug fix below
+; (require 'hl-sexp-overrides-bs)
+;; (require 'clojure-mode)                 ; Needed for bug fix below
 (require 'find-file-in-project)
 (require 'org)
-(require 'irml-mode)
+; (require 'irml-mode)
 (require 'uniquify)
 (require 'org-edn)
 (require 'auto-highlight-symbol)
@@ -641,18 +639,6 @@ and `(match-end 1)'."
    )
   t)
 
-(font-lock-add-keywords
- 'coffee-mode
-  '(
-    ;; Temporary definitions
-    ("\\(\\w*XXX\\w*\\)" 1 font-lock-warning-face t)
-    ;; Temporary definitions
-    ("\\(bus[.][A-Z_0-9]+\\)" 1 font-lock-warning-face t)
-    ;; Reminder comments
-    ("[/#*][ \t]*\\(FIXME\\|XXX\\|DbC\\|\\?\\?\\?\\)" 1 font-lock-warning-face t)
-   )
-  t)
-
 
 ;; ========================================================
 ;; Custom modes
@@ -868,7 +854,6 @@ and `(match-end 1)'."
                ("Org" (mode . org-mode))
                ("nXML" (mode . nxml-mode))
                ("Java" (mode . java-mode))
-               ("Coffee" (mode . coffee-mode))
                ("Sh" (mode . sh-mode))
                ("Shell" (mode . shell-mode))
                ("Compilation" (mode . compilation-mode))
@@ -1020,16 +1005,7 @@ prevent appending to the kill buffer."
                       nil nil nil 'regexp-history nil t)))
   (save-excursion
     (goto-char (point-min))
-    (let ((first-blood t))
-      (while (and (not (eobp))
-                  (re-search-forward regexp nil t))
-        (if (and (not current-prefix-arg) (not first-blood))
-            (append-next-kill))
-        (kill-region (progn (goto-char (match-beginning 0))
-                            (beginning-of-line)
-                            (point))
-                     (progn (forward-line 1) (point)))
-        (setq first-blood nil)))))
+    (kill-matching-lines regexp)))
 
 (defun my-toggle-line-move-visual ()
   "Toggle behavior of up/down arrow key, by visual line vs logical line."
@@ -1449,12 +1425,8 @@ Make backspaces delete the previous character."
  '(emacs-lisp-mode-hook
    lisp-mode-hook
    lisp-interaction-mode-hook
-   clojure-mode-hook
-   coffee-mode-hook))
-(add-hook 'coffee-mode-hook
-          (lambda ()
-            (define-key coffee-mode-map (kbd "C-c C-c") 'coffee-compile-buffer)
-            (define-key coffee-mode-map (kbd "C-c C-r") 'coffee-compile-region)))
+   clojure-mode-hook))
+
 ;;;;
 ;;;; END: Key bindings
 ;;;;

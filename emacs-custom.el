@@ -35,7 +35,7 @@
  '(canlock-password "e7415257d290faf90e7bedf1524d44d0fb6b3a2c")
  '(cider-auto-jump-to-error nil)
  '(cider-auto-mode t)
- '(cider-clojure-cli-command "clojure")
+ '(cider-clojure-cli-aliases "emacs-repl")
  '(cider-clojure-cli-parameters
    "-A:emacs-repl:emacs-repl-local:dev --init ~/my.clj -m nrepl.cmdline --middleware '%s'")
  '(cider-font-lock-dynamically '(deprecated))
@@ -67,6 +67,7 @@
  '(company-idle-delay nil)
  '(company-lighter-base "")
  '(company-show-numbers t)
+ '(company-show-quick-access t)
  '(company-tooltip-minimum-width 30)
  '(company-tooltip-offset-display 'scrollbar)
  '(compilation-scroll-output t)
@@ -875,7 +876,8 @@ pre {
      ("melpa-stable" . "https://stable.melpa.org/packages/")
      ("melpa" . "https://melpa.org/packages/")))
  '(package-selected-packages
-   '(powershell elpy wolfram swiper git-commit cider plantuml-mode yaml-mode markdown-mode dune utop tuareg erlang go-mode swift-mode inf-clojure graphviz-dot-mode helm-projectile find-file-in-project projectile quelpa use-package helm-org nim-mode cmake-mode luarocks company-lua lua-mode bitbake ob-kotlin flymake-shellcheck nodejs-repl jsonnet-mode dockerfile-mode gradle-mode spiral flycheck-swift swagger-to-org smali-mode cider-mode company-tern companytern helm-pages twittering-mode groovy-mode yasnippet yafolding wolfram-mode web-mode skewer-mode scala-mode2 racket-mode paredit org-dotemacs multiple-cursors modeline-posn lfe-mode json-mode js-comint javap-mode inflections ido-vertical-mode hydra htmlize hl-sexp highlight-parentheses highlight-indentation helm-idris git-commit-mode ghci-completion ghc fuzzy fringe-helper flx-ido fill-column-indicator exec-path-from-shell epoch-view edn dot-mode col-highlight coffee-mode clojure-mode-extra-font-locking bats-mode auto-highlight-symbol applescript-mode align-cljlet))
+   '(modeline-region tern ob-kotlin kotlin-mode typescript-mode powershell elpy wolfram swiper git-commit cider plantuml-mode yaml-mode markdown-mode dune utop tuareg erlang go-mode swift-mode inf-clojure graphviz-dot-mode helm-projectile find-file-in-project projectile quelpa use-package helm-org nim-mode cmake-mode luarocks company-lua lua-mode bitbake flymake-shellcheck nodejs-repl jsonnet-mode dockerfile-mode gradle-mode spiral flycheck-swift swagger-to-org smali-mode cider-mode company-tern companytern helm-pages twittering-mode groovy-mode yasnippet yafolding wolfram-mode web-mode skewer-mode scala-mode2 racket-mode paredit multiple-cursors modeline-posn lfe-mode json-mode js-comint javap-mode inflections ido-vertical-mode hydra htmlize hl-sexp highlight-parentheses highlight-indentation helm-idris git-commit-mode ghci-completion ghc fuzzy fringe-helper flx-ido fill-column-indicator exec-path-from-shell epoch-view edn dot-mode col-highlight coffee-mode clojure-mode-extra-font-locking bats-mode auto-highlight-symbol applescript-mode align-cljlet))
+ '(plantuml-default-exec-mode 'jar)
  '(prettify-symbols-unprettify-at-point nil)
  '(projectile-completion-system 'ido)
  '(projectile-globally-ignored-directories
@@ -933,7 +935,7 @@ pre {
  '(default ((t (:inherit nil :stipple nil :background "DarkSlateGray" :foreground "Wheat" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 140 :width normal :foundry "nil" :family "JetBrains Mono"))))
  '(ahs-definition-face ((((background dark)) (:background "#bb3222" :underline t)) (((background light)) (:background "Yellow" :underline t))))
  '(ahs-face ((((background dark)) (:background "#992000")) (((background light)) (:background "Yellow"))))
- '(ahs-plugin-defalt-face ((t (:background "#206600"))))
+ '(ahs-plugin-defalt-face ((t (:background "#206600"))) t)
  '(ahs-plugin-whole-buffer-face ((((background dark)) (:background "#662000")) (((background light)) (:background "#edda00"))))
  '(bs-hl-sexp-endcaps-face ((t (:foreground "white" :weight bold))))
  '(c-annotation-face ((t (:foreground "grey"))))

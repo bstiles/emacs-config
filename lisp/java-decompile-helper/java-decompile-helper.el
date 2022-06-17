@@ -31,21 +31,23 @@
 
 ;;; Commentary:
 
-;; This is a very simple pseudo-mode that takes effect when opening a 
-;; compiled Java .class file.  It calls the JAD decompiler on the class file 
+;; This is a very simple pseudo-mode that takes effect when opening a
+;; compiled Java .class file.  It calls the jd-cli decompiler on the class file
 ;; to produce a decompiled version of the source and displays that in the
-;; buffer and switches to 'jde-mode'.  If the .class file has already been 
-;; decompiled and is being displayed in a buffer, this process will be 
-;; short-circuited and that buffer will be displayed instead (actually this 
+;; buffer and switches to 'jde-mode'.  If the .class file has already been
+;; decompiled and is being displayed in a buffer, this process will be
+;; short-circuited and that buffer will be displayed instead (actually this
 ;; happens in any case if a buffer of the same name exists).  By the way,
-;; this works when opening .class files from within .jar and .zip files 
+;; this works when opening .class files from within .jar and .zip files
 ;; using Zip-Archive mode.
 
-;; There are a number of limitations as is, stemming from the fact that this 
-;; is just a quick hack so I could browse the source of Java classes whether or 
+;; There are a number of limitations as is, stemming from the fact that this
+;; is just a quick hack so I could browse the source of Java classes whether or
 ;; not I had the source immediately available.
 
-;; - the location to JAD is hard-coded
+;; - jd-cli is from https://github.com/kwart/jd-cli
+
+;; - the location to jd-cli is hard-coded
 
 ;; - the temporary output directory is hard-coded to /tmp
 
@@ -63,23 +65,22 @@
 
 
 (defun java-decompile-mode ()
-  "Runs the JAD Java decompiler and puts the output into a new buffer named appropriately based on the file being decompiled.  JAD "
+  "Runs the java-decompiler (FernFlower) Java decompiler and puts the output into a new buffer named appropriately based on the file being decompiled."
   (interactive)
   (string-match "\\([^ ]*\\).class" (buffer-name))
-  (unless (file-directory-p "/tmp/jad/")
-    (make-directory "/tmp/jad"))
-  (let ((tmpfile (make-temp-name "/tmp/jad/"))
+  (unless (file-directory-p "/tmp/java-decompiler/")
+    (make-directory "/tmp/java-decompiler"))
+  (let ((coding-system-for-write 'binary)
+        (tmpfile (concat (make-temp-name "/tmp/java-decompiler/") ".class"))
 	(newbufname (format "%s.java" (match-string 1 (buffer-name))))
 	(thisbuf (get-buffer (buffer-name))))
     (if (get-buffer newbufname)
 	(progn
 	  (switch-to-buffer (get-buffer newbufname))
 	  (kill-buffer thisbuf))
-      (set-buffer-file-coding-system 'raw-text)
-      (setq require-final-newline nil)
-      (write-file tmpfile)
+      (write-region nil nil tmpfile nil t)
       (erase-buffer)
-      (shell-command (format (concat (getenv "HOME") "/bin/jad -b -ff -lnc -nonlb -space -p %s") tmpfile) t)
+      (shell-command (format (concat (getenv "HOME") "/bin/java-decompiler/java-decompiler %s") tmpfile) t)
       (rename-buffer newbufname)
       (read-only-mode)
       (set-buffer-modified-p nil)
